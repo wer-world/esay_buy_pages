@@ -487,16 +487,20 @@
         })();
         </script>
         <!--End Banner End-->
-        <div class="inews">
+        <div class="inews" id="inews">
         	<div class="news_t">
             	<span class="fr"><a href="#">更多 ></a></span>新闻资讯
             </div>
             <ul>
-            	<li><span>[ 特惠 ]</span><a href="#">掬一轮明月 表无尽惦念</a></li>
+                <li v-for="(news, index) in newsList" :key="news.id" v-show="index<=4">
+                    <span>[ 公告 ]</span>
+                    <a href="javascript:void(0)">{{news.title}}</a>
+                </li>
+            	<!-- <li><span>[ 特惠 ]</span><a href="#">掬一轮明月 表无尽惦念</a></li>
             	<li><span>[ 公告 ]</span><a href="#">好奇金装成长裤新品上市</a></li>
             	<li><span>[ 特惠 ]</span><a href="#">大牌闪购 · 抢！</a></li>
             	<li><span>[ 公告 ]</span><a href="#">发福利 买车就抢千元油卡</a></li>
-            	<li><span>[ 公告 ]</span><a href="#">家电低至五折</a></li>
+            	<li><span>[ 公告 ]</span><a href="#">家电低至五折</a></li> -->
             </ul>
             <div class="charge_t">
             	话费充值<div class="ch_t_icon"></div>
@@ -1351,7 +1355,41 @@
     </div>
     <!--End Footer End -->
 </div>
+<script src="/js/axios.js"></script>
+<script src="/js/vue.min.js"></script>
+<script>
+    Vue.config.productionTip = false
 
+    new Vue({
+        el:"#inews",
+        data:{
+            newsList:[{
+                id:'',
+                title:'',
+                content:'',
+            }],
+            
+        },
+        methods: {
+            getNewsList(){
+                axios({
+                    method:"get",
+                    url:"/nginx/news/getNewsList",
+                }).then((result) => {
+                    if (result.data.code=='200') {
+                        this.newsList = result.data.data
+                    }
+                    
+                }).catch((err) => {
+                    
+                });
+            }
+        },
+        mounted() {
+            this.getNewsList();
+        },
+    })
+</script>
 </body>
 
 
