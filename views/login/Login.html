@@ -46,7 +46,7 @@
 </div>
 <!--End Header End-->
 <!--Begin Login Begin-->
-<div class="log_bg">
+<div class="log_bg" id="root">
     <div class="top">
         <div class="logo"><a href="../Index.html"><img src="../../images/logo.png" /></a></div>
     </div>
@@ -54,7 +54,7 @@
     	<div class="log_img"><img src="../../images/l_img.png" width="611" height="425" /></div>
 		<div class="log_c">
         	<form>
-            <table border="0" style="width:370px; font-size:14px; margin-top:30px;" cellspacing="0" cellpadding="0">
+            <table border="0" style="width:480px; font-size:14px; margin-top:30px;" cellspacing="0" cellpadding="0">
               <tr height="50" valign="top">
               	<td width="55">&nbsp;</td>
                 <td>
@@ -63,12 +63,14 @@
                 </td>
               </tr>
               <tr height="70">
-                <td>用户名</td>
-                <td><input type="text" value="" class="l_user" /></td>
+                <td>登录名</td>
+                <td><input type="text" value="" class="l_user" v-model="user.loginName" @blur="checkLoginName()"/></td>
+                <td><span>{{userMsg.loginNameMsg}}</span></td>
               </tr>
               <tr height="70">
                 <td>密&nbsp; &nbsp; 码</td>
-                <td><input type="password" value="" class="l_pwd" /></td>
+                <td><input type="password" value="" class="l_pwd" v-model="user.password"/></td>
+                <td><span>{{userMsg.passwordMsg}}</span></td>
               </tr>
               <tr>
               	<td>&nbsp;</td>
@@ -81,7 +83,7 @@
               </tr>
               <tr height="60">
               	<td>&nbsp;</td>
-                <td><input type="submit" value="登录" class="log_btn" /></td>
+                <td><input type="submit" value="登录" class="log_btn" @click.prevent="userLogin()"/></td>
               </tr>
             </table>
             </form>
@@ -97,7 +99,82 @@
     </div>
 </div>
 <!--End Footer End -->
+<script src="../../js/vue.min.js"></script>
+<script src="../../js/axios.js"></script>
+<script type="module">
+    Vue.config.productionTip = false
 
+    new Vue({
+        el:"#root",
+        data:{
+            user:{
+                loginName:'',
+                password:''
+            },
+            userMsg:{
+                loginNameMsg:'',
+                passwordMsg:''
+            }
+        },
+        methods: {
+            userLogin(){
+                var userNameRegix = /^[\u4e00-\u9fa5a-zA-Z0-9]{3,8}$/
+                if (this.user.loginName.trim().length == 0) {
+                this.userMsg.loginNameMsg="请输入登录名"
+                return;
+                }
+                if (!userNameRegix.test(this.user.loginName)) {
+                this.userMsg.loginNameMsg="请输入3-8位登录名"
+                return;
+                }
+                this.checkLoginName();
+                if (this.user.password.trim().length == 0) {
+                this.userMsg.passwordMsg="请输入密码"
+                return;
+                }
+                var passwordMsgRegix = /^[A-Za-z0-9]{6,18}$/
+                if (!passwordMsgRegix.test(this.user.password)) {
+                this.userMsg.passwordMsg="请输入6-18位密码"
+                return;
+                }
+                axios({
+                    method:'post',
+                    url:"/nginx/user/loginCheck",
+                    data:{
+                        loginName:this.user.loginName,
+                        password:this.user.password
+                    }
+                    }).then((result) => {
+                    if (result.data.code==200) {
+                        alert(result.data.message)
+                        window.location="../Index.html"
+                    }
+                    }).catch((err) => {
+
+                });
+            },
+            checkLoginName(){
+                
+                axios({
+                method:'post',
+                url:"/nginx/user/checkLogin",
+                data:{
+                    loginName:this.user.loginName
+                }
+                }).then((result) => {
+                if (result.data.code=='200') {
+                    this.userMsg.loginNameMsg="√"
+                }else{
+                    this.userMsg.loginNameMsg=result.data.message
+                    return;
+                }
+                }).catch((err) => {
+
+                });
+            }
+        },
+    })
+</script>
 </body>
 
 

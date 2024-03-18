@@ -1,4 +1,4 @@
-1、同步项目
+_1、同步项目
 2、将项目放到本地nginx中的html中，可创建文件夹放置
 ![img.png](img.png)
 3、配置conf下的nginx.conf配置，添加如下两个配置
@@ -16,7 +16,7 @@
 
 nginx.conf配置如下
 
-location /api {
+location /api {_
 alias html/esay_buy_pages/api;
 }
 

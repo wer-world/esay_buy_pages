@@ -46,7 +46,7 @@
 </div>
 <!--End Header End-->
 <!--Begin Login Begin-->
-<div class="log_bg">
+<div class="log_bg" id="root">
     <div class="top">
         <div class="logo"><a href="../Index.html"><img src="../../images/logo.png" /></a></div>
     </div>
@@ -54,7 +54,7 @@
     	<div class="log_img"><img src="../../images/l_img.png" width="611" height="425" /></div>
 		<div class="reg_c">
         	<form>
-            <table border="0" style="width:420px; font-size:14px; margin-top:20px;" cellspacing="0" cellpadding="0">
+            <table border="0" style="width:543px; font-size:14px; margin-top:20px;" cellspacing="0" cellpadding="0">
               <tr height="50" valign="top">
               	<td width="95">&nbsp;</td>
                 <td>
@@ -63,32 +63,40 @@
                 </td>
               </tr>
               <tr height="50">
-                <td align="right"><font color="#ff4e00">*</font>&nbsp;用户名 &nbsp;</td>
-                <td><input type="text" value="" class="l_user" /></td>
+                <td align="right"><font color="#ff4e00">*</font>&nbsp;登录名 &nbsp;</td>
+                <td><input type="text" value="" class="l_user" v-model="user.loginName" @blur="checkLoginName()"/></td>
+                <td><span>{{userMsg.loginNameMsg}}</span></td>
               </tr>
               <tr height="50">
+                <td align="right"><font color="#ff4e00">*</font>&nbsp;用户名 &nbsp;</td>
+                <td><input type="text" value="" class="l_user" v-model="user.userName"/></td>
+                <td><span>{{userMsg.userNameMsg}}</span></td>
+              </tr>
+              
+              <tr>
                 <td align="right"><font color="#ff4e00">*</font>&nbsp;密码 &nbsp;</td>
-                <td><input type="password" value="" class="l_pwd" /></td>
+                <td><input type="password" value="" class="l_pwd" v-model="user.password"/></td>
+                <td><span>{{userMsg.passwordMsg}}</span></td>
               </tr>
               <tr height="50">
                 <td align="right"><font color="#ff4e00">*</font>&nbsp;确认密码 &nbsp;</td>
-                <td><input type="password" value="" class="l_pwd" /></td>
+                <td><input type="password" value="" class="l_pwd" v-model="user.rePassword"/></td>
+                <td><span>{{userMsg.rePasswordMsg}}</span></td>
+              </tr>
+              <tr height="50">
+                  <td align="right"><font color="#ff4e00">*</font>身份证号 &nbsp;</td>
+                  <td><input type="text" value="" class="l_num" v-model="user.identityCode"/></td>
+                  <td><span>{{userMsg.identityCodeMsg}}</span></td>
               </tr>
               <tr height="50">
                 <td align="right"><font color="#ff4e00">*</font>&nbsp;邮箱 &nbsp;</td>
-                <td><input type="text" value="" class="l_email" /></td>
+                <td><input type="text" value="" class="l_email" v-model="user.email"/></td>
+                <td><span>{{userMsg.emailMsg}}</span></td>
               </tr>
               <tr height="50">
                 <td align="right"><font color="#ff4e00">*</font>&nbsp;手机 &nbsp;</td>
-                <td><input type="text" value="" class="l_tel" /></td>
-              </tr>
-              <tr height="50">
-                <td align="right">邀请人会员名 &nbsp;</td>
-                <td><input type="text" value="" class="l_mem" /></td>
-              </tr>
-              <tr height="50">
-                <td align="right">邀请人ID号 &nbsp;</td>
-                <td><input type="text" value="" class="l_num" /></td>
+                <td><input type="text" value="" class="l_tel" v-model="user.mobile"/></td>
+                <td><span>{{userMsg.mobileMsg}}</span></td>
               </tr>
               <tr height="50">
                 <td align="right"> <font color="#ff4e00">*</font>&nbsp;验证码 &nbsp;</td>
@@ -96,6 +104,7 @@
                     <input type="text" value="" class="l_ipt" />
                     <a href="#" style="font-size:12px; font-family:'宋体';">换一张</a>
                 </td>
+                <td><span>{{userMsg.userNameMsg}}</span></td>
               </tr>
               <tr>
               	<td>&nbsp;</td>
@@ -107,7 +116,7 @@
               </tr>
               <tr height="60">
               	<td>&nbsp;</td>
-                <td><input type="submit" value="立即注册" class="log_btn" /></td>
+                <td><input type="submit" value="立即注册" class="log_btn" @click.prevent="registUser()"/></td>
               </tr>
             </table>
             </form>
@@ -123,7 +132,149 @@
     </div>
 </div>
 <!--End Footer End -->
+<script src="../../js/vue.min.js"></script>
+<script src="../../js/axios.js"></script>
+<script type="module">
 
+  Vue.config.productionTip = false
+
+  new Vue({
+    el:"#root",
+    data:{
+      user:{
+        loginName:'',
+        userName:'',
+        password:'',
+        rePassword:'',
+        identityCode:'',
+        email:'',
+        mobile:'',
+      },
+      userMsg:{
+        loginNameMsg:'',
+        userNameMsg:'',
+        passwordMsg:'',
+        rePasswordMsg:'',
+        identityCodeMsg:'',
+        emailMsg:'',
+        mobileMsg:'',
+      },
+    },
+    methods: {
+      registUser(){
+        this.userMsg={
+          loginNameMsg:'',
+          userNameMsg:'',
+          passwordMsg:'',
+          rePasswordMsg:'',
+          identityCodeMsg:'',
+          emailMsg:'',
+          mobileMsg:'',
+        }
+        var userNameRegix = /^[\u4e00-\u9fa5a-zA-Z0-9]{3,8}$/
+        if (this.user.loginName.trim().length == 0) {
+          this.userMsg.loginNameMsg="请输入登录名"
+          return;
+        }
+        if (!userNameRegix.test(this.user.loginName)) {
+          this.userMsg.loginNameMsg="请输入3-8位登录名"
+          return;
+        }
+        this.checkLoginName();
+        if (this.user.userName.trim().length == 0) {
+          this.userMsg.userNameMsg="请输入用户名"
+          return;
+        }
+        if (!userNameRegix.test(this.user.userName)) {
+          this.userMsg.userNameMsg="请输入3-8位用户名"
+          return;
+        }
+        if (this.user.password.trim().length == 0) {
+          this.userMsg.passwordMsg="请输入密码"
+          return;
+        }
+        var passwordMsgRegix = /^[A-Za-z0-9]{6,18}$/
+        if (!passwordMsgRegix.test(this.user.password)) {
+          this.userMsg.passwordMsg="请输入6-18位密码"
+          return;
+        }
+        if (this.user.rePassword.trim().length == 0) {
+          this.userMsg.rePasswordMsg="请输入确认密码"
+          return;
+        }
+        if (!passwordMsgRegix.test(this.user.rePassword)) {
+          this.userMsg.rePasswordMsg="请输入6-18位密码"
+          return;
+        }
+        if (this.user.password != this.user.rePassword) {
+          this.userMsg.rePasswordMsg="请与密码一致"
+          return;
+        }
+        if (this.user.identityCode.trim().length == 0) {
+          this.userMsg.identityCodeMsg="请输入身份证号"
+          return;
+        }
+        var identityCodeRegix = /^[0-9]{18}$/
+        if (!identityCodeRegix.test(this.user.identityCode)) {
+          this.userMsg.identityCodeMsg="请输入正确的18身份证号"
+          return;
+        }
+        
+        if (this.user.email.trim().length == 0) {
+          this.userMsg.emailMsg="请输入邮箱"
+          return;
+        }
+        var emailRegix = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/
+        if (!emailRegix.test(this.user.email)) {
+          this.userMsg.emailMsg="请输入正确的邮箱"
+          return;
+        }
+        if (this.user.mobile.trim().length == 0) {
+          this.userMsg.mobileMsg="请输入电话号码"
+          return;
+        }
+        var mobileRegix = /^1(3[0-9]|5[0-3,5-9]|7[1-3,5-8]|8[0-9])\d{8}$/
+        if (!mobileRegix.test(this.user.mobile)) {
+          this.userMsg.mobileMsg="请输入正确的11位电话号码"
+          return;
+        }
+        axios({
+          method:'post',
+          url:"/nginx/user/register",
+          data:{
+            user:this.user
+          }
+        }).then((result) => {
+          if (result.data.code==200) {
+            alert("注册成功")
+            window.location="../login/Login.html"
+          }
+        }).catch((err) => {
+
+        });
+      },
+      checkLoginName(){
+        axios({
+          method:'post',
+          url:"/nginx/user/checkLoginName",
+          data:{
+            loginName:this.user.loginName
+          }
+        }).then((result) => {
+          if (result.data.code=='200') {
+            this.userMsg.loginNameMsg="√"
+          }else{
+            this.userMsg.loginNameMsg=result.data.message
+            return;
+          }
+        }).catch((err) => {
+
+        });
+      }
+    },
+
+  })
+</script>
 </body>
 
 
