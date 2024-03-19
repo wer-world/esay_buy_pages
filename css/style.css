@@ -253,10 +253,10 @@ ul.menu_r li a:hover, ul.menu_r li a.now{
 .leftNav ul li ul li .n_c{ width:142px; overflow:hidden; float:left; }
 .leftNav ul li ul li .n_c a{ width:60px; height:20px; line-height:20px; overflow:hidden; float:left; display:inline-block; margin:0px 0px 0px 10px; }
 .leftNav ul li .fj{ width:210px; height:40px; line-height:40px; display:block; overflow:hidden; position:absolute; left:0; top:0; z-index:901; }
-.leftNav ul li .fj.nuw{	width:211px; text-decoration:none; height:40px; line-height:40px; background-color:#FFF; color:#ff4e00; z-index:800px; }
+.leftNav ul li .fj.nuw{	width:211px; text-decoration:none; height:40px; line-height:40px; background-color:#FFF; color:#ff4e00; z-index:800; }
 
-.leftNav .zj{ 
-	width:989px; height:411px; overflow:hidden; background-color:#FFF; position:absolute; left:210px; top:0; display:none; 
+.leftNav .zj{
+	width:989px; height:411px; overflow:hidden; background-color:#FFF; position:absolute; left:210px; top:0; display:block;
 }
 .leftNav .zj .zj_l{
 	width:685px; height:385px; overflow:hidden; float:left; display:inline; margin-left:20px; margin-top:15px;
