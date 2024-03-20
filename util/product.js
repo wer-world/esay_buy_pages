@@ -38,16 +38,16 @@ new Vue({
                     'id':this.id
                 }
             }).then((res=>{
-                this.product = res.data;
+                this.product = res.data.data;
             }))
             axios({
                 method:'post',
                 url:'/nginx/product/getSimilarProducts',
                 data:{
-                    'id':this.id
+                    'categoryLevelId':this.product.categoryLevelId
                 }
             }).then((res=>{
-                this.similarProducts = res.data;
+                this.similarProducts = res.data.data;
             }))
         },
         collect(){

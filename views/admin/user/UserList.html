@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<!--    <link rel="stylesheet" href="../../../css/Element.css">-->
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <style>
+        .el-input{
+            width: 36%;
+        }
+    </style>
+</head>
+<body>
+<div id="root">
+    <div>
+        <el-input placeholder="请输入要查询的用户名" v-model="userName" clearable @keydown.enter="currentChange(1)"></el-input>
+        <el-select v-model="type" placeholder="123">
+            <el-option v-for="t in typeList" v-model="t.id" :label="t.name"></el-option>
+        </el-select>
+        <el-button slot="append" icon="el-icon-search" @click="currentChange(1)"></el-button>
+    </div>
+    <el-table :data="userList" border style="width: 40%">
+        <el-table-column prop="loginName" label="登录名" width="180"></el-table-column>
+        <el-table-column prop="userName" label="用户名" width="180"></el-table-column>
+        <el-table-column label="性别" width="80">
+            <template slot-scope="scope">
+                {{getSex(scope.row.sex)}}
+            </template>
+        </el-table-column>
+        <el-table-column fixed="right" label="操作" width="100">
+            <template slot-scope="scope">
+                <el-button @click="viewUser(scope.row.id)" type="text" size="small">查看</el-button>
+                <el-button @click="updateUser(scope.row.id)" type="text" size="small">修改</el-button>
+                <el-button @click="deleteUser(scope.row.id)" type="text" size="small">删除</el-button>
+            </template>
+        </el-table-column>
+    </el-table>
+    <el-pagination
+        small
+        @current-change="currentChange"
+        :page-size="pageSize"
+        layout="prev, pager, next"
+        :total="totalCount">
+    </el-pagination>
+</div>
+</body>
+<script src="../../../js/vue.min.js"></script>
+<!--<script src="../../../js/Element.js"></script>-->
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="../../../js/axios.js"></script>
+<script src="../../../util/user_list.js"></script>
+</html>
