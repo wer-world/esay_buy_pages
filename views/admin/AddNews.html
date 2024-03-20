@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>添加资讯</title>
+    <link rel="stylesheet" href="/css/Element.css">
+</head>
+<body>
+    <div id="app">
+        <el-descriptions title="添加资讯信息"></el-descriptions>
+        <el-form ref="form" :model="news" label-width="80px">
+            <el-form-item label="标题">
+              <el-input v-model="news.title"></el-input>
+            </el-form-item>
+            <el-form-item >{{titleMsg}}</el-form-item>
+            <el-form-item label="内容">
+              <el-input type="textarea" v-model="news.content"></el-input>
+            </el-form-item>
+            <el-form-item >{{contentMsg}}</el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="onSubmit">确认添加</el-button>
+              <el-button @click="clear">清空</el-button>
+              <el-button @click="returnNewsList">返回资讯列表</el-button>
+            </el-form-item>
+          </el-form>
+    </div>
+    <script src="../../js/vue.min.js"></script>
+    <script src="/js/axios.js"></script>
+    <script src="../../js/Element.js"></script>
+    <script src="../../util/addNews.js"></script>
+</body>
+</html>

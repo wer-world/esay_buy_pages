@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>查看资讯</title>
+    <link rel="stylesheet" href="/css/Element.css">
+</head>
+<body>
+    <div id="app">
+        <el-descriptions title="资讯信息">
+            <el-descriptions-item label="标题">{{news.title}}</el-descriptions-item>
+            <el-descriptions-item label="内容">{{news.content}}</el-descriptions-item>
+            <el-descriptions-item label="创建时间">{{news.createTime}}</el-descriptions-item>
+            
+        </el-descriptions>
+        <el-button @click="returnNewsList">返回资讯列表</el-button>
+    </div>
+    <script src="../../js/vue.min.js"></script>
+    <script src="/js/axios.js"></script>
+    <script src="../../js/Element.js"></script>
+    <script src="../../util/viewNews.js"></script>
+</body>
+</html>

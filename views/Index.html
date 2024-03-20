@@ -279,15 +279,10 @@
             	<span class="fr"><a href="#">更多 ></a></span>新闻资讯
             </div>
             <ul>
-                <li v-for="(news, index) in newsList" :key="news.id" v-show="index<=4">
+                <li v-for="(news, index) in newsList" :key="news.id">
                     <span>[ 公告 ]</span>
                     <a href="javascript:void(0)">{{news.title}}</a>
                 </li>
-            	<!-- <li><span>[ 特惠 ]</span><a href="#">掬一轮明月 表无尽惦念</a></li>
-            	<li><span>[ 公告 ]</span><a href="#">好奇金装成长裤新品上市</a></li>
-            	<li><span>[ 特惠 ]</span><a href="#">大牌闪购 · 抢！</a></li>
-            	<li><span>[ 公告 ]</span><a href="#">发福利 买车就抢千元油卡</a></li>
-            	<li><span>[ 公告 ]</span><a href="#">家电低至五折</a></li> -->
             </ul>
             <div class="charge_t">
             	话费充值<div class="ch_t_icon"></div>
@@ -333,20 +328,20 @@
                     <div id="block">
                         <div id="botton-scroll">
                             <ul class="featureUL">
-                                <li class="featureBox">
+                                <li class="featureBox" v-for="(pro, index) in products" :key="pro.id" v-show="index<4">
                                     <div class="box">
                                     	<div class="h_icon"><img src="../images/hot.png" width="50" height="50" /></div>
                                         <div class="imgbg">
-                                        	<a href="#"><img src="../images/hot1.jpg" width="160" height="136" /></a>
+                                        	<a href="#"><img :src="pro.picPath" width="160" height="136" /></a>
                                         </div>
                                         <div class="name">
                                         	<a href="#">
-                                            <h2>德国进口</h2>
-                                            德亚全脂纯牛奶200ml*48盒
+                                            <h2>{{pro.description}}</h2>
+                                            {{pro.name}}
                                             </a>
                                         </div>
                                         <div class="price">
-                                            <font>￥<span>189</span></font> &nbsp; 26R
+                                            <font>￥<span>{{pro.price}}</span></font> &nbsp; 26R
                                         </div>
                                     </div>
                                 </li>
@@ -719,42 +714,12 @@
 </div>
 <script src="/js/axios.js"></script>
 <script src="/js/vue.min.js"></script>
-<script>
-    Vue.config.productionTip = false
 
-    new Vue({
-        el:"#inews",
-        data:{
-            newsList:[{
-                id:'',
-                title:'',
-                content:'',
-            }],
-            
-        },
-        methods: {
-            getNewsList(){
-                axios({
-                    method:"get",
-                    url:"/nginx/news/getNewsList",
-                }).then((result) => {
-                    if (result.data.code=='200') {
-                        this.newsList = result.data.data
-                    }
-                    
-                }).catch((err) => {
-                    
-                });
-            }
-        },
-        mounted() {
-            this.getNewsList();
-        },
-    })
-</script>
 </body>
 <script type="text/javascript" src="../util/leftNav.js"></script>
 <script type="text/javascript" src="../util/center.js"></script>
+<script type="text/javascript" src="../util/hotPro.js"></script>
+<script type="text/javascript" src="../util/newsVue.js"></script>
 <!--[if IE 6]>
 <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
 <![endif]-->
