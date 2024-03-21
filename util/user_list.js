@@ -3,7 +3,7 @@ new Vue({
     data: {
         userList: [],
         typeList: [],
-        type: 0,
+        type:'',
         userName: '',
         pageSize: 5,
         totalCount: 0
@@ -24,6 +24,7 @@ new Vue({
                     'pageSize': this.pageSize
                 }
             }).then((res => {
+                console.log(res.data.data.userList)
                 this.userList = res.data.data.userList;
                 this.totalCount = res.data.data.totalCount;
             }))
