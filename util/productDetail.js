@@ -2,64 +2,68 @@ Vue.config.productionTip = false
 new Vue({
     el: '#app',
     data:{
-        newsList: [],
+        proList: [],
+        product:{},
         currentPageCount:1,
-        pageSize:4,
+        pageSize:5,
         totalCount:0
 
     },
     methods: {
-        getNewsList(currentPageCount){
+        getProList(currentPageCount){
             axios({
                 method:"get",
-                url:"/nginx/news/getNewsList",
+                url:"/nginx/product/getProductListPages",
                 params:{
                     currentPage:currentPageCount,
-                    pageSize:this.pageSize
+                    pageSize:this.pageSize,
+                    brandName:this.product.brandName,
+                    name:this.product.name,
+
                 }
             }).then((result) => {
                 if (result.data.code=='200') {
-                    this.newsList = result.data.data.getNewsList
+                    this.proList = result.data.data.productList
                     this.totalCount = result.data.data.page.totalCount
                     this.currentPageCount = result.data.data.page.currentPage
                 }
-                
+
             }).catch((err) => {
-                
+
             });
         },
-        addNews(){
-            window.location="/esay_buy_pages/admin/news/AddNews.html"
+        addPro(){
+            window.location="/esay_buy_pages/admin/products/AddPro.html"
         },
-        newsDetail(id){
-            window.location="/esay_buy_pages/admin/news/ViewNews.html?id=" + id
+        viewPro(id){
+            window.location="/esay_buy_pages/admin/products/ViewPro.html?id=" + id
         },
-        modifyNews(id){
-            window.location="/esay_buy_pages/admin/news/ModifyNews.html?id=" + id
+        modifyPro(id){
+            window.location="/esay_buy_pages/admin/products/ModifyPro.html?id=" + id
         },
-        delNews(id){
+        delPro(id){
             if (!confirm("是否确认删除")) {
                 return;
             }
             axios({
                 method:'get',
-                url:"/nginx/news/delNewsById",
+                url:"/nginx/product/delProduct",
                 params:{
                     id:id
                 }
             }).then((result) => {
                 if (result.data.code=='200') {
                     alert("删除成功");
-                    this.getNewsList(this.currentPageCount)
+                    this.getProList(this.currentPageCount)
                 }
-                
+
             }).catch((err) => {
-                
+
             });
         }
-        
+
     },
     mounted() {
-        this.getNewsList(1);
+        this.getProList(1);
     },
 })
