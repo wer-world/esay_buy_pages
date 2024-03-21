@@ -1,10 +1,15 @@
-import {axios} from "../js/axios.js";
+import axios from "/js/axios.js";
 
 const instance = axios.create({
-    baseURL: 'http://localhost/nginx/'
+    baseURL: '/nginx/'
 })
 
-instance.interceptors.request.use(function (response) {
+// instance.interceptors.request.use((config) => {
+//     console.log(config)
+//     return config
+// })
+
+instance.interceptors.response.use(function (response) {
     return response.data;
 }, function (error) {
     return Promise.reject(error);

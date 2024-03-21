@@ -80,14 +80,14 @@
                         点击发送验证码
                         <span v-if="second>0">({{second}})</span>
                     </button>
-                    
+
                 </td>
                 <td><span>{{userMsg.emailCodeMsg}}</span></td>
               </tr>
               <tr>
                 <td>&nbsp;</td>
               <td style="font-size:12px; padding-top:20px;">
-                  
+
                   <span class="fr"><a href="#" style="color:#ff4e00;" @click="returnLogin()">返回登录</a></span>
               </td>
             </tr>
@@ -95,7 +95,7 @@
                 <td>&nbsp;</td>
               <td><input type="submit" value="确认找回" class="log_btn" @click.prevent="sureFindPsw()"/></td>
             </tr>
-              
+
             </table>
             </form>
         </div>
@@ -112,7 +112,7 @@
 <!--End Footer End -->
 <script src="../../js/vue.min.js"></script>
 <script src="../../js/axios.js"></script>
-<script src="/js/login/forgetPsw.js"></script>
+<script src="/util/login/forgetPsw.js"></script>
 </body>
 
 
