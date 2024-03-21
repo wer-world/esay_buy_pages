@@ -27,11 +27,11 @@ new Vue({
             }
 
         },
-        init(){
+        async init(){
             const url = new URLSearchParams(window.location.search)
             const id = url.get('id');
             this.id = id;
-            axios({
+            await axios({
                 method:'post',
                 url:'/nginx/product/getProductById',
                 data:{
@@ -76,6 +76,9 @@ new Vue({
             }else if (this.zuheCount>200){
                 this.zuheCount = 200;
             }
+        },
+        view(id){
+            window.location.href="/esay_buy_pages/product/Product.html?id="+id;
         }
     }
 })

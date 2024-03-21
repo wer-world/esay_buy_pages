@@ -22,10 +22,9 @@ new Vue({
                 }
             }).then((res)=>{
                 this.categoryList1 = res.data
-                console.log(this.categoryList1)
             })
         },
-        getProductList(){
+         getProductList(){
             for (let i = 0; i < this.categoryList1.length; i++) {
                 let id = this.categoryList1[i].id;
                 axios({
@@ -35,11 +34,14 @@ new Vue({
                         'id':id
                     }
                 }).then((res)=>{
-                    this.productList.push(res.data);
-                    console.log(this.productList)
+                    res.data.data.picPath = '/nginx/product/downLoad?picPath=' + res.data.data.picPath;
+                    this.productList.push(res.data.data);
                 })
             }
 
+        },
+        view(id){
+            window.location.href="/esay_buy_pages/product/Product.html?id="+id;
         }
     }
 })

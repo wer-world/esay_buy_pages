@@ -116,7 +116,7 @@ new Vue({
             }).then((res => {
                 if (res.data.code=="200"){
                     alert("修改成功");
-                    window.location.href="/views/admin/user/UserList.html";
+                    window.location.href="/esay_buy_pages/admin/user/UserList.html";
                 }
             }))
         }
