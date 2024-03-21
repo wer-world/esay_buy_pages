@@ -6,11 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>资讯列表</title>
     <link rel="stylesheet" href="/css/Element.css">
+    <!-- <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"> -->
 </head>
 
 <body>
     <div id="app">
         <div>
+            <el-descriptions title="资讯列表"></el-descriptions>
             <el-button type="" @click="addNews">添加资讯</el-button>
             <el-table :data="newsList" border style="width: 25%">
                 <el-table-column prop="title" label="标题" width="120">
@@ -36,9 +38,10 @@
         </div>
     </div>
 </body>
-<script src="../../js/vue.min.js"></script>
+<script src="/js/vue.min.js"></script>
 <script src="/js/axios.js"></script>
-<script src="../../js/Element.js"></script>
-<script src="../../util/news_detail.js"></script>
+<!-- <script src="https://unpkg.com/element-ui/lib/index.js"></script> -->
+<script src="/js/Element.js"></script>
+<script src="/util/news_detail.js"></script>
 
 </html>

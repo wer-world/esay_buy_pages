@@ -63,7 +63,7 @@ new Vue({
             }
         },
         returnNewsList(){
-            window.location="/esay_buy_pages/admin/NewsDetail.html"
+            window.location="/esay_buy_pages/admin/news/NewsDetail.html"
         
         }
     },
