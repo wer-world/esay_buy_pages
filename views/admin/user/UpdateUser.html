@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <style>
+        .el-input{
+            width: 36%;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="root">
+        登录名：<el-input :value="user.loginName" v-model="user.loginName"></el-input><br>
+        用户名：<el-input :value="user.userName" v-model="user.userName"></el-input><br>
+        性别：<el-input :value="user.sex==1?'男':'女'" v-model="user.sex"></el-input><br>
+        身份证号： <el-input :value="user.identityCode" v-model="user.identityCode"></el-input><br>
+        邮箱：<el-input :value="user.email" v-model="user.email"></el-input><br>
+        手机号码： <el-input :value="user.mobile" v-model="user.mobile"></el-input><br>
+        身份类型：
+        <el-select v-model="user.type">
+            <el-option v-for="t in typeList" v-model="t.id" :label="t.name" disabled="currentUser.type<=t.id"></el-option>
+        </el-select>
+        <a href="UserList.html">返回用户列表</a>
+        <el-button @click="save()">保存</el-button>
+    </div>
+
+</body>
+<script src="../../../js/vue.min.js"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="../../../js/axios.js"></script>
+<script src="../../../util/user_update.js"></script>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <style>
+        .el-input{
+            width: 36%;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="root">
+        登录名：<el-input :value="user.loginName" readonly></el-input><br>
+        用户名：<el-input :value="user.userName" readonly></el-input><br>
+        性别：<el-input :value="user.sex==1?'男':'女'" readonly></el-input><br>
+        身份证号： <el-input :value="user.identityCode" readonly></el-input><br>
+        邮箱：<el-input :value="user.email" readonly></el-input><br>
+        手机号码： <el-input :value="user.mobile" readonly></el-input><br>
+        身份类型：<el-input :value="user.type==1?'超级管理员':user.type==2?'管理员':'用户'" readonly></el-input>
+        <a href="UserList.html">返回用户列表</a>
+    </div>
+
+</body>
+<script src="../../../js/vue.min.js"></script>
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="../../../js/axios.js"></script>
+<script src="../../../util/user_view.js"></script>
+</html>
