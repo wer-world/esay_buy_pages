@@ -4,12 +4,19 @@ const instance = axios.create({
     baseURL: '/nginx/'
 })
 
-// instance.interceptors.request.use((config) => {
-//     console.log(config)
-//     return config
-// })
+let isRandom = true
+instance.interceptors.request.use(async (config) => {
+    if (isRandom) {
+        isRandom = false
+        config.headers.random = await instance.get('/replay/getRandom')
+        config.headers.token = document.cookie
+        config.headers.urlTime = Date.now()
+    }
+    return config
+})
 
 instance.interceptors.response.use(function (response) {
+    isRandom = true
     return response.data;
 }, function (error) {
     return Promise.reject(error);
