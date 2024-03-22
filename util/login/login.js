@@ -1,4 +1,4 @@
-import {checkLogin, login} from "../../api/user";
+import {checkLoginName, login} from "../../api/login.js";
 
 Vue.config.productionTip = false
 
@@ -21,7 +21,7 @@ new Vue({
     methods: {
         async userLogin() {
             var userNameRegix = /^[\u4e00-\u9fa5a-zA-Z0-9]{3,8}$/
-            if (this.user.loginName.trim().length == 0) {
+            if (this.user.loginName.trim().length === 0) {
                 this.userMsg.loginNameMsg = "请输入登录名"
                 return;
             }
@@ -29,11 +29,11 @@ new Vue({
                 this.userMsg.loginNameMsg = "请输入3-8位登录名"
                 return;
             }
+            await this.checkLoginName()
             if (!this.flag.loginNameFlag) {
-                this.checkLoginName()
                 return;
             }
-            if (this.user.password.trim().length == 0) {
+            if (this.user.password.trim().length === 0) {
                 this.userMsg.passwordMsg = "请输入密码"
                 return;
             }
@@ -49,9 +49,9 @@ new Vue({
             }
         },
         async checkLoginName() {
-            const {code, message} = await checkLogin(this.user)
+            const {code, message} = await checkLoginName(this.user.loginName)
             if (code === '200') {
-                this.userMsg.loginNameMsg = "√"
+                this.userMsg.loginNameMsg = message
                 this.flag.loginNameFlag = true
             } else {
                 this.userMsg.loginNameMsg = message

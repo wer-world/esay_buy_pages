@@ -1,3 +1,6 @@
+import {checkRegisterName, identityCheck, register} from "../../api/register.js";
+import {checkEmailCode, sendEmailCode} from "../../api/login.js";
+
 Vue.config.productionTip = false
 
   new Vue({
@@ -34,7 +37,7 @@ Vue.config.productionTip = false
       }
     },
     methods: {
-      registUser(){
+      async registUser(){
         this.userMsg={
           loginNameMsg:'',
           userNameMsg:'',
@@ -47,7 +50,7 @@ Vue.config.productionTip = false
           emailCodeMsg:''
         }
         var userNameRegix = /^[\u4e00-\u9fa5a-zA-Z0-9]{3,8}$/
-        if (this.user.loginName.trim().length == 0) {
+        if (this.user.loginName.trim().length === 0) {
           this.userMsg.loginNameMsg="请输入登录名"
           return;
         }
@@ -60,7 +63,7 @@ Vue.config.productionTip = false
             return;
         }
         
-        if (this.user.userName.trim().length == 0) {
+        if (this.user.userName.trim().length === 0) {
           this.userMsg.userNameMsg="请输入用户名"
           return;
         }
@@ -68,7 +71,7 @@ Vue.config.productionTip = false
           this.userMsg.userNameMsg="请输入3-8位用户名"
           return;
         }
-        if (this.user.password.trim().length == 0) {
+        if (this.user.password.trim().length === 0) {
           this.userMsg.passwordMsg="请输入密码"
           return;
         }
@@ -77,7 +80,7 @@ Vue.config.productionTip = false
           this.userMsg.passwordMsg="请输入6-18位密码"
           return;
         }
-        if (this.user.rePassword.trim().length == 0) {
+        if (this.user.rePassword.trim().length === 0) {
           this.userMsg.rePasswordMsg="请输入确认密码"
           return;
         }
@@ -89,7 +92,7 @@ Vue.config.productionTip = false
           this.userMsg.rePasswordMsg="请与密码一致"
           return;
         }
-        if (this.user.identityCode.trim().length == 0) {
+        if (this.user.identityCode.trim().length === 0) {
           this.userMsg.identityCodeMsg="请输入身份证号"
           return;
         }
@@ -98,12 +101,11 @@ Vue.config.productionTip = false
           this.userMsg.identityCodeMsg="请输入正确的18身份证号"
           return;
         }
-        this.identityCheck()
+        await this.identityCheck()
         if (!this.flag.identityCodeFlag) {
-          
           return;
         }
-        if (this.user.email.trim().length == 0) {
+        if (this.user.email.trim().length === 0) {
           this.userMsg.emailMsg="请输入邮箱"
           return;
         }
@@ -113,7 +115,7 @@ Vue.config.productionTip = false
           return;
         }
         
-        if (this.user.mobile.trim().length == 0) {
+        if (this.user.mobile.trim().length === 0) {
           this.userMsg.mobileMsg="请输入电话号码"
           return;
         }
@@ -126,49 +128,31 @@ Vue.config.productionTip = false
           this.userMsg.checkedMsg="请勾选协议"
           return;
         }
+        await this.checkEmailCode()
         if (!this.flag.emailCodeFlag) {
-          this.checkEmailCode()
           return;
         }
-        axios({
-          method:'post',
-          url:"/nginx/user/register",
-          data:{
-            user:this.user
-          }
-        }).then((result) => {
-          if (result.data.code==200) {
-            alert("注册成功")
-            window.location="/esay_buy_pages/login/Login.html"
-          }
-        }).catch((err) => {
-
-        });
+        const {code} = await register(this.user);
+        if (code==="200") {
+          alert("注册成功")
+          window.location="/esay_buy_pages/login/Login.html"
+        }
       },
-      checkLoginName(){
-        axios({
-          method:'post',
-          url:"/nginx/user/checkLoginName",
-          data:{
-            loginName:this.user.loginName
-          }
-        }).then((result) => {
-          if (result.data.code=='200') {
+      async checkLoginName(){
+        const {code,message} = await checkRegisterName(this.user.loginName);
+          if (code==='200') {
             this.userMsg.loginNameMsg="√"
             this.flag.loginNameFlag = true
           }else{
-            this.userMsg.loginNameMsg=result.data.message
+            this.userMsg.loginNameMsg=message
             this.flag.loginNameFlag = false
           }
-        }).catch((err) => {
-
-        });
       },
       checkClick(){
         this.checkboxSel=!this.checkboxSel
       },
-      sendEmail(){
-        if (this.user.email.trim().length == 0) {
+      async sendEmail(){
+        if (this.user.email.trim().length === 0) {
           this.userMsg.emailMsg="请输入邮箱"
           return;
         }
@@ -177,62 +161,35 @@ Vue.config.productionTip = false
           this.userMsg.emailMsg="请输入正确的邮箱"
           return;
         }
-        axios({
-          method:"get",
-          url:"/nginx/user/sendEmailCode",
-          params:{
-            email:this.user.email
+        const {code} = await sendEmailCode(this.user.email)
+        this.second=60
+        setInterval(() => {
+          if (this.second>0) {
+            this.second--
           }
-        }).then((result) => {
-          this.second=60 
-          setInterval(() => {
-            if (this.second>0) {
-              this.second--
-            }
-          }, 1000);
-          if (result.data.code=='200') {
-            this.userMsg.emailCodeMsg="请前往邮箱查看验证码"
-          }
-        }).catch((err) => {
-          
-        });
+        }, 1000);
+        if (code==='200') {
+          this.userMsg.emailCodeMsg="请前往邮箱查看验证码"
+        }
       },
 
-      checkEmailCode(){
-        axios({
-            method:'get',
-            url:"/nginx/user/checkEmailCode",
-            params:{
-              code:this.emailCode
-            }
-          }).then((result) => {
-            if (result.data.code=='201') {
-              this.userMsg.emailCodeMsg=result.data.message
-              this.flag.emailCodeFlag = false
-            }else{
-              this.flag.emailCodeFlag = true
-            }
-          }).catch((err) => {
-
-        });
+      async checkEmailCode(){
+        const {code,message} = await checkEmailCode(this.emailCode);
+          if (code==='201') {
+            this.userMsg.emailCodeMsg=message
+            this.flag.emailCodeFlag = false
+          }else{
+            this.flag.emailCodeFlag = true
+          }
       },
-      identityCheck(){
-        axios({
-            method:'post',
-            url:"/nginx/user/identityCheck",
-            data:{
-              identityCode:this.user.identityCode
-            }
-          }).then((result) => {
-            if (result.data.code=='201') {
-              this.userMsg.identityCodeMsg="该身份证已存在请重新输入"
-              this.flag.identityCodeFlag = false;
-            }else{
-              this.flag.identityCodeFlag = true;
-            }
-          }).catch((err) => {
-
-        });
+      async identityCheck(){
+        const {code} = await identityCheck(this.user.identityCode)
+        if (code==='201') {
+          this.userMsg.identityCodeMsg="该身份证已存在请重新输入"
+          this.flag.identityCodeFlag = false;
+        }else{
+          this.flag.identityCodeFlag = true;
+        }
       }
     },
 

@@ -1,3 +1,5 @@
+import {getNewsById} from "../api/news.js";
+
 Vue.config.productionTip = false
 var params = new URLSearchParams(window.location.search);
 var id = params.get("id");
@@ -13,62 +15,32 @@ new Vue({
         flag:false
     },
     methods: {
-        getNewsById(){
-            axios({
-                method:'get',
-                url:"/nginx/news/getNewsById",
-                params:{
-                    id:id
-                }
-            }).then((result) => {
-                this.news=result.data.data
-            }).catch((err) => {
-                
-            });
+        async getNewsById(){
+            const {data} = await getNewsById(id);
+            this.news=data
         },
-        onSubmit() {
-            flag=false
-            this.checkTitle();
+        async onSubmit() {
+            await this.checkTitle();
             if (!this.flag) {
                 return
             }
-            if (this.news.content.trim().length==0) {
+            if (this.news.content.trim().length===0) {
                 this.contentMsg="请输入内容";
             }
-            axios({
-                method:'post',
-                url:"/nginx/news/modifyNewsById",
-                data:{
-                    id:id,
-                    title:this.news.title,
-                    content:this.news.content
-                }
-            }).then((result) => {
-                if (result.data.code=='200') {
-                    alert("修改成功");
-                    window.location="/esay_buy_pages/admin/news/NewsDetail.html"
-                }
-            }).catch((err) => {
-                
-            });
+            const {code} = await modifyNewsById(id,this.news.title,this.news.content);
+            if (code==='200') {
+                alert("修改成功");
+                window.location="/esay_buy_pages/admin/news/NewsDetail.html"
+            }
         },
-        checkTitle(){
-            axios({
-                method:'post',
-                url:"/nginx/news/getNewsByTitle",
-                data:{
-                    title:this.news.title
-                }
-            }).then((result) => {
-                if (result.data.code==201) {
-                    this.titleMsg = result.data.message
-                    this.flag = false
-                }else{
-                    this.flag = true
-                }
-            }).catch((err) => {
-                
-            });
+        async checkTitle(){
+            const {code,message} = await getNewsByTitle(this.news.title);
+            if (code==='201') {
+                this.titleMsg = message
+                this.flag = false
+            }else{
+                this.flag = true
+            }
         },
         clear(){
             this.news={
