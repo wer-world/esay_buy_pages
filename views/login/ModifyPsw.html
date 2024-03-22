@@ -62,20 +62,20 @@
                 </td>
               </tr>
               <tr height="70">
-                <td>登录名</td>
-                <td><input type="text" value="" class="l_user" v-model="user.loginName" @blur="checkLoginName()"/></td>
-                <td><span>{{userMsg.loginNameMsg}}</span></td>
+                <td>密码</td>
+                <td><input type="password" value="" class="l_pwd" v-model="user.password"/></td>
+                <td><span>{{userMsg.passwordMsg}}</span></td>
               </tr>
               </tr>
               <tr height="70">
-                <td>密&nbsp;&nbsp;码</td>
-                <td><input type="password" value="" class="l_pwd" v-model="user.password"/></td>
-                <td><span>{{userMsg.passwordMsg}}</span></td>
+                <td>确认密码</td>
+                <td><input type="password" value="" class="l_pwd" v-model="user.rePassword"/></td>
+                <td><span>{{userMsg.rePasswordMsg}}</span></td>
               </tr>
 
             <tr height="60">
                 <td>&nbsp;</td>
-              <td><input type="submit" value="确认修改" class="log_btn" @click.prevent="findPsw()"/></td>
+              <td><button  class="log_btn" @click.prevent="findPsw"/>确认修改</button</td>
             </tr>
 
             </table>
@@ -93,8 +93,8 @@
 </div>
 <!--End Footer End -->
 <script src="../../js/vue.min.js"></script>
-<script src="../../js/axios.js"></script>
-<script src="/util/login/modifyPsw.js"></script>
+<script type="module" src="../../js/axios.js"></script>
+<script type="module" src="/util/login/modifyPsw.js"></script>
 </body>
 
 

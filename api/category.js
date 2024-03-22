@@ -5,3 +5,7 @@ export function getCategoryList(value) {
         parentId: value
     })
 }
+
+export function getProCategoryNameByType() {
+    return request.get('/category/getProCategoryNameByType')
+}
