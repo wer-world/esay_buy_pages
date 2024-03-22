@@ -15,3 +15,27 @@ export function delProduct(id) {
         }
     })
 }
+
+export function download(picPath){
+    return request.post('/product/downLoad',{
+        picPath:picPath
+    })
+}
+
+export function getProductsByHigHestId(id){
+    return request.post('/product/getProductsByHigHestId',{
+        id:id
+    })
+}
+
+export function getProductById(id){
+    return request.post('/product/getProductById',{
+        id:id
+    })
+}
+
+export function getSimilarProducts(categoryLevelId){
+    return request.post('/product/getSimilarProducts',{
+        categoryLevelId:categoryLevelId
+    })
+}

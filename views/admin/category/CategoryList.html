@@ -3,8 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="/css/Element.css">
+    <style>
+        .custom-tree-node {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 14px;
+            padding-right: 8px;
+        }
+    </style>
 </head>
 <body>
+<div id="root">
+    <el-tree
+        :data="categoryList1"
+        node-key="id"
+        default-expand-all
+        expand-on-click-node
+        :props="defaultProps">
+        <span class="custom-tree-node" slot-scope="{node,data}">
+            <span>{{getCategoryType(data.type)}}</span>
+            <span>{{data.name}}</span>
+            <span>
+                <el-button size="mini" type="text">修改</el-button>
+                <el-button size="mini" type="text">删除</el-button>
+            </span>
+        </span>
 
+    </el-tree>
+</div>
 </body>
+<script type="text/javascript" src="/js/vue.min.js"></script>
+<script type="module" src="/js/axios.js"></script>
+<script type="text/javascript" src="/js/Element.js"></script>
+<script type="module" src="/util/admin/category/category.js"></script>
 </html>
