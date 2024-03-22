@@ -17,7 +17,6 @@ new Vue({
                 }
             }).then((res)=>{
                 this.categoryList1 = res.data
-                console.log(this.categoryList1)
             })
         }
     }

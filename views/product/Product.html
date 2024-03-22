@@ -11,9 +11,9 @@
     <![endif]-->
 
     <script type="text/javascript" src="../../js/jquery-1.8.2.min.js"></script>
-    <script type="text/javascript" src="../../js/menu.js"></script>
 
     <script type="text/javascript" src="../../js/lrscroll_1.js"></script>
+    <script type="text/javascript" src="../../js/menu.js"></script>
 
 
     <script type="text/javascript" src="../../js/n_nav.js"></script>
@@ -29,10 +29,6 @@
     <script type="text/javascript" src="../../js/p_tab.js"></script>
 
     <script type="text/javascript" src="../../js/shade.js"></script>
-
-    <script type="text/javascript" src="../../js/axios.js"></script>
-    <script type="text/javascript" src="../../js/vue.min.js"></script>
-
 
     <title>尤洪</title>
 </head>
@@ -639,9 +635,9 @@
                 <div class="fav_t">用户还喜欢</div>
                 <ul>
                     <li v-for="(p,index) in similarProducts" :key="index" v-if="index<=4">
-                        <div class="img"><a href="#"><img src="../../images/his_1.jpg" width="185" height="162"/></a>
+                        <div class="img"><a href="javascript:void(0)" @click="view(p.id)"><img src="../../images/his_1.jpg" width="185" height="162"/></a>
                         </div>
-                        <div class="name"><a href="#">{{p.name}}</a></div>
+                        <div class="name"><a href="javascript:void(0)" @click="view(p.id)">{{p.name}}</a></div>
                         <div class="price">
                             <font>￥<span>{{p.price}}</span></font> &nbsp; 18R
                         </div>
@@ -657,9 +653,9 @@
                     </div>
                     <div v-for="(p,index) in similarProducts" :key="index" v-if="index<3">
                     <div class="team_list">
-                        <div class="img"><a href="#"><img src="../../images/mat_1.jpg" width="160" height="140"/></a>
+                        <div class="img"><a href="javascript:void(0)" @click="view(p.id)"><img src="../../images/mat_1.jpg" width="160" height="140"/></a>
                         </div>
-                        <div class="name"><a href="#">{{p.name}}</a></div>
+                        <div class="name"><a href="javascript:void(0)" @click="view(p.id)">{{p.name}}</a></div>
                         <div class="price">
                             <div class="checkbox"><input type="checkbox" name="zuhe" @change="handlerChange($event,p),calZuhePrice()"/></div>
                             <font>￥<span>{{p.price}}</span></font> &nbsp; 18R
@@ -997,10 +993,10 @@
     </div>
 </div>
 </body>
-
-<script type="text/javascript" src="../../util/product.js"></script>
-
-<script src="../../js/ShopShow.js"></script>
+<script src="/js/axios-new.js"></script>
+<script type="text/javascript" src="/js/vue.min.js"></script>
+<script type="module" src="/util/product.js"></script>
+<script type="module" src="/ShopShow.js"></script>
 
 <!--[if IE 6]>
 <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
