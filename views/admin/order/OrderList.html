@@ -99,8 +99,8 @@
         </span>
             <!--End 所在收货地区 End-->
             <span class="fr">
-        	<span class="fl">你好，请<a href="/views/login/Login.html">登录</a>&nbsp; <a
-                    href="/views/register/Regist.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
+        	<span class="fl">你好，请<a href="/esay_buy_pages/login/Login.html">登录</a>&nbsp; <a
+                    href="/esay_buy_pages/register/Regist.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
                     href="#">我的订单</a>&nbsp;|</span>
         	<span class="ss">
             	<div class="ss_list">
@@ -149,7 +149,7 @@
     </div>
     <div class="m_top_bg">
         <div class="top">
-            <div class="m_logo"><a href="/views/Index.html"><img src="/images/logo1.png"/></a></div>
+            <div class="m_logo"><a href="/esay_buy_pages/Index.html"><img src="/images/logo1.png"/></a></div>
             <div class="m_search">
                 <form>
                     <input type="text" value="" class="m_ipt"/>
@@ -163,7 +163,7 @@
                 <div class="car_t">购物车 [ <span>3</span> ]</div>
                 <div class="car_bg">
                     <!--Begin 购物车未登录 Begin-->
-                    <div class="un_login">还未登录！<a href="/views/login/Login.html" style="color:#ff4e00;">马上登录</a>
+                    <div class="un_login">还未登录！<a href="/esay_buy_pages/login/Login.html" style="color:#ff4e00;">马上登录</a>
                         查看购物车！
                     </div>
                     <!--End 购物车未登录 End-->
@@ -201,31 +201,31 @@
                 <div class="left_m">
                     <div class="left_m_t t_bg1">订单管理</div>
                     <ul>
-                        <li><a href="/views/admin/order/OrderList.html" class="now">订单列表</a></li>
+                        <li><a href="/esay_buy_pages/admin/order/OrderList.html" class="now">订单列表</a></li>
                     </ul>
                 </div>
                 <div class="left_m">
                     <div class="left_m_t t_bg2">用户管理</div>
                     <ul>
-                        <li><a href="/views/admin/user/UserList.html">用户列表</a></li>
+                        <li><a href="/esay_buy_pages/admin/user/UserList.html">用户列表</a></li>
                     </ul>
                 </div>
                 <div class="left_m">
                     <div class="left_m_t t_bg3">商品管理</div>
                     <ul>
-                        <li><a href="/views/admin/product/ProductList.html">商品列表</a></li>
+                        <li><a href="/esay_buy_pages/admin/product/ProductList.html">商品列表</a></li>
                     </ul>
                 </div>
                 <div class="left_m">
                     <div class="left_m_t t_bg4">分类管理</div>
                     <ul>
-                        <li><a href="/views/admin/category/CategoryList.html">分类列表</a></li>
+                        <li><a href="/esay_buy_pages/admin/category/CategoryList.html">分类列表</a></li>
                     </ul>
                 </div>
                 <div class="left_m">
                     <div class="left_m_t t_bg4">资讯管理</div>
                     <ul>
-                        <li><a href="/views/admin/news/ViewNews.html">资讯列表</a></li>
+                        <li><a href="/esay_buy_pages/admin/news/ViewNews.html">资讯列表</a></li>
                     </ul>
                 </div>
             </div>
@@ -234,11 +234,11 @@
                 <div class="mem_tit">订单管理</div>
                 <div class="order_list" style="margin: 0 48px">
                     <div class="order_list_search flex">
-                        <div class="flex font-16">
+                        <div class="flex font-16" style="margin-right: 10px">
                             <span style="width: 70px">订单号:</span>
                             <el-input v-model="serialNumber" placeholder="请输入订单号"></el-input>
                         </div>
-                        <div class="flex font-16">
+                        <div class="flex font-16" style="margin-right: 10px">
                             <span style="width: 70px">用户名:</span>
                             <el-input v-model="loginName" placeholder="请输入用户名"></el-input>
                         </div>

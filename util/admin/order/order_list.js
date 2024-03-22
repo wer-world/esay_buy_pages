@@ -42,8 +42,10 @@ new Vue({
         }
     },
     mounted: async function () {
+        this.orderListLoad = true
         const {data} = await getOrderList(1, 5)
         this.orderList = data.orderList
         this.totalCount = data.totalCount
+        this.orderListLoad = false
     }
 })

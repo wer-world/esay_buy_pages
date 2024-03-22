@@ -37,7 +37,7 @@ alias html/esay_buy_pages/api;
 		}
 		
 		location /esay_buy_pages {
-			alias html/esay_buy_pages/views;
+			alias html/esay_buy_pages/esay_buy_pages;
 		}
 		
 		location /nginx/ {
