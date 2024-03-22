@@ -8,3 +8,8 @@
 # 前端第三次整合
 1. 此次整合未修改任何代码，仅合并组员代码
 2. 进行一次同步
+
+# 前端第四次整合
+
+1. 此次整合添加util/request.js公共请求方法
+2. 使用方法详细见/api/order.js类与util/admin/order/order_list.js类
