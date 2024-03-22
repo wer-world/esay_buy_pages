@@ -22,6 +22,23 @@ export function downloadProductImg(picPath) {
         picPath: picPath
     }, {
         responseType:'blob'
-        // responseType: 'arraybuffer'
+    })
+}
+
+export function getProductsByHigHestId(id){
+    return request.post('/product/getProductsByHigHestId',{
+        id:id
+    })
+}
+
+export function getProductById(id){
+    return request.post('/product/getProductById',{
+        id:id
+    })
+}
+
+export function getSimilarProducts(categoryLevelId){
+    return request.post('/product/getSimilarProducts',{
+        categoryLevelId:categoryLevelId
     })
 }

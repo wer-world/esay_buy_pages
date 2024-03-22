@@ -1,3 +1,6 @@
+import {getProductById,getSimilarProducts} from "/api/product.js"
+import {addCollection} from "/api/collection.js"
+
 new Vue({
     el:'#all',
     data:{
@@ -12,8 +15,9 @@ new Vue({
         zuheTempPrice:0,
         zuhePrice:0
     },
-    mounted(){
-        this.init();
+    mounted: async function(){
+        await this.initProduct();
+        await this.initsimilarProducts();
     },
     methods:{
         calZuhePrice(){
@@ -27,39 +31,21 @@ new Vue({
             }
 
         },
-        async init(){
+        async initProduct(){
             const url = new URLSearchParams(window.location.search)
             const id = url.get('id');
             this.id = id;
-            await axios({
-                method:'post',
-                url:'/nginx/product/getProductById',
-                data:{
-                    'id':this.id
-                }
-            }).then((res=>{
-                this.product = res.data.data;
-            }))
-            axios({
-                method:'post',
-                url:'/nginx/product/getSimilarProducts',
-                data:{
-                    'categoryLevelId':this.product.categoryLevelId
-                }
-            }).then((res=>{
-                this.similarProducts = res.data.data;
-            }))
+            const {data} = getProductById(id);
+            this.product = data;
+        },
+        async initsimilarProducts(){
+            const {data} = getSimilarProducts(this.product.categoryLevelId);
+            console.log(data)
+            this.similarProducts = data;
         },
         collect(){
-            axios({
-                method:'post',
-                url:'/nginx/collection/addCollection',
-                data:{
-                    'productId':this.id
-                }
-            }).then((res=>{
-                this.collectMsg = res.data.message;
-            }))
+            const {code} = addCollection(this.id)
+            this.collectMsg = code;
         },
         checkCount(){
             const reg = /^[0-9]*[1-9][0-9]*$/;

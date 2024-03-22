@@ -1,3 +1,5 @@
+import {getCategoryList} from "/api/category.js";
+
 new Vue({
     el:'#leftNav',
     data:{
@@ -8,16 +10,9 @@ new Vue({
         this.initCategoryList();
     },
     methods:{
-        initCategoryList(){
-            axios({
-                method:'post',
-                url:'/nginx/category/getCategoryList',
-                data:{
-                    'parentId':0
-                }
-            }).then((res)=>{
-                this.categoryList1 = res.data
-            })
+        async initCategoryList(){
+            const data = await getCategoryList(0);
+            this.categoryList1 = data;
         }
     }
 })
