@@ -12,27 +12,56 @@
             justify-content: space-between;
             font-size: 14px;
             padding-right: 8px;
+            width: 700px;
+        }
+        .all{
+            width: 60%;
+            padding: 20px 300px;
+        }
+        .el-input{
+            width: 180px;
         }
     </style>
 </head>
 <body>
 <div id="root">
-    <el-tree
-        :data="categoryList1"
-        node-key="id"
-        default-expand-all
-        expand-on-click-node
-        :props="defaultProps">
+    <div class="all">
+        <h2>分类管理页面</h2>
+        <el-tree
+                :data="categoryList1"
+                node-key="id"
+                default-expand-all
+                :expand-on-click-node="false"
+                :props="defaultProps">
         <span class="custom-tree-node" slot-scope="{node,data}">
             <span>{{getCategoryType(data.type)}}</span>
             <span>{{data.name}}</span>
             <span>
-                <el-button size="mini" type="text">修改</el-button>
-                <el-button size="mini" type="text">删除</el-button>
+                <el-button size="mini" type="text" @click="dialogAddCategoryForm=true,setParentCategory(data.parentId)">添加</el-button>
+                <el-button size="mini" type="text" @click="dialogUpdateCategoryForm=true,setCurrentCategory(data.id)">修改</el-button>
+                <el-button size="mini" type="text" @click="dialogDeleteCategoryForm=true,setCurrentCategory(data.id)">删除</el-button>
             </span>
+            <el-dialog title="新建分类" :visible.sync="dialogAddCategoryForm">
+                <h4>在<b style="color: red">{{parentCategory==null?'根':parentCategory.name}}</b>类别下添加子类</h4>
+                类别名：<el-input v-model="newCategoryName"></el-input>
+                <el-button @click="saveAdd()">保存</el-button>
+                <el-button @click="dialogAddCategoryForm=false">返回</el-button>
+            </el-dialog>
+            <el-dialog title="修改分类" :visible.sync="dialogUpdateCategoryForm">
+                类别名：<el-input v-model="currentCategory.name"></el-input>
+                <el-button @click="saveUpdate()">保存</el-button>
+                <el-button @click="dialogUpdateCategoryForm=false">返回</el-button>
+            </el-dialog>
+            <el-dialog title="删除分类" :visible.sync="dialogDeleteCategoryForm">
+                <span>是否删除该分类?</span>
+                <el-button @click="saveDelete()">确认删除</el-button>
+                <el-button @click="dialogDeleteCategoryForm=false">返回</el-button>
+            </el-dialog>
         </span>
+        </el-tree>
 
-    </el-tree>
+    </div>
+
 </div>
 </body>
 <script type="text/javascript" src="/js/vue.min.js"></script>
