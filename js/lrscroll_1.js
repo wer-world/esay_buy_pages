@@ -136,10 +136,10 @@ var jq = jQuery.noConflict();
 
 
 jQuery(function() {
-	jq("#botton-scroll1").jCarouselLite1({
-		btnNext: ".l_next",
-		btnPrev: ".l_prev"
-	});
+	// jq("#botton-scroll1").jCarouselLite1({
+	// 	btnNext: ".l_next",
+	// 	btnPrev: ".l_prev"
+	// });
 });
 
 jQuery(function () {
