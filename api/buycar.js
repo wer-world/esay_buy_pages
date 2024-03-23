@@ -5,7 +5,7 @@ export function getBuyCarListByUserId() {
 }
 
 export function delBuyCarProductById(id) {
-    return request.get('/buyCar/delBuyCarProductById', {
+    return request.delete('/buyCar/delBuyCarProductById', {
         params: {
             id: id
         }

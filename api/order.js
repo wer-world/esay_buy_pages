@@ -9,11 +9,10 @@ export function getOrderList(currentPage, pageSize, serialNumber, loginName) {
     })
 }
 
-export function getOrder(id) {
-    return request.get('/order/getOrder', {
-        params: {
-            id: id
-        }
+export function getOrder(id, serialNumber) {
+    return request.post('/order/getOrder', {
+        id: id,
+        serialNumber: serialNumber
     })
 }
 
@@ -23,5 +22,11 @@ export function getOrderDetailListPage(currentPage, pageSize, orderId, productNa
         pageSize: pageSize,
         orderId: orderId,
         productName: productName
+    })
+}
+
+export function createOrder(buyCar) {
+    return request.post('/order/createOrder', {
+        buyCar: buyCar
     })
 }

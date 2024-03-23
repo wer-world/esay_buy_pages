@@ -1,4 +1,4 @@
-import {getOrder, getOrderDetailListPage, getOrderList} from "/api/order.js";
+import {getOrder, getOrderDetailListPage} from "/api/order.js";
 import {delBuyCarProductById, getBuyCarListByUserId} from "/api/buycar.js";
 import {downloadProductImg} from "/api/product.js";
 
@@ -62,13 +62,19 @@ new Vue({
             this.currentPage = val
             this.handleFind()
         },
-        handleDelBuyCarProduct(id) {
-            delBuyCarProductById(id)
+        async handleDelBuyCarProduct(id) {
+            const {code} = await delBuyCarProductById(id)
+            if (code === '200') {
+                this.getBuyCarList()
+            } else {
+                this.$message.error('删除购物车信息失败')
+            }
         },
         async getBuyCarList() {
             const {code, data} = await getBuyCarListByUserId()
             if (code === '200') {
                 this.buyCarList = data
+                await this.handleDownloadImg()
             } else {
                 this.buyCarList = []
             }
@@ -83,9 +89,17 @@ new Vue({
             }
         }
     },
+    computed: {
+        totalCost: function () {
+            let totalCost = 0
+            for (let key in this.buyCarList) {
+                totalCost += this.buyCarList[key].productNum * this.buyCarList[key].productPrice
+            }
+            return totalCost
+        }
+    },
     mounted: async function () {
         await this.getBuyCarList()
-        await this.handleDownloadImg()
         this.orderId = getUrlParam('orderId')
         const {code, data} = await getOrder(this.orderId)
         if (code === '200') {

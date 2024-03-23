@@ -1,8 +1,8 @@
 import request from "/util/request.js";
 
 
-export function getUserListPage(type,userName,currentPage,pageSize){
-    return request.post('/user/getUserListPage',{
+export function getUserListPage(type, userName, currentPage, pageSize) {
+    return request.post('/user/getUserListPage', {
         type: type,
         userName: userName,
         currentPage: currentPage,
@@ -10,20 +10,22 @@ export function getUserListPage(type,userName,currentPage,pageSize){
     })
 }
 
-export function checkType(id){
-    return request.post('/user/checkType',{
-        id:id
+export function checkType(id) {
+    return request.post('/user/checkType', {
+        id: id
     })
 }
 
-export function deleteUser(id){
-    return request.post('/user/deleteUser',{
-        id:id
+export function deleteUser(id) {
+    return request.post('/user/deleteUser', {
+        id: id
     })
 }
 
-export function getTypeList(){
-    return request.post('/type/getTypeList',{
+export function getTypeList() {
+    return request.post('/type/getTypeList', {})
+}
 
-    })
+export function getUserById() {
+    return request.get('/user/getUserById')
 }
