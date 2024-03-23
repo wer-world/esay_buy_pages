@@ -13,3 +13,8 @@
 
 1. 此次整合添加util/request.js公共请求方法
 2. 使用方法详细见/api/order.js类与util/admin/order/order_list.js类
+
+# 前端第五次整合
+
+1. 此次整合优化部分代码
+2. 添加图片下载功能，详细见/util/admin/order_detail中的handleDownloadImg方法

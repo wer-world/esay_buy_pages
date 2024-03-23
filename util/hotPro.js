@@ -1,4 +1,4 @@
-import {getProductListPages} from "../api/product";
+import {getProductListPages} from "../api/product.js";
 
 Vue.config.productionTip = false
 
@@ -36,7 +36,7 @@ new Vue({
                 //     isPrice: null,
                 //     isNewProducts: null
                 // }
-            const {code,data} = await getProductListPages(1,4,null,null);
+            const {code,data} = await getProductListPages(1,4,null,null,null);
             if (code === '200') {
                 this.products = data.productList
                 for (const key in this.products) {

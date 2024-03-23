@@ -38,3 +38,7 @@ export function deleteCategory(id){
         id:id,
     })
 }
+
+export function getProCategoryNameByType() {
+    return request.get('/category/getProCategoryNameByType')
+}

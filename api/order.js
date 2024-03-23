@@ -9,8 +9,19 @@ export function getOrderList(currentPage, pageSize, serialNumber, loginName) {
     })
 }
 
-export function getOrder(orderId) {
-    return request.post('/order/getOrder', {
-        orderId: orderId
+export function getOrder(id) {
+    return request.get('/order/getOrder', {
+        params: {
+            id: id
+        }
+    })
+}
+
+export function getOrderDetailListPage(currentPage, pageSize, orderId, productName) {
+    return request.post('/orderDetail/getOrderDetailListPage', {
+        currentPage: currentPage,
+        pageSize: pageSize,
+        orderId: orderId,
+        productName: productName
     })
 }

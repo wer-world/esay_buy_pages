@@ -1,3 +1,5 @@
+import {delNewsById, getNewsList} from "../api/news.js";
+
 Vue.config.productionTip = false
 new Vue({
     el: '#app',
@@ -9,24 +11,13 @@ new Vue({
 
     },
     methods: {
-        getNewsList(currentPageCount){
-            axios({
-                method:"get",
-                url:"/nginx/news/getNewsList",
-                params:{
-                    currentPage:currentPageCount,
-                    pageSize:this.pageSize
-                }
-            }).then((result) => {
-                if (result.data.code=='200') {
-                    this.newsList = result.data.data.getNewsList
-                    this.totalCount = result.data.data.page.totalCount
-                    this.currentPageCount = result.data.data.page.currentPage
-                }
-                
-            }).catch((err) => {
-                
-            });
+        async getNewsList(currentPageCount){
+            const {code,data} = await getNewsList(currentPageCount,this.pageSize);
+            if (code==='200') {
+                this.newsList = data.getNewsList
+                this.totalCount = data.page.totalCount
+                this.currentPageCount = data.page.currentPage
+            }
         },
         addNews(){
             window.location="/esay_buy_pages/admin/news/AddNews.html"
@@ -37,25 +28,15 @@ new Vue({
         modifyNews(id){
             window.location="/esay_buy_pages/admin/news/ModifyNews.html?id=" + id
         },
-        delNews(id){
+        async delNews(id){
             if (!confirm("是否确认删除")) {
                 return;
             }
-            axios({
-                method:'get',
-                url:"/nginx/news/delNewsById",
-                params:{
-                    id:id
-                }
-            }).then((result) => {
-                if (result.data.code=='200') {
-                    alert("删除成功");
-                    this.getNewsList(this.currentPageCount)
-                }
-                
-            }).catch((err) => {
-                
-            });
+            const {code} = await delNewsById(id);
+            if (code==='200') {
+                alert("删除成功");
+                this.getNewsList(this.currentPageCount)
+            }
         }
         
     },
