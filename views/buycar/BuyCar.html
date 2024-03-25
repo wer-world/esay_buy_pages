@@ -177,14 +177,17 @@
                 <!--End 购物车未登录 End-->
                 <!--Begin 购物车已登录 Begin-->
                 <ul class="cars">
+                    <li v-if="buyCarList.length === 0"><div style="text-indent: 50px">购物车暂无数据，快去购买吧!</div></li>
                     <li v-for="(item,index) in buyCarList" :key="item.id">
-                        <div class="img"><a href="javascript:void(0)"><img :id="'productImg' + index" width="58" height="58"/></a></div>
+                        <div class="img"><a href="javascript:void(0)"><img :id="'productImg' + index" width="58"
+                                                                           height="58"/></a></div>
                         <div class="name"><a href="javascript:void(0)">{{item.description}}</a></div>
-                        <div class="price"><font color="#ff4e00">￥{{item.productPrice}}</font> X{{item.productNum}}&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<a href="javascript:void(0)" @click="handleDelBuyCarProduct(item.id)">删除</a></div>
+                        <div class="price"><font color="#ff4e00">￥{{item.productPrice}}</font> X{{item.productNum}}&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<a
+                                href="javascript:void(0)" @click="handleDelBuyCarProduct(item.id)">删除</a></div>
                     </li>
                 </ul>
                 <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>{{totalCost}}</span></div>
-                <div class="price_a"><a href="#">去购物车结算</a></div>
+                <div class="price_a"><a @click="handlerToBuyCar">去购物车结算</a></div>
                 <!--End 购物车已登录 End-->
             </div>
         </div>
@@ -516,6 +519,9 @@
                     <td class="car_th" width="140">返还积分</td>
                     <td class="car_th" width="150">操作</td>
                 </tr>
+                <tr v-if="buyCarList.length === 0">
+                    <td colspan="6" style="text-align: center">购物车暂无数据，快去购买吧!</td>
+                </tr>
                 <tr v-for="(item, index) in buyCarList" :key="item.id" :class="{ 'car_tr': index % 2 === 1 }">
                     <td>
                         <div class="c_s_img"><img :id="'buyCarImg' + index" width="73" height="73"/></div>
@@ -525,7 +531,8 @@
                     <td align="center">
                         <div class="c_num">
                             <input type="button" value="" @click="handlerSubProductNum(index)" class="car_btn_1"/>
-                            <input type="text" :value="item.productNum" @input="handleInputProductNum(index, $event.target)" name="" class="car_ipt"/>
+                            <input type="text" :value="item.productNum"
+                                   @input="handleInputProductNum(index, $event.target)" name="" class="car_ipt"/>
                             <input type="button" value="" @click="handlerAddProductNum(index)" class="car_btn_2"/>
                         </div>
                     </td>
@@ -543,7 +550,8 @@
                 </tr>
                 <tr valign="top" height="150">
                     <td colspan="6" align="right">
-                        <a href="#"><img src="../../images/buy1.gif"/></a>&nbsp; &nbsp; <a @click="handlerConfirmSell"><img
+                        <a @click="handlerContinueBuy"><img src="../../images/buy1.gif"/></a>&nbsp; &nbsp; <a
+                            @click="handlerConfirmSell"><img
                             src="../../images/buy2.gif"/></a>
                     </td>
                 </tr>

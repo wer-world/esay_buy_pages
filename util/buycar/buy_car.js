@@ -93,7 +93,17 @@ new Vue({
             this.buyCarList[index].productNum = e.value
         },
         handlerConfirmSell() {
+            if (this.buyCarList.length === 0) {
+                this.message('当前购物车中没有商品,无法确认结算', 'error')
+                return
+            }
             window.location.href = '/esay_buy_pages/buycar/BuyCar_Two.html'
+        },
+        handlerToBuyCar() {
+            window.location.href = '/esay_buy_pages/buycar/BuyCar.html'
+        },
+        handlerContinueBuy() {
+            window.location.href = '/esay_buy_pages/index.html'
         },
         message(message, option) {
             const messageDom = document.getElementsByClassName('el-message')[0]

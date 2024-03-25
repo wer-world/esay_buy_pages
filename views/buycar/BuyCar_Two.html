@@ -179,6 +179,7 @@
                 <!--End 购物车未登录 End-->
                 <!--Begin 购物车已登录 Begin-->
                 <ul class="cars">
+                    <li v-if="buyCarList.length === 0"><div style="text-indent: 50px">购物车暂无数据，快去购买吧!</div></li>
                     <li v-for="(item,index) in buyCarList" :key="item.id">
                         <div class="img"><a href="javascript:void(0)"><img :id="'productImg' + index" width="58"
                                                                            height="58"/></a></div>
@@ -188,7 +189,7 @@
                     </li>
                 </ul>
                 <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>{{totalCost}}</span></div>
-                <div class="price_a"><a href="#">去购物车结算</a></div>
+                <div class="price_a"><a @click="handlerToBuyCar">去购物车结算</a></div>
                 <!--End 购物车已登录 End-->
             </div>
         </div>
@@ -523,6 +524,9 @@
                         <td class="car_th" width="130">小计</td>
                         <td class="car_th" width="140">返还积分</td>
                         <td v-if="!isProductMod" class="car_th" width="150">操作</td>
+                    </tr>
+                    <tr v-if="buyCarList.length === 0">
+                        <td colspan="6" style="text-align: center">购物车暂无数据，快去购买吧!</td>
                     </tr>
                     <tr v-for="(item, index) in buyCarList" :key="item.id" :class="{ 'car_tr': index % 2 === 1 }">
                         <td>

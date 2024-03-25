@@ -111,7 +111,14 @@ new Vue({
                 this.message('当前未登录!')
             }
         },
+        handlerToBuyCar() {
+            window.location.href = '/esay_buy_pages/buycar/BuyCar.html'
+        },
         async handlerCreateOrder() {
+            if (this.buyCarList.length === 0) {
+                this.message('当前购物车中没有商品,无法确认订单', 'error')
+                return
+            }
             const {code, data} = await createOrder(this.buyCarList);
             if (code === '200') {
                 window.location.href = '/esay_buy_pages/buycar/BuyCar_Three.html?orderId=' + data.id

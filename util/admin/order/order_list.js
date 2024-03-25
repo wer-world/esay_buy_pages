@@ -35,6 +35,7 @@ new Vue({
         },
         handleSizeChange(val) {
             this.pageSize = val
+            this.handleFind()
         },
         handleCurrentChange(val) {
             this.currentPage = val

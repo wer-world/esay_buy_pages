@@ -249,7 +249,7 @@
                         <el-table
                                 :data="orderList"
                                 border
-                                :load="orderListLoad"
+                                :v-loading="orderListLoad"
                                 style="width: 100%">
                             <el-table-column
                                     prop="serialNumber"

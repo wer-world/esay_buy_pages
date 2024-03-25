@@ -1,4 +1,4 @@
-import {download, getProductsByHigHestId,getProductListPages} from "/api/product.js";
+import {getProductsByHigHestId,getProductListPages} from "/api/product.js";
 import {getCategoryList} from "/api/category.js";
 import {getNewsList} from "/api/news.js";
 
@@ -33,8 +33,10 @@ new Vue({
     },
     methods: {
         async initCategoryList() {
-            const data = await getCategoryList(0);
-            this.categoryList1 = data;
+            const {code, data} = await getCategoryList(0);
+            if (code === '200'){
+                this.categoryList1 = data;
+            }
         },
         async getProductList() {
             for (let i = 0; i < this.categoryList1.length; i++) {
