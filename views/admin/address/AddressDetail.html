@@ -9,7 +9,7 @@
             margin-left: 510px;
             font-size: 30px;
         }
-        .proName{
+        .address{
             margin-left: 278px;
             margin-bottom: 10px;
         }
@@ -23,49 +23,18 @@
 </head>
 <body>
 <div id="app">
-    <el-descriptions title="商品列表"></el-descriptions>
-    <div class="proName">
-        <span style="font-size: 16px;">商品名：</span>
-        <el-input v-model="product.name" placeholder="请输入商品名"></el-input>
-        <template>
-            <el-select v-model="brandName" placeholder="请选择品牌名">
-                <el-option lable="请选择" value="">
-                </el-option>
-                <el-option
-                        v-for="brand in brandList"
-                        :key="brand.id"
-                        :label="brand.name"
-                        :value="brand.name">
-                </el-option>
-            </el-select>
-        </template>
-        <template>
-            <el-select v-model="categoryName" placeholder="请选择分类名">
-                <el-option lable="请选择" value="">
-                </el-option>
-                <el-option
-                        v-for="category in categoryList"
-                        :key="category.id"
-                        :label="category.name"
-                        :value="category.name">
-                </el-option>
-            </el-select>
-        </template>
-        <el-button type="" @click="getProList(currentPageCount,pageSize,product.name,brandName,categoryName)">查询</el-button>
-        <el-button type="" @click="addPro()">添加商品</el-button>
+    <el-descriptions title="地址列表"></el-descriptions>
+    <div class="address">
+        <el-button type="" @click="addAddress()">添加地址</el-button>
     </div>
 
-    <el-table :data="addressList" border style="width: 67%" v-loading="loading">
+    <el-table :data="addressList" border style="width: 39%" v-loading="loading">
 
         <el-table-column prop="id" label="地址id" width="120">
-        </el-table-column>
-        <el-table-column prop="userName" label="用户名称" width="120">
         </el-table-column>
         <el-table-column prop="address" label="地址" width="120">
         </el-table-column>
         <el-table-column prop="createTime" label="创建时间" width="120">
-        </el-table-column>
-        <el-table-column prop="isDefault" label="是否为默认地址" width="120">
         </el-table-column>
         <el-table-column prop="remark" label="备注" width="120">
         </el-table-column>
@@ -86,5 +55,5 @@
 <script src="/js/vue.min.js"></script>
 <script type="module" src="/js/axios.js"></script>
 <script src="/js/Element.js"></script>
-<script type="module" src="/util/addressDetail.js"></script>
+<script type="module" src="/util/admin/address/addressDetail.js"></script>
 </html>

@@ -1,7 +1,7 @@
-import {getCategoryList, getProCategoryNameByType} from "../api/category.js";
-import {getBrandList} from "../api/brand.js";
-import {addFile} from "../api/file.js";
-import {addProduct} from "../api/product.js";
+import {getCategoryList, getProCategoryNameByType} from "../../../api/category.js";
+import {getBrandList} from "../../../api/brand.js";
+import {addFile} from "../../../api/file.js";
+import {addProduct} from "../../../api/product.js";
 
 new Vue({
     el:'#app',

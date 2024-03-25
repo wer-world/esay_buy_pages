@@ -1,4 +1,4 @@
-import {getNewsById} from "../api/news.js";
+import {getNewsById} from "../../../api/news.js";
 
 Vue.config.productionTip = false
 var params = new URLSearchParams(window.location.search);

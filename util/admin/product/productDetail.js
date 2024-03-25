@@ -1,6 +1,6 @@
-import {getProductListPages, delProduct} from "../api/product.js";
-import { getProCategoryNameByType} from "../api/category.js";
-import {getBrandList} from "../api/brand.js";
+import {getProductListPages, delProduct} from "../../../api/product.js";
+import { getProCategoryNameByType} from "../../../api/category.js";
+import {getBrandList} from "../../../api/brand.js";
 
 Vue.config.productionTip = false
 new Vue({
