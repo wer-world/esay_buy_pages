@@ -1,4 +1,4 @@
-import {getProductsByHigHestId,getProductListPages} from "/api/product.js";
+import {downloadProductImg,getProductsByHigHestId,getProductListPages} from "/api/product.js";
 import {getCategoryList} from "/api/category.js";
 import {getNewsList} from "/api/news.js";
 
@@ -30,6 +30,7 @@ new Vue({
         await this.getProductList();
         await this.getNewsList();
         await this.getHotPro();
+        await this.handleDownloadImg();
     },
     methods: {
         async initCategoryList() {
@@ -44,13 +45,25 @@ new Vue({
                 const {data} = await getProductsByHigHestId(id);
                 this.productList.push(data);
             }
-
         },
-        view(id) {
-            window.location.href = "/esay_buy_pages/product/Product.html?id=" + id;
-        },
-        download(picPath) {
-            download(picPath);
+        async handleDownloadImg() {
+            for (const key in this.productList) {
+                const childProductList = this.productList[key];
+                for (const key1 in childProductList){
+                    const data = await downloadProductImg(childProductList[key1].picPath)
+                    const blob = new Blob([data], {type: "image/jepg,image/png"});
+                    let url = window.URL.createObjectURL(blob);
+                    let img = document.getElementById('productImg' + key + key1)
+                    img.setAttribute('src', url);
+                }
+            }
+            for (const key in this.products) {
+                const data = await downloadProductImg(this.products[key].picPath)
+                const blob = new Blob([data], {type: "image/jepg,image/png"});
+                let url = window.URL.createObjectURL(blob);
+                let img = document.getElementById('proImg' + key)
+                img.setAttribute('src', url);
+            }
         },
         async getNewsList() {
             const {code,data} = await getNewsList(1,5);
@@ -62,10 +75,10 @@ new Vue({
             const {code,data} = await getProductListPages(1,4,null,null);
             if (code === '200') {
                 this.products = data.productList
-                for (const key in this.products) {
-                    this.products[key].picPath = '/nginx/product/downLoad?picPath=' + this.products[key].picPath;
-                }
             }
+        },
+        view(id) {
+            window.location.href = "/esay_buy_pages/product/Product.html?id=" + id;
         }
     }
 })

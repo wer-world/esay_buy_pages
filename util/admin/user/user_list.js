@@ -58,8 +58,7 @@ new Vue({
                 const {code} = await deleteUser(id);
                 if (code == "200") {
                     alert("删除成功!")
-                    await this.getUserList(1);
-                    await this.getTypeList();
+                    location.reload();
                 }
             }
         },

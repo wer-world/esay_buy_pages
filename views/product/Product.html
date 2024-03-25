@@ -527,7 +527,7 @@
 
             <div id="tsShopContainer">
                 <div id="tsImgS"><a href="../../images/p_big.jpg" title="Images" class="MagicZoom" id="MagicZoom"><img
-                        src="../../images/p_big.jpg" width="390" height="390"/></a></div>
+                        :class="'productImg'+product.picId" width="390" height="390"/></a></div>
                 <div id="tsPicContainer">
                     <div id="tsImgSArrL" onclick="tsScrollArrLeft()"></div>
                     <div id="tsImgSCon">
@@ -636,8 +636,8 @@
             <div class="l_history">
                 <div class="fav_t">用户还喜欢</div>
                 <ul>
-                    <li v-for="(p,index) in similarProducts" :key="index" v-if="index<=4">
-                        <div class="img"><a href="javascript:void(0)" @click="view(p.id)"><img src="../../images/his_1.jpg" width="185" height="162"/></a>
+                    <li v-for="(p,index) in similarProducts" :key="index" v-if="index<5">
+                        <div class="img"><a href="javascript:void(0)" @click="view(p.id)"><img :class="'productImg'+p.picId" width="185" height="162"/></a>
                         </div>
                         <div class="name"><a href="javascript:void(0)" @click="view(p.id)">{{p.name}}</a></div>
                         <div class="price">
@@ -655,7 +655,7 @@
                     </div>
                     <div v-for="(p,index) in similarProducts" :key="index" v-if="index<3">
                     <div class="team_list">
-                        <div class="img"><a href="javascript:void(0)" @click="view(p.id)"><img src="../../images/mat_1.jpg" width="160" height="140"/></a>
+                        <div class="img"><a href="javascript:void(0)" @click="view(p.id)"><img :class="'productImg'+p.picId" width="160" height="140"/></a>
                         </div>
                         <div class="name"><a href="javascript:void(0)" @click="view(p.id)">{{p.name}}</a></div>
                         <div class="price">
@@ -717,7 +717,7 @@
                         <table border="0" align="center" style="width:745px; font-size:14px; font-family:'宋体';"
                                cellspacing="0" cellpadding="0">
                             <tr>
-                                <td width="265"><img src="../../images/de1.jpg" width="206" height="412"/></td>
+                                <td width="265"><img :class="'productImg'+product.picId" width="206" height="412"/></td>
                                 <td>
                                     <b>{{product.name}}</b><br/>
                                     【商品规格】：5ml<br/>
