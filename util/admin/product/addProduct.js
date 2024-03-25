@@ -1,6 +1,5 @@
-import {getCategoryList, getProCategoryNameByType} from "../../../api/category.js";
-import {getBrandList} from "../../../api/brand.js";
-import {addFile} from "../../../api/file.js";
+import {getProCategoryNameByType} from "/api/category.js";
+import {getBrandAllList} from "/api/brand.js";
 import {addProduct} from "../../../api/product.js";
 
 new Vue({
@@ -46,7 +45,7 @@ new Vue({
             this.categoryList=data
         },
         async getBrandList(){
-            const {data} = await getBrandList();
+            const {data} = await getBrandAllList();
             this.brandList=data
         },
         handleAvatarSuccess(res, file) {

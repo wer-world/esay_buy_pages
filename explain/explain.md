@@ -18,3 +18,8 @@
 
 1. 此次整合优化部分代码
 2. 添加图片下载功能，详细见/util/admin/order_detail中的handleDownloadImg方法
+
+# 前段第六次整合
+
+1. 修改仇海林冲突问题代码
+2. 整合所有代码

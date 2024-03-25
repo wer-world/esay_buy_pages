@@ -1,6 +1,6 @@
 import {getProductListPages, delProduct} from "../../../api/product.js";
 import { getProCategoryNameByType} from "../../../api/category.js";
-import {getBrandList} from "../../../api/brand.js";
+import {getBrandAllList} from "../../../api/brand.js";
 
 Vue.config.productionTip = false
 new Vue({
@@ -55,7 +55,7 @@ new Vue({
             this.categoryList=data
         },
         async getBrandList(){
-            const {data} = await getBrandList();
+            const {data} = await getBrandAllList();
             this.brandList=data
         },
 
