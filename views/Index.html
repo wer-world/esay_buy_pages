@@ -348,10 +348,10 @@
                                             <div class="h_icon"><img src="/images/hot.png" width="50" height="50"/>
                                             </div>
                                             <div class="imgbg">
-                                                <a href="#"><img :src="pro.picPath" width="160" height="136"/></a>
+                                                <a href="javascript:void(0)" @click="view(pro.id)"><img :id="'proImg'+index" width="160" height="136"/></a>
                                             </div>
                                             <div class="name">
-                                                <a href="#">
+                                                <a href="javascript:void(0)" @click="view(pro.id)">
                                                     <h2>{{pro.description}}</h2>
                                                     {{pro.name}}
                                                 </a>
@@ -473,14 +473,13 @@
                 </div>
                 <div class="fresh_mid">
                     <ul>
-                        <li v-for="p in productList[index]" v-if="index<6">
-                            <div class="name"><a href="javascript:void(0)" @click="view(p.id)">{{p.name}}</a></div>
+                        <li v-for="(p,index1) in productList[index]" v-if="index<6" :key="index1">
+                            <div class="name"><a href="javascript:void(0)" @click="view(p.id)">{{p.description}}</a></div>
                             <div class="price">
                                 <font>￥<span>{{p.price}}</span></font> &nbsp; 26R
                             </div>
-                            <div class="img"><a href="javascript:void(0)" @click="view(p.id)"><img
-                                    src="../images/fre_1.jpg" width="185"
-                                    height="155"/></a></div>
+                            <div class="img"><a href="javascript:void(0)" @click="view(p.id)">
+                                <img :id="'productImg' + index + index1" width="185" height="155"/></a></div>
                         </li>
                     </ul>
                 </div>

@@ -5,3 +5,18 @@ export function addCollection(productId){
         productId:productId
     })
 }
+getCollections
+export function getCollections(userId){
+    return request.get('/collection/getCollections',{
+        params:{
+            userId:userId
+        }
+    })
+}
+export function deleteCollection(id){
+    return request.get('/collection/deleteCollection',{
+        params:{
+            id:id
+        }
+    })
+}
