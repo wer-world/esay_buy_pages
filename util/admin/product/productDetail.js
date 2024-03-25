@@ -1,5 +1,6 @@
-import {getProductListPages, delProduct} from "../api/product.js";
-import { getProCategoryNameByType} from "../api/category.js";
+import {getProductListPages, delProduct} from "../../../api/product.js";
+import { getProCategoryNameByType} from "../../../api/category.js";
+import {getBrandList} from "../../../api/brand.js";
 
 Vue.config.productionTip = false
 new Vue({
@@ -10,20 +11,25 @@ new Vue({
         currentPageCount: 1,
         pageSize: 5,
         totalCount: 0,
-        catagoryList: [],
+        categoryList: [],
+        brandList:[],
         categoryName: '',
+        brandName:'',
+        loading: true
     },
     methods: {
         async getProList(currentPageCount) {
+            this.loading = true
             const {
                 code,
                 data
-            } = await getProductListPages(currentPageCount, this.pageSize, this.product.brandName, this.product.name,this.categoryName)
+            } = await getProductListPages(currentPageCount, this.pageSize, this.brandName, this.product.name,this.categoryName)
             if (code === '200') {
                 this.proList = data.productList
                 this.totalCount = data.page.totalCount
                 this.currentPageCount = data.page.currentPage
             }
+            this.loading = false
         },
         addPro() {
             window.location = "/esay_buy_pages/admin/products/AddProduct.html"
@@ -46,12 +52,17 @@ new Vue({
         },
         async getCategoryList(){
             const {data} = await getProCategoryNameByType();
-            this.catagoryList=data
+            this.categoryList=data
+        },
+        async getBrandList(){
+            const {data} = await getBrandList();
+            this.brandList=data
         },
 
     },
     mounted: async function () {
         await this.getProList(1);
         await this.getCategoryList();
+        await this.getBrandList();
     },
 })

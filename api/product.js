@@ -54,3 +54,7 @@ export function getSimilarProducts(categoryLevelId) {
         categoryLevelId: categoryLevelId
     })
 }
+
+export function addProduct(formDate){
+    return request.post('/product/addProduct', formDate)
+}

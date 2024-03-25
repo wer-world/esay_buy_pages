@@ -25,52 +25,67 @@
 </head>
 <body>
 <div id="app">
-        <el-descriptions title="商品列表"></el-descriptions>
-        <div class="proName">
-            <span style="font-size: 16px;">商品名：</span>
-            <el-input v-model="product.name" placeholder="请输入商品名"></el-input>
-            <span style="font-size: 16px;">品牌名：</span>
-            <el-input v-model="product.brandName" placeholder="请输入品牌名"></el-input>
-            <template>
-                <el-select v-model="value" placeholder="请选择">
-                    <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
+    <el-descriptions title="商品列表"></el-descriptions>
+    <div class="proName">
+        <span style="font-size: 16px;">商品名：</span>
+        <el-input v-model="product.name" placeholder="请输入商品名"></el-input>
+        <template>
+            <el-select v-model="brandName" placeholder="请选择品牌名">
+                <el-option lable="请选择" value="">
+                </el-option>
+                <el-option
+                        v-for="brand in brandList"
+                        :key="brand.id"
+                        :label="brand.name"
+                        :value="brand.name">
+                </el-option>
+            </el-select>
+        </template>
+        <template>
+            <el-select v-model="categoryName" placeholder="请选择分类名">
+                <el-option lable="请选择" value="">
+                </el-option>
+                <el-option
+                        v-for="category in categoryList"
+                        :key="category.id"
+                        :label="category.name"
+                        :value="category.name">
+                </el-option>
+            </el-select>
+        </template>
+        <el-button type="" @click="getProList(currentPageCount,pageSize,product.name,brandName,categoryName)">查询</el-button>
+        <el-button type="" @click="addPro()">添加商品</el-button>
+    </div>
+
+    <el-table :data="proList" border style="width: 67%" v-loading="loading">
+
+        <el-table-column prop="id" label="商品id" width="120">
+        </el-table-column>
+        <el-table-column prop="name" label="商品名称" width="120">
+        </el-table-column>
+        <el-table-column prop="brandName" label="品牌名称" width="120">
+        </el-table-column>
+        <el-table-column prop="description" label="商品描述" width="120">
+        </el-table-column>
+        <el-table-column prop="price" label="商品价格" width="120">
+        </el-table-column>
+        <el-table-column prop="stock" label="库存" width="120">
+        </el-table-column>
+        <el-table-column prop="categoryName" label="分类名称" width="120">
+            <template slot-scope="scope">
+                <div v-html="scope.row.categoryName"></div>
             </template>
-            <el-button type="" @click="getProList(currentPageCount)">查询</el-button>
-            <el-button type="" @click="addPro()">添加商品</el-button>
-        </div>
-        
-        <el-table :data="proList" border style="width: 67%">
-            
-            <el-table-column prop="id" label="商品id" width="120">
-            </el-table-column>
-            <el-table-column prop="name" label="商品名称" width="120">
-            </el-table-column>
-            <el-table-column prop="brandName" label="品牌名称" width="120">
-            </el-table-column>
-            <el-table-column prop="description" label="商品描述" width="120">
-            </el-table-column>
-            <el-table-column prop="price" label="商品价格" width="120">
-            </el-table-column>
-            <el-table-column prop="stock" label="库存" width="120">
-            </el-table-column>
-            <el-table-column prop="categoryName" label="分类名称" width="120">
-            </el-table-column>
-            <el-table-column prop="sales" label="销量" width="120">
-            </el-table-column>
-            <el-table-column fixed="right" label="操作" width="150">
-                <template slot-scope="scope">
-                    <el-button @click="viewPro(scope.row.id)" type="text" size="small">查看</el-button>
-                    <el-button @click="modifyPro(scope.row.id)" type="text" size="small">修改</el-button>
-                    <el-button @click="delPro(scope.row.id)" type="text" size="small">删除</el-button>
-                </template>
-            </el-table-column>
-        </el-table>
+        </el-table-column>
+        <el-table-column prop="sales" label="销量" width="120">
+        </el-table-column>
+        <el-table-column fixed="right" label="操作" width="150">
+            <template slot-scope="scope">
+                <el-button @click="viewPro(scope.row.id)" type="text" size="small">查看</el-button>
+                <el-button @click="modifyPro(scope.row.id)" type="text" size="small">修改</el-button>
+                <el-button @click="delPro(scope.row.id)" type="text" size="small">删除</el-button>
+            </template>
+        </el-table-column>
+    </el-table>
     <div class="block" width="100">
         <el-pagination layout="prev, pager, next" :total="totalCount" :page-size="pageSize" @current-change="getProList">
         </el-pagination>
@@ -80,5 +95,5 @@
 <script src="/js/vue.min.js"></script>
 <script type="module" src="/js/axios.js"></script>
 <script src="/js/Element.js"></script>
-<script type="module" src="/util/productDetail.js"></script>
+<script type="module" src="/util/admin/product/productDetail.js"></script>
 </html>

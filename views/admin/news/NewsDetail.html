@@ -13,7 +13,7 @@
         <div>
             <el-descriptions title="资讯列表"></el-descriptions>
             <el-button type="" @click="addNews">添加资讯</el-button>
-            <el-table :data="newsList" border style="width: 25%">
+            <el-table :data="newsList" border style="width: 25%" v-loading="loading">
                 <el-table-column prop="title" label="标题" width="120">
                 </el-table-column>
                 <el-table-column prop="createTime" label="日期" width="120">
@@ -40,6 +40,6 @@
 <script src="/js/vue.min.js"></script>
 <script type="module" src="/js/axios.js"></script>
 <script src="/js/Element.js"></script>
-<script type="module" src="/util/news_detail.js"></script>
+<script type="module" src="/util/admin/news/news_detail.js"></script>
 
 </html>

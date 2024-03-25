@@ -1,4 +1,4 @@
-import {addNews, getNewsByTitle} from "../api/news.js";
+import {addNews, getNewsByTitle} from "../../../api/news.js";
 
 Vue.config.productionTip = false
 
