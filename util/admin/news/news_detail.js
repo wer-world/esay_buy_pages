@@ -40,8 +40,10 @@ new Vue({
                 alert("删除成功");
                 this.getNewsList(this.currentPageCount)
             }
+        },
+        returnAdmin(){
+            window.location="/esay_buy_pages/admin/Admin.html"
         }
-        
     },
     mounted() {
         this.getNewsList(1);

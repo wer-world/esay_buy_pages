@@ -13,7 +13,7 @@ new Vue({
         totalCount: 0,
         categoryList: [],
         brandList:[],
-        categoryName: '',
+        categoryLeve3Name: '',
         brandName:'',
         loading: true
     },
@@ -23,7 +23,7 @@ new Vue({
             const {
                 code,
                 data
-            } = await getProductListPages(currentPageCount, this.pageSize, this.brandName, this.product.name,this.categoryName)
+            } = await getProductListPages(currentPageCount, this.pageSize, this.product.brandName, this.product.name,this.product.categoryLeve3Name)
             if (code === '200') {
                 this.proList = data.productList
                 this.totalCount = data.page.totalCount
@@ -33,9 +33,6 @@ new Vue({
         },
         addPro() {
             window.location = "/esay_buy_pages/admin/products/AddProduct.html"
-        },
-        viewPro(id) {
-            window.location = "/esay_buy_pages/admin/products/ViewProduct.html?id=" + id
         },
         modifyPro(id) {
             window.location = "/esay_buy_pages/admin/products/ModifyProduct.html?id=" + id
@@ -58,6 +55,9 @@ new Vue({
             const {data} = await getBrandAllList();
             this.brandList=data
         },
+        returnAdmin(){
+            window.location="/esay_buy_pages/admin/Admin.html"
+        }
 
     },
     mounted: async function () {
