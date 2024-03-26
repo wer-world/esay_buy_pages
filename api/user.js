@@ -22,10 +22,24 @@ export function deleteUser(id) {
     })
 }
 
+export function updateUser(user) {
+    return request.post('/user/updateUser', {
+        user: user
+    })
+}
+
 export function getTypeList() {
     return request.post('/type/getTypeList', {})
 }
 
-export function getUserById() {
-    return request.get('/user/getUserById')
+export function getUserById(id) {
+    return request.get('/user/getUserById',{
+        params:{
+            id:id
+        }
+    })
+}
+
+export function getCurrentUser() {
+    return request.get('/user/getCurrentUser');
 }

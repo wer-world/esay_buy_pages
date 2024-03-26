@@ -31,7 +31,10 @@ new Vue({
             productName: '',
             totalCount: 0,
             orderDetailList: [],
-            load: true
+            load: true,
+            //购物车相关
+            loginName: null,
+            globalCondition: null,
         }
     },
     methods: {
@@ -87,6 +90,12 @@ new Vue({
                 let img = document.getElementById('productImg' + key)
                 img.setAttribute('src', url);
             }
+        },
+        handlerToBuyCar() {
+            window.location.href = '/esay_buy_pages/buycar/BuyCar.html'
+        },
+        toCategoryList(){
+            window.location.href='/esay_buy_pages/category/CategoryList.html?globalCondition='+this.globalCondition
         }
     },
     computed: {
@@ -111,5 +120,6 @@ new Vue({
         } else {
             this.$message.error('订单详情获取失败!')
         }
+        this.loginName = readCookie('loginName')
     }
 })

@@ -17,6 +17,9 @@ new Vue({
         returnNewsList(){
             window.location="/esay_buy_pages/admin/news/NewsDetail.html"
         
+        },
+        returnIndex(){
+            window.location="/esay_buy_pages/Index.html"
         }
     },
     mounted() {

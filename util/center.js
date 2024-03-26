@@ -28,7 +28,7 @@ new Vue({
         //购物车相关
         loginName: null,
         buyCarList: [],
-
+        globalCondition: null,
     },
     mounted: async function(){
         this.loginName = readCookie('loginName')
@@ -140,5 +140,8 @@ new Vue({
         handlerToBuyCar() {
             window.location.href = '/esay_buy_pages/buycar/BuyCar.html'
         },
+        toCategoryList(){
+            window.location.href='/esay_buy_pages/category/CategoryList.html?globalCondition='+this.globalCondition
+        }
     }
 })

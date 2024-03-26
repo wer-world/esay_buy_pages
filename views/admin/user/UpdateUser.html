@@ -23,18 +23,16 @@
         用户名：<el-input :value="user.userName" v-model="user.userName"></el-input>
         <el-alert :title="userMsg.userNameMsg" :closable="false" v-show="userMsg.userNameMsg!==''"></el-alert><br>
         性别：<el-select v-model="user.sex">
-        <el-option label="男" value="1"></el-option>
-        <el-option label="女" value="0"></el-option>
+        <el-option label="男" :value="1"></el-option>
+        <el-option label="女" :value="0"></el-option>
             </el-select><br>
-        身份证号： <el-input :value="user.identityCode" v-model="user.identityCode"></el-input>
-        <el-alert :title="userMsg.identityCodeMsg" :closable="false" v-show="userMsg.identityCodeMsg!==''"></el-alert><br>
         邮箱：<el-input :value="user.email" v-model="user.email"></el-input>
         <el-alert :title="userMsg.emailMsg" :closable="false" v-show="userMsg.emailMsg!==''"></el-alert><br>
         手机号码： <el-input :value="user.mobile" v-model="user.mobile"></el-input>
         <el-alert :title="userMsg.mobileMsg" :closable="false" v-show="userMsg.mobileMsg!==''"></el-alert><br>
         身份类型：
         <el-select v-model="user.type">
-            <el-option v-for="t in typeList" value="t.id" :label="t.name" :disabled="/*currentUser.type<=t.id*/true"></el-option>
+            <el-option v-for="t in typeList" :value="t.id" :label="t.name" :disabled="currentUser.type>=t.type"></el-option>
         </el-select>
         <a href="UserList.html">返回用户列表</a>
         <el-button @click="save()">保存</el-button>
