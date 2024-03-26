@@ -30,3 +30,11 @@ export function createOrder(buyCar) {
         buyCar: buyCar
     })
 }
+
+export function cancelOrder(id) {
+    return request.get('/order/cancelOrder', {
+        params: {
+            id: id
+        }
+    })
+}

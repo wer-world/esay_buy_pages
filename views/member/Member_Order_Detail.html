@@ -171,32 +171,19 @@
                 <div class="car_t">购物车 [ <span>3</span> ]</div>
                 <div class="car_bg">
                     <!--Begin 购物车未登录 Begin-->
-                    <div class="un_login">还未登录！<a href="../login/Login.html" style="color:#ff4e00;">马上登录</a>
+                    <div class="un_login">还未登录！<a href="/esay_buy_pages/login/Login.html" style="color:#ff4e00;">马上登录</a>
                         查看购物车！
                     </div>
                     <!--End 购物车未登录 End-->
                     <!--Begin 购物车已登录 Begin-->
                     <ul class="cars">
-                        <li>
-                            <div class="img"><a href="#"><img src="../../images/car1.jpg" width="58" height="58"/></a>
-                            </div>
-                            <div class="name"><a href="#">法颂浪漫梦境50ML 香水女士持久清新淡香 送2ML小样3只</a></div>
-                            <div class="price"><font color="#ff4e00">￥399</font> X1</div>
-                        </li>
-                        <li>
-                            <div class="img"><a href="#"><img src="../../images/car2.jpg" width="58" height="58"/></a>
-                            </div>
-                            <div class="name"><a href="#">香奈儿（Chanel）邂逅活力淡香水50ml</a></div>
-                            <div class="price"><font color="#ff4e00">￥399</font> X1</div>
-                        </li>
-                        <li>
-                            <div class="img"><a href="#"><img src="../../images/car2.jpg" width="58" height="58"/></a>
-                            </div>
-                            <div class="name"><a href="#">香奈儿（Chanel）邂逅活力淡香水50ml</a></div>
-                            <div class="price"><font color="#ff4e00">￥399</font> X1</div>
+                        <li v-for="(item,index) in buyCarList" :key="item.id">
+                            <div class="img"><a href="javascript:void(0)"><img :id="'productImg' + index" width="58" height="58"/></a></div>
+                            <div class="name"><a href="javascript:void(0)">{{item.description}}</a></div>
+                            <div class="price"><font color="#ff4e00">￥{{item.productPrice}}</font> X{{item.productNum}}&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<a href="javascript:void(0)" @click="handleDelBuyCarProduct(item.id)">删除</a></div>
                         </li>
                     </ul>
-                    <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>1058</span></div>
+                    <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>{{totalCost}}</span></div>
                     <div class="price_a"><a href="#">去购物车结算</a></div>
                     <!--End 购物车已登录 End-->
                 </div>
@@ -205,122 +192,129 @@
     </div>
     <!--End Header End-->
     <div class="i_bg bg_color">
+
         <!--Begin 用户中心 Begin -->
         <div class="m_content">
             <div class="m_left">
                 <div class="left_n">管理中心</div>
                 <div class="left_m">
-                    <div class="left_m_t t_bg1">订单中心</div>
+                    <div class="left_m_t t_bg1">订单管理</div>
                     <ul>
-                        <li><a href="Member_Order.html" class="now">我的订单</a></li>
-                        <li><a href="Member_Address.html">收货地址</a></li>
-                        <li><a href="#">缺货登记</a></li>
-                        <li><a href="#">跟踪订单</a></li>
+                        <li><a href="/esay_buy_pages/admin/order/OrderList.html" class="now">订单列表</a></li>
                     </ul>
                 </div>
                 <div class="left_m">
-                    <div class="left_m_t t_bg2">会员中心</div>
+                    <div class="left_m_t t_bg2">用户管理</div>
                     <ul>
-                        <li><a href="Member_User.html">用户信息</a></li>
-                        <li><a href="Member_Collect.html">我的收藏</a></li>
-                        <li><a href="Member_Msg.html">我的留言</a></li>
-                        <li><a href="Member_Links.html">推广链接</a></li>
-                        <li><a href="#">我的评论</a></li>
+                        <li><a href="/esay_buy_pages/admin/user/UserList.html">用户列表</a></li>
                     </ul>
                 </div>
                 <div class="left_m">
-                    <div class="left_m_t t_bg3">账户中心</div>
+                    <div class="left_m_t t_bg3">商品管理</div>
                     <ul>
-                        <li><a href="Member_Safe.html">账户安全</a></li>
-                        <li><a href="Member_Packet.html">我的红包</a></li>
-                        <li><a href="Member_Money.html">资金管理</a></li>
+                        <li><a href="/esay_buy_pages/admin/product/ProductList.html">商品列表</a></li>
                     </ul>
                 </div>
                 <div class="left_m">
-                    <div class="left_m_t t_bg4">分销中心</div>
+                    <div class="left_m_t t_bg4">分类管理</div>
                     <ul>
-                        <li><a href="Member_Member.html">我的会员</a></li>
-                        <li><a href="Member_Results.html">我的业绩</a></li>
-                        <li><a href="Member_Commission.html">我的佣金</a></li>
-                        <li><a href="Member_Cash.html">申请提现</a></li>
+                        <li><a href="/esay_buy_pages/admin/category/CategoryList.html">分类列表</a></li>
+                    </ul>
+                </div>
+                <div class="left_m">
+                    <div class="left_m_t t_bg4">资讯管理</div>
+                    <ul>
+                        <li><a href="/esay_buy_pages/admin/news/ViewNews.html">资讯列表</a></li>
                     </ul>
                 </div>
             </div>
             <div class="m_right">
-                <p></p>
-                <div class="mem_tit">我的订单</div>
-                <el-input placeholder="请输入要查询的订单号" v-model="serialNumber" clearable @keydown.enter="getOrderList(1)"></el-input>
-                <el-button slot="append" icon="el-icon-search" @click="getOrderList(1)"></el-button>
-                <table border="0" class="order_tab" style="width:930px; text-align:center; margin-bottom:30px;"
-                       cellspacing="0" cellpadding="0">
-                    <tr>
-                        <td width="20%">订单号</td>
-                        <td width="25%">下单时间</td>
-                        <td width="15%">订单总金额</td>
-                        <td width="15%">订单状态</td>
-                        <td width="25%">操作</td>
-                    </tr>
-                    <tr v-for="order in orderList">
-                        <td><span style="color: #ff4e00; ">{{order.serialNumber}}</span></td>
-                        <td>{{order.createTime}}</td>
-                        <td>￥{{order.cost}}</td>
-                        <td>{{order.statusName}}</td>
-                        <td v-if="order.status==1"><span style="color: #ff4e00; ">已确认</span></td>
-                        <td v-else-if="order.status==2"><span>已取消订单</span></td>
-                        <td v-else-if="order.status==3"><span>已超时取消订单</span></td>
-                        <td v-else-if="order.status==4"><span>已退款成功</span></td>
-                        <td v-else><a style="color: #ff4e00;" :href="'/esay_buy_pages/member/Member_Order_Detail.html?orderId='+order.id">查看</a>
-                            &nbsp;<a style="color: #ff4e00; " href="javascript:void(0)" @click="payOrder(order.id,order.serialNumber)">支付订单</a>
-                            &nbsp;<a style="color: #ff4e00; " href="javascript:void(0)" @click="cancelOrder(order.id)">取消订单</a></td>
-                    </tr>
-                </table>
-                <el-pagination
-                        small
-                        @current-change="getOrderList"
-                        :page-size="pageSize"
-                        layout="prev, pager, next"
-                        :total="totalCount">
-                </el-pagination>
-
-
-                <!--<div class="mem_tit">合并订单</div>
-                <table border="0" class="order_tab" style="width:930px;" cellspacing="0" cellpadding="0">
-                    <tr>
-                        <td width="135" align="right">主订单</td>
-                        <td width="220">
-                            <select class="jj" name="order1">
-                                <option value="0" selected="selected">请选择...</option>
-                                <option value="1">2015092626589</option>
-                                <option value="2">2015092626589</option>
-                                <option value="3">2015092626589</option>
-                                <option value="4">2015092626589</option>
-                            </select>
-                        </td>
-                        <td width="135" align="right">从订单</td>
-                        <td width="220">
-                            <select class="jj" name="order2">
-                                <option value="0" selected="selected">请选择...</option>
-                                <option value="1">2015092626589</option>
-                                <option value="2">2015092626589</option>
-                                <option value="3">2015092626589</option>
-                                <option value="4">2015092626589</option>
-                            </select>
-                        </td>
-                        <td>
-                            <div class="btn_u"><a href="#">合并订单</a></div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>&nbsp;</td>
-                        <td colspan="4" style="font-family:'宋体'; padding:20px 10px 50px 10px;">
-                            订单合并是在发货前将相同状态的订单合并成一新的订单。 <br/>
-                            收货地址，送货方式等以主定单为准。
-                        </td>
-                    </tr>
-                </table>-->
+                <div class="order_list" style="margin: 48px">
+                    <p></p>
+                    <div class="mem_tit">订单信息</div>
+                    <div class="order_detail">
+                        <table style="margin: 0">
+                            <tr>
+                                <td style="font-weight: bold">订单号</td>
+                                <td>{{order.serialNumber}}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold">用户名</td>
+                                <td>{{order.loginName}}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold">用户地址</td>
+                                <td>{{order.userAddress}}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold">联系方式</td>
+                                <td>{{order.mobile}}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold">订单总价</td>
+                                <td>{{order.cost}}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold">创建时间</td>
+                                <td>{{order.createTime}}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold">订单状态</td>
+                                <td>{{order.statusName}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="order_detail_list">
+                        <div class="flex" style="margin-bottom: 10px">
+                            <div class="flex font-16" style="margin-right: 10px">
+                                <span style="width: 100px">商品名称:</span>
+                                <el-input v-model="productName" placeholder="请输入商品名称"></el-input>
+                            </div>
+                            <el-button @click="handleFind">查询</el-button>
+                            <el-button @click="handleReset">重置</el-button>
+                        </div>
+                        <el-table
+                                :data="orderDetailList"
+                                border
+                                :load="load"
+                                style="width: 100%">
+                            <el-table-column
+                                    type="index"
+                                    label="序号"
+                                    width="50px">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="productName"
+                                    label="商品名">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="productPrice"
+                                    label="商品单价">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="quantity"
+                                    label="数量">
+                            </el-table-column>
+                            <el-table-column
+                                    prop="cost"
+                                    label="总价">
+                            </el-table-column>
+                        </el-table>
+                        <el-pagination
+                                @size-change="handleSizeChange"
+                                @current-change="handleCurrentChange"
+                                :current-page="currentPage"
+                                :page-sizes="[5, 10, 15, 20]"
+                                :page-size="pageSize"
+                                layout="total, sizes, prev, pager, next, jumper"
+                                :total="totalCount">
+                        </el-pagination>
+                    </div>
+                </div>
             </div>
         </div>
         <!--End 用户中心 End-->
+
         <!--Begin Footer Begin -->
         <div class="b_btm_bg b_btm_c">
             <div class="b_btm">
@@ -420,7 +414,7 @@
 <script type="text/javascript" src="/js/vue.min.js"></script>
 <script type="module" src="/js/axios.js"></script>
 <script type="text/javascript" src="/js/Element.js"></script>
-<script type="module" src="/util/member/member_order.js"></script>
+<script type="module" src="/util/member/member_order_detail.js"></script>
 
 <!--[if IE 6]>
 <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>

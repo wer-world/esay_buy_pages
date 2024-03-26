@@ -172,6 +172,11 @@ new Vue({
             this.brandIndex = brandIndex
             this.handleGetProductListPages()
         },
+        initCategoryName(){
+            const urlParams = new URLSearchParams(window.location.search)
+            const categoryName = urlParams.get("categoryName")
+            this.categoryName = categoryName;
+        },
         handleSearchPrice(minPrice, maxPrice, priceIndex) {
             this.minPrice = minPrice
             this.maxPrice = maxPrice
@@ -239,5 +244,6 @@ new Vue({
         await this.getBuyCarList()
         await this.getBrandAllList()
         await this.handleGetProductListPages()
+        await this.initCategoryName()
     }
 })
