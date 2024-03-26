@@ -18,6 +18,7 @@
     <el-descriptions title="地址列表"></el-descriptions>
     <div>
         <el-button type="" @click="addAddress()">添加地址</el-button>
+        <el-button type="" @click="returnAdmin">返回到管理员页面</el-button>
     </div>
 
     <el-table :data="addressList" border style="width: 53%" v-loading="loading">

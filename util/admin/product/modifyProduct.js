@@ -1,7 +1,8 @@
 import {getProCategoryNameByType} from "/api/category.js";
 import {getBrandAllList} from "/api/brand.js";
-import {addProduct} from "/api/product.js";
-
+import {getProductById, modifyProductById} from "/api/product.js";
+var param = new URLSearchParams(window.location.search);
+var id = param.get("id")
 new Vue({
     el: '#app',
     data: {
@@ -44,6 +45,7 @@ new Vue({
     methods: {
         resetForm() {
             this.product = [];
+            this.imageUrl = '';
         },
         async getCategoryList() {
             const {data} = await getProCategoryNameByType();
@@ -76,10 +78,11 @@ new Vue({
             this.$refs[formName].validate(async (valid) => {
                 if (valid) {
                     let formData = new FormData(upload)
+                    formData.set('id', id)
                     formData.set('brandId', $this.product.brandId)
                     formData.set('categoryLevelId', $this.product.categoryLevelId)
                     formData.set('filePath', $this.product.picPath)
-                    const {code, message} = await addProduct(formData);
+                    const {code, message} = await modifyProductById(formData);
                     if (code === '200') {
                         alert(message)
                         window.location = "/esay_buy_pages/admin/products/ProductDetail.html"
@@ -91,10 +94,18 @@ new Vue({
         },
         cancle(){
             window.location = "/esay_buy_pages/admin/products/ProductDetail.html"
+        },
+        async getProById(){
+            const {code,data} = await getProductById(id);
+            if (code ==='200'){
+                this.product=data;
+                this.imageUrl = "/" + data.picPath
+            }
         }
     },
     mounted: async function () {
         await this.getCategoryList();
         await this.getBrandList();
+        await this.getProById();
     }
 })

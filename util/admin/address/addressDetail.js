@@ -42,6 +42,9 @@ new Vue({
             if (code==='200'){
                 this.totalCount = data
             }
+        },
+        returnAdmin(){
+            window.location="/esay_buy_pages/admin/Admin.html"
         }
     },
     mounted: async function(){

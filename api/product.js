@@ -1,12 +1,12 @@
 import request from "/util/request.js";
 
-export function getProductListPages(currentPageCount, pageSize, brandName, productName, categoryName, minPrice, maxPrice, isSales, isNewProduct, isPrice) {
+export function getProductListPages(currentPageCount, pageSize, brandName, productName, categoryLeve3Name, minPrice, maxPrice, isSales, isNewProduct, isPrice) {
     return request.post('/product/getProductListPages', {
         currentPage: currentPageCount,
         pageSize: pageSize,
         brandName: brandName,
         productName: productName,
-        categoryName: categoryName,
+        categoryName: categoryLeve3Name,
         minPrice: minPrice,
         maxPrice: maxPrice,
         isSales: isSales,
@@ -58,3 +58,7 @@ export function getSimilarProducts(categoryLevelId) {
 export function addProduct(formDate) {
     return request.post('/product/addProduct', formDate)
 }
+export function modifyProductById(formDate) {
+    return request.post('/product/modifyProductById', formDate)
+}
+
