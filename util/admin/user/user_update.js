@@ -1,3 +1,5 @@
+import {getUserById, updateUser,getCurrentUser} from "/api/user.js"
+import {getTypeList} from "/api/type.js"
 new Vue({
     el:'#root',
     data:{
@@ -17,42 +19,28 @@ new Vue({
         currentUser:{},
         typeList:[]
     },
-    mounted(){
-        this.initUser();
-        this.getTypeList();
-        this.initCurrentUser()
+    mounted:async function(){
+        await this.initUser();
+        await this.initCurrentUser();
+        await this.getTypeList();
     },
     methods:{
-        initUser(){
+        async initUser(){
            let urlParams =  new URLSearchParams(window.location.search)
            let id = urlParams.get("id")
-           axios({
-               method:'post',
-               url:'/nginx/user/getUser',
-               data:{
-                   'id':id
-               }
-           }).then((res=>{
-               this.user = res.data.data;
-           }))
+            const {data} = await getUserById(id);
+            this.user = data;
         },
-        initCurrentUser(){
-            axios({
-                method:'post',
-                url:'/nginx/user/getCurrentUser'
-            }).then((res=>{
-                this.currentUser = res.data.data;
-            }))
+        async initCurrentUser(){
+            const {data} = await getCurrentUser();
+            this.currentUser = data;
+            console.log(data)
         },
-        getTypeList() {
-            axios({
-                method: 'post',
-                url: '/nginx/type/getTypeList',
-            }).then((res => {
-                this.typeList = res.data.data;
-            }))
+        async getTypeList() {
+            const {data} = await getTypeList();
+            this.typeList = data;
         },
-        save(){
+        async save(){
             this.userMsg={
                 loginNameMsg:'',
                 userNameMsg:'',
@@ -107,18 +95,11 @@ new Vue({
                 this.userMsg.mobileMsg="请输入正确的11位电话号码"
                 return;
             }
-            axios({
-                method: 'post',
-                url: '/nginx/user/updateUser',
-                data:{
-                    'user':this.user
-                }
-            }).then((res => {
-                if (res.data.code=="200"){
-                    alert("修改成功");
-                    window.location.href="/esay_buy_pages/admin/user/UserList.html";
-                }
-            }))
+            const {code} = await updateUser(this.user);
+            if (code=="200"){
+                alert("修改成功");
+                window.location.href="/esay_buy_pages/admin/user/UserList.html";
+            }
         }
     }
 })

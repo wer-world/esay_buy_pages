@@ -1,3 +1,5 @@
+import {getUserById} from "/api/user.js"
+
 new Vue({
     el:'#root',
     data:{
@@ -7,19 +9,11 @@ new Vue({
         this.initUser();
     },
     methods:{
-        initUser(){
+        async initUser(){
            let urlParams =  new URLSearchParams(window.location.search)
            let id = urlParams.get("id")
-           axios({
-               method:'post',
-               url:'/nginx/user/getUser',
-               data:{
-                   'id':id
-               }
-           }).then((res=>{
-               this.user = res.data.data;
-               console.log(this.user)
-           }))
+           const {data} = await getUserById(id);
+           this.user = data;
         }
     }
 })

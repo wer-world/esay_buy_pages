@@ -14,11 +14,13 @@
             padding-right: 8px;
             width: 700px;
         }
-        .all{
+
+        .all {
             width: 60%;
             padding: 20px 300px;
         }
-        .el-input{
+
+        .el-input {
             width: 180px;
         }
     </style>
@@ -27,22 +29,25 @@
 <div id="root">
     <div class="all">
         <h2>分类管理页面</h2>
+        <el-button @click="dialogAddCategoryForm=true,setParentCategory(0)">新增一级分类</el-button>
         <el-tree
                 :data="categoryList1"
                 node-key="id"
-                default-expand-all
                 :expand-on-click-node="false"
                 :props="defaultProps">
         <span class="custom-tree-node" slot-scope="{node,data}">
             <span>{{getCategoryType(data.type)}}</span>
             <span>{{data.name}}</span>
             <span>
-                <el-button size="mini" type="text" @click="dialogAddCategoryForm=true,setParentCategory(data.parentId)">添加</el-button>
-                <el-button size="mini" type="text" @click="dialogUpdateCategoryForm=true,setCurrentCategory(data.id)">修改</el-button>
-                <el-button size="mini" type="text" @click="dialogDeleteCategoryForm=true,setCurrentCategory(data.id)">删除</el-button>
+                <el-button size="mini" type="text" @click="dialogAddCategoryForm=true,setParentCategory(data.id)" v-if="data.type<3">添加</el-button>
+                <el-button size="mini" type="text"
+                           @click="dialogUpdateCategoryForm=true,setCurrentCategory(data.id)">修改</el-button>
+                <el-button size="mini" type="text"
+                           @click="dialogDeleteCategoryForm=true,setCurrentCategory(data.id)">删除</el-button>
             </span>
             <el-dialog title="新建分类" :visible.sync="dialogAddCategoryForm">
-                <h4>在<b style="color: red">{{parentCategory==null?'根':parentCategory.name}}</b>类别下添加子类</h4>
+                <h4>在<b
+                        style="color: red">{{parentCategory == null ? '根' : parentCategory.name}}</b>类别下添加子类</h4>
                 类别名：<el-input v-model="newCategoryName"></el-input>
                 <el-button @click="saveAdd()">保存</el-button>
                 <el-button @click="dialogAddCategoryForm=false">返回</el-button>

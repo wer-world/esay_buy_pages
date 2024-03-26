@@ -20,7 +20,7 @@ new Vue({
     },
     methods:{
         async initCategoryList() {
-            const data = await getCategoryList(0);
+            const {data} = await getCategoryList(0);
             this.categoryList1 = data;
         },
         getCategoryType(type){

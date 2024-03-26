@@ -1,5 +1,7 @@
-import {downloadProductImg, getProductById, getSimilarProducts} from "/api/product.js"
+import {downloadProductImg, getProductById, getProductsByHigHestId, getSimilarProducts} from "/api/product.js"
 import {addCollection} from "/api/collection.js"
+import {getCategoryList} from "/api/category.js";
+import {addBuyCar, delBuyCarProductById, getBuyCarListByUserId} from "/api/buycar.js";
 
 new Vue({
     el: '#all',
@@ -13,13 +15,34 @@ new Vue({
         count: 1,
         zuheCount: 1,
         zuheTempPrice: 0,
-        zuhePrice: 0
+        zuhePrice: 0,
+        //侧边栏分类
+        categoryList1: [],
+        hoverIndex: -1,
+        //购物车相关
+        loginName: null,
+        buyCarList: [],
+        globalCondition: null,
     },
     mounted: async function () {
+        this.loginName = readCookie('loginName')
+        await this.getBuyCarList()
+        await this.initCategoryList();
         await this.initProduct();
         await this.initsimilarProducts();
         await this.handleDownloadImg();
     },
+    //购物车相关
+    computed: {
+        totalCost: function () {
+            let totalCost = 0
+            for (let key in this.buyCarList) {
+                totalCost += this.buyCarList[key].productNum * this.buyCarList[key].productPrice
+            }
+            return totalCost
+        }
+    },
+    //↑购物车相关
     methods: {
         calZuhePrice() {
             this.zuhePrice = this.zuheTempPrice * this.zuheCount
@@ -88,6 +111,65 @@ new Vue({
                         imgs[i].setAttribute('src', url);
                     }
             }
+            //购物车相关
+            for (const key in this.buyCarList) {
+                const data = await downloadProductImg(this.buyCarList[key].picPath)
+                const blob = new Blob([data], {type: "image/jepg,image/png"});
+                let url = window.URL.createObjectURL(blob);
+                let productImg = document.getElementById('productImg' + key)
+                if (productImg != null) {
+                    productImg.setAttribute('src', url);
+                }
+            }
+            //↑购物车相关
+        },
+        //侧边栏分类
+        async initCategoryList() {
+            const {code, data} = await getCategoryList(0);
+            if (code === '200'){
+                this.categoryList1 = data;
+            }
+        },
+        async getProductList() {
+            for (let i = 0; i < this.categoryList1.length; i++) {
+                let id = this.categoryList1[i].id;
+                const {data} = await getProductsByHigHestId(id);
+                this.productList.push(data);
+            }
+        },
+        //购物车相关
+        async handleDelBuyCarProduct(id) {
+            if (confirm('您确定要把该商品移除购物车吗!')) {
+                const {code} = await delBuyCarProductById(id)
+                if (code === '200') {
+                    this.message('移除成功!', 'error')
+                    this.getBuyCarList()
+                } else {
+                    this.message('删除购物车信息失败', 'error')
+                }
+            }
+        },
+        async getBuyCarList() {
+            const {code, data} = await getBuyCarListByUserId()
+            if (code === '200') {
+                this.buyCarList = data
+                await this.handleDownloadImg()
+            }
+        },
+        async handleAddBuyCar(productId) {
+            const {code, message} = await addBuyCar(productId)
+            if (code === '200') {
+                await this.getBuyCarList()
+                this.message('加入购物车成功！', 'success')
+            } else {
+                this.message(message, 'error')
+            }
+        },
+        handlerToBuyCar() {
+            window.location.href = '/esay_buy_pages/buycar/BuyCar.html'
+        },
+        toCategoryList(){
+            window.location.href='/esay_buy_pages/category/CategoryList.html?globalCondition='+this.globalCondition
         }
     }
 })

@@ -5,14 +5,14 @@ new Vue({
     data: {
         userList: [],
         typeList: [],
-        type: '',
-        userName: '',
+        type: null,
+        userName: null,
         pageSize: 5,
         totalCount: 0
     },
     mounted:async function(){
-        await this.getUserList(1);
         await this.getTypeList();
+        await this.getUserList(1);
     },
     methods: {
         async getUserList(currentPage) {
