@@ -177,7 +177,9 @@
                 <!--End 购物车未登录 End-->
                 <!--Begin 购物车已登录 Begin-->
                 <ul class="cars">
-                    <li v-if="buyCarList.length === 0"><div style="text-indent: 50px">购物车暂无数据，快去购买吧!</div></li>
+                    <li v-if="buyCarList.length === 0">
+                        <div style="text-indent: 50px">购物车暂无数据，快去购买吧!</div>
+                    </li>
                     <li v-for="(item,index) in buyCarList" :key="item.id">
                         <div class="img"><a href="javascript:void(0)"><img :id="'productImg' + index" width="58"
                                                                            height="58"/></a></div>
