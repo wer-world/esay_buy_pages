@@ -12,9 +12,11 @@
             position: relative;
             overflow: hidden;
         }
+
         .avatar-uploader .el-upload:hover {
             border-color: #409EFF;
         }
+
         .avatar-uploader-icon {
             font-size: 28px;
             color: #8c939d;
@@ -23,6 +25,7 @@
             line-height: 178px;
             text-align: center;
         }
+
         .avatar {
             width: 178px;
             height: 178px;
@@ -31,56 +34,57 @@
     </style>
 </head>
 <body>
-    <div id="app">
-        <el-descriptions title="商品添加"></el-descriptions>
-        <el-form :model="product" :rules="rules" ref="product" label-width="100px" class="demo-ruleForm" id="upload">
-            <el-form-item label="商品名称" prop="name">
-                <el-input v-model="product.name"></el-input>
-            </el-form-item>
-            <el-form-item label="品牌名称" prop="brandId">
-                <el-select v-model="product.brandId" placeholder="请选品牌">
-                    <el-option
-                            v-for="brand in brandList"
-                            :key="brand.id"
-                            :label="brand.name"
-                            :value="brand.id">
-                    </el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="分类名称" prop="categoryLevelId">
-                <el-select v-model="product.categoryLevelId" placeholder="请选分类">
-                    <el-option
-                            v-for="category in categoryList"
-                            :key="category.id"
-                            :label="category.name"
-                            :value="category.id">
-                    </el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="商品价格" prop="price">
-                <el-input v-model.number="product.price" :step="0.1"></el-input>
-            </el-form-item>
+<div id="app">
+    <el-descriptions title="商品添加"></el-descriptions>
+    <el-form :model="product" :rules="rules" ref="product" label-width="100px" class="demo-ruleForm" id="upload">
+        <el-form-item label="商品名称" prop="name">
+            <el-input v-model="product.name" name="name"></el-input>
+        </el-form-item>
+        <el-form-item label="品牌名称" prop="brandId">
+            <el-select v-model="product.brandId" name="brandId" placeholder="请选品牌">
+                <el-option
+                        v-for="brand in brandList"
+                        :key="brand.id"
+                        :label="brand.name"
+                        :value="brand.id">
+                </el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item label="分类名称" prop="categoryLevelId">
+            <el-select v-model="product.categoryLevelId" name="categoryLevelId" placeholder="请选分类">
+                <el-option
+                        v-for="category in categoryList"
+                        :key="category.id"
+                        :label="category.name"
+                        :value="category.id">
+                </el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item label="商品价格" prop="price">
+            <el-input v-model.number="product.price" name="price" :step="0.1"></el-input>
+        </el-form-item>
 
-            <el-form-item label="商品描述" prop="desc">
-                <el-input type="textarea" v-model="product.desc"></el-input>
-            </el-form-item>
-            <el-form-item label="文件上传" prop="picPath">
-                <el-upload
-                        class="avatar-uploader"
-                        action
-                        :show-file-list="false"
-                        :on-success="handleAvatarSuccess"
-                        :before-upload="beforeAvatarUpload">
-                    <img v-if="imageUrl" :src="imageUrl" class="avatar" alt="">
-                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                </el-upload>
-            </el-form-item>
-            <el-form-item>
-                <el-button type="primary" @click="submitForm()">立即创建</el-button>
-                <el-button @click="resetForm">重置</el-button>
-            </el-form-item>
-        </el-form>
-    </div>
+        <el-form-item label="商品描述" prop="desc">
+            <el-input type="textarea" name="description" v-model="product.desc"></el-input>
+        </el-form-item>
+        <el-form-item label="文件上传"  prop="picPath">
+            <el-upload
+                    class="avatar-uploader"
+                    name="filePath"
+                    action="#"
+                    :http-request="handleHttpRequest"
+                    :show-file-list="false"
+                    :before-upload="beforeAvatarUpload">
+                <img v-if="imageUrl" :src="imageUrl" class="avatar" alt="">
+                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+        </el-form-item>
+        <el-form-item>
+            <el-button type="primary" @click="submitForm('product')">立即创建</el-button>
+            <el-button @click="resetForm">重置</el-button>
+        </el-form-item>
+    </el-form>
+</div>
 </body>
 <script src="/js/vue.min.js"></script>
 <script type="module" src="/js/axios.js"></script>

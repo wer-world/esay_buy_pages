@@ -3,23 +3,23 @@ import {getBrandAllList} from "/api/brand.js";
 import {addProduct} from "../../../api/product.js";
 
 new Vue({
-    el:'#app',
-    data:{
+    el: '#app',
+    data: {
         product: {
-            brandId:'',
-            categoryLevelId:'',
-            name:'',
-            price:'',
-            desc: '',
-            picPath:''
+            brandId: '',
+            categoryLevelId: '',
+            name: '',
+            price: '',
+            description: '',
+            picPath: ''
         },
         imageUrl: '',
-        brandList:[],
-        categoryList:[],
+        brandList: [],
+        categoryList: [],
         rules: {
             price: [
-                { required: true, message: '价格不能为空',trigger: 'blur'},
-                { type: 'number', message: '价格必须为数字值',trigger: 'blur'}
+                {required: true, message: '价格不能为空', trigger: 'blur'},
+                {type: 'number', message: '价格必须为数字值', trigger: 'blur'}
             ],
             name: [
                 {required: true, message: '请输入商品名称', trigger: 'blur'},
@@ -36,20 +36,17 @@ new Vue({
             ]
         }
     },
-    methods:{
-        resetForm(){
-            this.product=[];
+    methods: {
+        resetForm() {
+            this.product = [];
         },
-        async getCategoryList(){
+        async getCategoryList() {
             const {data} = await getProCategoryNameByType();
-            this.categoryList=data
+            this.categoryList = data
         },
-        async getBrandList(){
+        async getBrandList() {
             const {data} = await getBrandAllList();
-            this.brandList=data
-        },
-        handleAvatarSuccess(res, file) {
-            this.imageUrl = URL.createObjectURL(file.raw);
+            this.brandList = data
         },
         beforeAvatarUpload(file) {
             const isJPG = file.type === 'image/jpg';
@@ -65,17 +62,30 @@ new Vue({
             }
             return (isJPG || isPNG || isJPEG || isPNEG) && isLt2M;
         },
-        async submitForm(){
-            var formData = new FormData(upload);
-            const {code,message} = addProduct(formData);
-            if (code==='200'){
-                alert(message)
-                window.location="/esay_buy_pages/admin/products/ProductDetail.html"
-            }
+        handleHttpRequest(req) {
+            this.product.picPath = req.file
+            this.imageUrl = URL.createObjectURL(req.file);
+        },
+        async submitForm(formName) {
+            let $this = this
+            this.$refs[formName].validate(async (valid) => {
+                if (valid) {
+                    let formData = new FormData(upload)
+                    formData.set('brandId', $this.product.brandId)
+                    formData.set('categoryLevelId', $this.product.categoryLevelId)
+                    formData.set('filePath', $this.product.picPath)
+                    const {code, message} = await addProduct(formData);
+                    if (code === '200') {
+                        alert(message)
+                        window.location = "/esay_buy_pages/admin/products/ProductDetail.html"
+                    }
+                } else {
+                    return false;
+                }
+            });
         }
-
     },
-    mounted:async function(){
+    mounted: async function () {
         await this.getCategoryList();
         await this.getBrandList();
     }
