@@ -132,10 +132,15 @@ new Vue({
                 this.message('当前购物车中没有商品,无法确认订单', 'error')
                 return
             }
-            const {code, data} = await createOrder(this.buyCarList);
-            if (code === '200') {
-                window.location.href = '/esay_buy_pages/buycar/BuyCar_Three.html?orderId=' + data.id
-            }
+            this.$alert('是否确认订单', '确认订单', {
+                confirmButtonText: '确定',
+                callback: async action => {
+                    const {code, data} = await createOrder(this.buyCarList)
+                    if (code === '200') {
+                        window.location.href = '/esay_buy_pages/buycar/BuyCar_Three.html?orderId=' + data.id
+                    }
+                }
+            })
         },
         message(message, option) {
             const messageDom = document.getElementsByClassName('el-message')[0]

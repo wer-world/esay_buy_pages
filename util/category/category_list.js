@@ -98,6 +98,9 @@ new Vue({
             }
         },
         async handleGlobalSearchProduct() {
+            if (this.loginName == null) {
+                window.location.href = '/esay_buy_pages/login/Login.html'
+            }
             this.handleClearSearchCondition()
             const {code, data} = await globalSearchProduct(this.globalCondition)
             if (code === '200') {
@@ -182,7 +185,7 @@ new Vue({
             this.brandIndex = brandIndex
             this.handleGetProductListPages()
         },
-        initRequestParams(){
+        initRequestParams() {
             const urlParams = new URLSearchParams(window.location.search)
             const categoryName = urlParams.get("categoryName")
             this.categoryName = categoryName;
