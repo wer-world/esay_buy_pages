@@ -1,9 +1,11 @@
 import {downloadProductImg, getProductsByHigHestId, getProductListPages} from "/api/product.js";
 import {getCategoryList} from "/api/category.js";
 import {getNewsList} from "/api/news.js";
-import {addBuyCar, delBuyCarProductById, getBuyCarListByUserId} from "/api/buycar.js";
+import {addBuyCar, delBuyCarProductById, getBuyCarListByUserId, modBuyCarProductNumById} from "/api/buycar.js";
 import {createMobilePaymentOrder} from "/api/order.js";
 import {alipayCreate} from "/api/alipay.js";
+
+let time
 
 export const centerVue = new Vue({
     el: '#center',
@@ -141,20 +143,29 @@ export const centerVue = new Vue({
                 this.message(message, 'error')
             }
         },
+        handleModBuyCarProductNumById() {
+            const $this = this
+            if (time) {
+                clearTimeout(time)
+            }
+            time = setTimeout(async function () {
+                const {code, data} = await createMobilePaymentOrder($this.mobile, $this.amount)
+                if (code === '200') {
+                    const formData = await alipayCreate(data.id, data.serialNumber)
+                    const div = document.createElement('div');
+                    div.innerHTML = formData;
+                    document.body.appendChild(div);
+                    document.getElementsByName('punchout_form')[0].submit()
+                } else {
+                    $this.message('充值失败,请检查登录状态!', 'error')
+                }
+            }, 1000)
+        },
         async handleCreateMobilePaymentOrder() {
             if (!/^1[3-9]\d{9}$/.test(this.mobile)) {
                 this.message('手机号输入不正确', 'warning')
             }
-            const {code, data} = await createMobilePaymentOrder(this.mobile, this.amount)
-            if (code === '200') {
-                const formData = await alipayCreate(data.id, data.serialNumber)
-                const div = document.createElement('div');
-                div.innerHTML = formData;
-                document.body.appendChild(div);
-                document.getElementsByName('punchout_form')[0].submit()
-            } else {
-                this.message('充值失败,请检查登录状态!', 'error')
-            }
+            this.handleModBuyCarProductNumById()
         },
         handleAmountChange(value) {
             value = value.substring(0, value.length - 1)
@@ -163,8 +174,8 @@ export const centerVue = new Vue({
         handlerToBuyCar() {
             window.location.href = '/esay_buy_pages/buycar/BuyCar.html'
         },
-        toCategoryList(){
-            window.location.href='/esay_buy_pages/category/CategoryList.html?globalCondition='+this.globalCondition
+        toCategoryList() {
+            window.location.href = '/esay_buy_pages/category/CategoryList.html?globalCondition=' + this.globalCondition
         },
         message(message, option) {
             const messageDom = document.getElementsByClassName('el-message')[0]

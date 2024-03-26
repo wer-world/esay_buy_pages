@@ -3,6 +3,8 @@ import {downloadProductImg} from "/api/product.js";
 import {getOrder} from "/api/order.js";
 import {alipayCreate} from "/api/alipay.js";
 
+let time
+
 new Vue({
     el: '#buyCar',
     data() {
@@ -65,13 +67,19 @@ new Vue({
                 this.order = data
             }
         },
-        async handlerAlipayCreate() {
-            const data = await alipayCreate(this.order.id, this.order.serialNumber)
-            /* 此处form就是后台返回接收到的数据 */
-            const div = document.createElement('div');
-            div.innerHTML = data;
-            document.body.appendChild(div);
-            document.getElementsByName('punchout_form')[0].submit()
+        handlerAlipayCreate() {
+            let $this = this
+            if (time) {
+                clearTimeout(time)
+            }
+            time = setTimeout(async function () {
+                const data = await alipayCreate($this.order.id, $this.order.serialNumber)
+                /* 此处form就是后台返回接收到的数据 */
+                const div = document.createElement('div');
+                div.innerHTML = data;
+                document.body.appendChild(div);
+                document.getElementsByName('punchout_form')[0].submit()
+            }, 1000)
         },
         message(message, option) {
             const messageDom = document.getElementsByClassName('el-message')[0]

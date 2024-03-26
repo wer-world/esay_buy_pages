@@ -1,8 +1,10 @@
-import {delBuyCarProductById, getBuyCarListByUserId} from "/api/buycar.js";
+import {delBuyCarProductById, getBuyCarListByUserId, modBuyCarProductNumById} from "/api/buycar.js";
 import {downloadProductImg} from "/api/product.js";
 import {addCollection} from "/api/collection.js";
 import {getUserById} from "/api/user.js";
 import {createOrder} from "/api/order.js";
+
+let time
 
 new Vue({
     el: '#buyCar',
@@ -72,12 +74,21 @@ new Vue({
                 this.message(message, 'error')
             }
         },
+        handleModBuyCarProductNumById(id, product) {
+            if (time) {
+                clearTimeout(time)
+            }
+            time = setTimeout(function () {
+                modBuyCarProductNumById(id, product)
+            }, 1000)
+        },
         handlerSubProductNum(index) {
             if (this.buyCarList[index].productNum - 1 < 1) {
                 this.buyCarList[index].productNum = 1
                 this.message('商品数量不能小于1', 'warning')
             } else {
                 this.buyCarList[index].productNum--
+                this.handleModBuyCarProductNumById(this.buyCarList[index].id, this.buyCarList[index].productNum)
             }
         },
         handlerAddProductNum(index) {
@@ -86,6 +97,7 @@ new Vue({
                 this.message('商品数量不能大于200', 'warning')
             } else {
                 this.buyCarList[index].productNum++
+                this.handleModBuyCarProductNumById(this.buyCarList[index].id, this.buyCarList[index].productNum)
             }
         },
         handleInputProductNum(index, e) {
@@ -102,6 +114,7 @@ new Vue({
                 this.message('商品数量需为正整数', 'warning')
             }
             this.buyCarList[index].productNum = e.value
+            this.handleModBuyCarProductNumById(this.buyCarList[index].id, this.buyCarList[index].productNum)
         },
         async handlerGetUserInfo() {
             const {code, data} = await getUserById()

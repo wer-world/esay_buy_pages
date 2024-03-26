@@ -17,3 +17,10 @@ export function delBuyCarProductById(id) {
         }
     })
 }
+
+export function modBuyCarProductNumById(id, productNum) {
+    return request.put('/buyCar/modBuyCarProductNumById', {
+        id: id,
+        productNum: productNum
+    })
+}
