@@ -1,6 +1,6 @@
 import {getProCategoryNameByType} from "/api/category.js";
 import {getBrandAllList} from "/api/brand.js";
-import {addProduct} from "../../../api/product.js";
+import {addProduct} from "/api/product.js";
 
 new Vue({
     el: '#app',

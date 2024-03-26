@@ -1,9 +1,11 @@
-import {downloadProductImg,getProductsByHigHestId,getProductListPages} from "/api/product.js";
+import {downloadProductImg, getProductsByHigHestId, getProductListPages} from "/api/product.js";
 import {getCategoryList} from "/api/category.js";
 import {getNewsList} from "/api/news.js";
 import {addBuyCar, delBuyCarProductById, getBuyCarListByUserId} from "/api/buycar.js";
+import {createMobilePaymentOrder} from "/api/order.js";
+import {alipayCreate} from "/api/alipay.js";
 
-new Vue({
+export const centerVue = new Vue({
     el: '#center',
     data: {
         categoryList1: [],
@@ -25,12 +27,14 @@ new Vue({
             sales: '',
             stock: ''
         }],
+        mobile: '',
+        amount: '99.5',
         //购物车相关
         loginName: null,
         buyCarList: [],
 
     },
-    mounted: async function(){
+    mounted: async function () {
         this.loginName = readCookie('loginName')
         await this.initCategoryList();
         await this.getProductList();
@@ -53,7 +57,7 @@ new Vue({
     methods: {
         async initCategoryList() {
             const {code, data} = await getCategoryList(0);
-            if (code === '200'){
+            if (code === '200') {
                 this.categoryList1 = data;
             }
         },
@@ -67,7 +71,7 @@ new Vue({
         async handleDownloadImg() {
             for (const key in this.productList) {
                 const childProductList = this.productList[key];
-                for (const key1 in childProductList){
+                for (const key1 in childProductList) {
                     const data = await downloadProductImg(childProductList[key1].picPath)
                     const blob = new Blob([data], {type: "image/jepg,image/png"});
                     let url = window.URL.createObjectURL(blob);
@@ -95,13 +99,13 @@ new Vue({
             //↑购物车相关
         },
         async getNewsList() {
-            const {code,data} = await getNewsList(1,5);
+            const {code, data} = await getNewsList(1, 5);
             if (code === '200') {
                 this.newsList = data.getNewsList
             }
         },
         async getHotPro() {
-            const {code,data} = await getProductListPages(1,4,null,null);
+            const {code, data} = await getProductListPages(1, 4, null, null);
             if (code === '200') {
                 this.products = data.productList
             }
@@ -137,8 +141,47 @@ new Vue({
                 this.message(message, 'error')
             }
         },
+        async handleCreateMobilePaymentOrder() {
+            if (!/^1[3-9]\d{9}$/.test(this.mobile)) {
+                this.message('手机号输入不正确', 'warning')
+            }
+            const {code, data} = await createMobilePaymentOrder(this.mobile, this.amount)
+            if (code === '200') {
+                const formData = await alipayCreate(data.id, data.serialNumber)
+                const div = document.createElement('div');
+                div.innerHTML = formData;
+                document.body.appendChild(div);
+                document.getElementsByName('punchout_form')[0].submit()
+            } else {
+                this.message('充值失败,请检查登录状态!', 'error')
+            }
+        },
+        handleAmountChange(value) {
+            value = value.substring(0, value.length - 1)
+            this.amount = value - 0.5
+        },
         handlerToBuyCar() {
             window.location.href = '/esay_buy_pages/buycar/BuyCar.html'
         },
+        message(message, option) {
+            const messageDom = document.getElementsByClassName('el-message')[0]
+            console.log(messageDom)
+            if (messageDom === undefined) {
+                switch (option) {
+                    case 'success': {
+                        this.$message.success(message)
+                        break;
+                    }
+                    case 'error': {
+                        this.$message.error(message)
+                        break;
+                    }
+                    case 'warning': {
+                        this.$message.warning(message)
+                        break;
+                    }
+                }
+            }
+        }
     }
 })

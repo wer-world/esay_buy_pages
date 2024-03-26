@@ -31,6 +31,13 @@ export function createOrder(buyCar) {
     })
 }
 
+export function createMobilePaymentOrder(mobile, cost) {
+    return request.post('/order/createMobilePaymentOrder', {
+        mobile: mobile,
+        cost: cost
+    })
+}
+
 export function cancelOrder(id) {
     return request.get('/order/cancelOrder', {
         params: {
