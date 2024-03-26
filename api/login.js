@@ -12,25 +12,28 @@ export function login(user) {
     })
 }
 
+export function loginOut() {
+    return request.get('/user/loginOut')
+}
 
-export function sendEmailCode(email){
-    return request.get('/user/sendEmailCode',{
-        params:{
-            email:email
+export function sendEmailCode(email) {
+    return request.get('/user/sendEmailCode', {
+        params: {
+            email: email
         }
     })
 }
 
-export function checkEmailCode(emailCode){
-    return request.get('/user/checkEmailCode',{
-        params:{
-            code:emailCode
+export function checkEmailCode(emailCode) {
+    return request.get('/user/checkEmailCode', {
+        params: {
+            code: emailCode
         }
     })
 }
 
-export function modifyPasswordById(user){
-    return request.post('/user/modifyPasswordById',{
-        user:user
+export function modifyPasswordById(user) {
+    return request.post('/user/modifyPasswordById', {
+        user: user
     })
 }

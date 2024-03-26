@@ -3,6 +3,7 @@ import {downloadProductImg, getProductListPages, globalSearchProduct} from "/api
 import {getBrandAllList} from "/api/brand.js";
 import {getCategoryList} from "/api/category.js";
 import {addCollection} from "/api/collection.js";
+import {loginOut} from "/api/login.js";
 
 new Vue({
     el: '#category',
@@ -122,6 +123,15 @@ new Vue({
                 this.message(message, 'error')
             }
         },
+        async handleLoginOut() {
+            const {code} = await loginOut()
+            if (code === '200') {
+                this.loginName = null
+                this.message('用户注销成功', 'success')
+            } else {
+                this.message('用户注销失败', 'error')
+            }
+        },
         handleSortProduct(sortIndex) {
             switch (sortIndex) {
                 case 1: {
@@ -172,7 +182,7 @@ new Vue({
             this.brandIndex = brandIndex
             this.handleGetProductListPages()
         },
-        initCategoryName(){
+        initCategoryName() {
             const urlParams = new URLSearchParams(window.location.search)
             const categoryName = urlParams.get("categoryName")
             this.categoryName = categoryName;
