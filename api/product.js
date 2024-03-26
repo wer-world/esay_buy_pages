@@ -56,5 +56,10 @@ export function getSimilarProducts(categoryLevelId) {
 }
 
 export function addProduct(formDate){
-    return request.post('/product/addProduct', formDate)
+    const http = request.create({
+        headers: {
+            "Content-Type": "multipart/form-data"
+        }
+    })
+    return http.post('/product/addProduct',formDate)
 }

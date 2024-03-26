@@ -13,6 +13,7 @@ new Vue({
             desc: '',
             picPath:''
         },
+        fileList:[],
         imageUrl: '',
         brandList:[],
         categoryList:[],
@@ -33,7 +34,8 @@ new Vue({
             ],
             desc: [
                 {required: true, message: '请填写商品描述', trigger: 'blur'}
-            ]
+            ],
+
         }
     },
     methods:{
@@ -48,8 +50,9 @@ new Vue({
             const {data} = await getBrandAllList();
             this.brandList=data
         },
-        handleAvatarSuccess(res, file) {
-            this.imageUrl = URL.createObjectURL(file.raw);
+        handleAvatarSuccess(file) {
+            this.imageUrl = URL.createObjectURL(file);
+
         },
         beforeAvatarUpload(file) {
             const isJPG = file.type === 'image/jpg';
@@ -64,14 +67,39 @@ new Vue({
                 this.$message.error('上传头像图片大小不能超过 2MB!');
             }
             return (isJPG || isPNG || isJPEG || isPNEG) && isLt2M;
+
+        },
+          handleFileUpload(fileObject){
+            console.log(fileObject)
+            // 文件上傳功能實現
+            this.handleAvatarSuccess(fileObject.file);
+            console.log(fileObject.file)
+            this.fileObj = fileObject.file;
         },
         async submitForm(){
-            var formData = new FormData(upload);
-            const {code,message} = addProduct(formData);
-            if (code==='200'){
-                alert(message)
-                window.location="/esay_buy_pages/admin/products/ProductDetail.html"
-            }
+            this.$refs["product"].validate(async (valid) => {
+                if (valid) {
+                    console.log("校验通过");
+                    var formData = new FormData();
+                    for (let i = 0; i < this.fileList.length; i++) {
+                        //this.fileList[i].raw:获取图片格式
+                        //这里的file必须和后端Controller中的requestparam参数一致，才能上传成功，否则会报400错误
+                        formData.append("picPath", this.fileList[i].raw, this.fileList[i].name);
+                    }
+                    formData.append('products', this.product);
+                    console.log(formData)
+                    //这里重新创建了一个axios实例,是因为我在全局配置里的Content-type是appliacation/json,而这里我想要使用multipart/form-data
+                    const {code,message,data} = await addProduct(formData);
+                    if (code==='200'){
+                        console.log(data);
+                        alert(message)
+                        window.location="/esay_buy_pages/admin/products/ProductDetail.html"
+                    }
+                }else{
+                    console.log("校验不通过")
+                }
+            });
+
         }
 
     },

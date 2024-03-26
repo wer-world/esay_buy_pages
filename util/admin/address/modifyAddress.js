@@ -1,5 +1,6 @@
-import {addAddress} from "../../../api/address.js";
-
+import {getAddressById,modifyAddressById} from "../../../api/address.js";
+var param = new URLSearchParams(window.location.search);
+var id = param.get("id")
 new Vue({
     el: "#app",
     data: {
@@ -20,13 +21,13 @@ new Vue({
             countyList: []
         },
         address:{
+            id:'',
             province: '',
             city: '',
             county: '',
             address:'',
             consignee:'',
             tel:'',
-            detailed:'',
             remark:'',
             isDefault:''
         },
@@ -133,7 +134,7 @@ new Vue({
             window.location = "/esay_buy_pages/admin/address/AddressDetail.html"
         },
         onSubmit(){
-             this.$refs["form"].validate(async (valid) => {
+            this.$refs["form"].validate(async (valid) => {
                 if (valid) {
                     console.log("校验通过");
                     this.address.province = this.form.region1;
@@ -143,25 +144,39 @@ new Vue({
                     this.address.tel = this.form.tel;
                     this.address.detailed = this.form.xxarrive;
                     this.address.address=this.form.region1 + this.form.region2 + this.form.region3 + this.form.xxarrive
-                    const {code} = await addAddress(this.address);
+                    this.address.id = id;
+                    const {code} = await modifyAddressById(this.address);
                     if (code === "200"){
-                        alert("添加成功");
+                        alert("修改成功");
                         window.location="/esay_buy_pages/admin/address/AddressDetail.html"
                     }
 
                 }else{
                     console.log("校验不通过")
                 }
-            });
+            })
         },
         async resetForm(){
             this.form=[];
             await this.getAreaByGaoDe();
+        },
+        async getAddressById(){
+            const {code,data} = await getAddressById(id);
+            if (code ==='200'){
+                this.address= data
+                this.form.region1 = data.province;
+                this.form.region2 = data.city;
+                this.form.region3 = data.county;
+                this.form.xxarrive = data.detailed;
+                this.form.consignee = data.consignee;
+                this.form.tel = data.tel;
+            }
         }
 
     },
     mounted: async function () {
         await this.getAreaByGaoDe();
+        await this.getAddressById();
     }
 
 
