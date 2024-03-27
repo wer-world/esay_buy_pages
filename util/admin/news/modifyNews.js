@@ -1,4 +1,4 @@
-import {getNewsById} from "/api/news.js";
+import {getNewsById, getNewsByTitle, modifyNewsById} from "/api/news.js";
 import {loginOut} from "/api/login.js";
 import {checkPermission} from "/api/user.js";
 
@@ -89,7 +89,7 @@ new Vue({
         },
     },
     mounted: async function () {
-        this.getNewsById();
+        await this.getNewsById();
         this.loginName = readCookie('loginName');
         this.type = readCookie('type')
         const {code, message} = await checkPermission()

@@ -31,7 +31,6 @@ export function getNewsList(page,title) {
     return request.post('/news/getNewsList', {
         page:page,
         title:title
-
     })
 }
 

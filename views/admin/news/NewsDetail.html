@@ -200,6 +200,7 @@
                     <el-descriptions title="资讯列表"></el-descriptions>
                     <el-input type="text" v-model="title" placeholder="请输入标题" style="width: 100px"></el-input>
                     <el-button type="" @click="getNewsList">查询</el-button>
+                    <el-button @click="handleReset">重置</el-button>
                     <el-button type="" @click="addNews">添加资讯</el-button>
                     <el-button type="" @click="returnAdmin">返回到管理员页面</el-button>
                     <el-table :data="newsList" border style="width: 41%;margin-left: 1px" v-loading="loading">

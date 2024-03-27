@@ -21,11 +21,16 @@ new Vue({
     methods: {
         async getNewsList(currentPageCount) {
             this.loading = true
+            this.page.currentPage = currentPageCount
             const {code, data} = await getNewsList(this.page, this.title);
             if (code === '200') {
                 this.newsList = data.getNewsList
                 this.totalCount = data.page.totalCount
                 this.page.currentPageCount = data.page.currentPage
+            } else {
+                this.newsList = []
+                this.totalCount = 0
+                this.page.currentPageCount = 1
             }
             this.loading = false
         },
@@ -37,6 +42,9 @@ new Vue({
         },
         modifyNews(id) {
             window.location = "/esay_buy_pages/admin/news/ModifyNews.html?id=" + id
+        },
+        handleReset() {
+            this.title = ''
         },
         async delNews(id) {
             if (!confirm("是否确认删除")) {

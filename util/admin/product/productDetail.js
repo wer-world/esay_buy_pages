@@ -62,6 +62,9 @@ new Vue({
         returnAdmin() {
             window.location = "/esay_buy_pages/admin/Admin.html"
         },
+        handleReset() {
+            this.product = {}
+        },
         async handleLoginOut() {
             const {code} = await loginOut()
             if (code === '200') {

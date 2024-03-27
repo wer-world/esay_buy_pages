@@ -1,6 +1,6 @@
 import {getProCategoryNameByType} from "/api/category.js";
 import {getBrandAllList} from "/api/brand.js";
-import {getProductById, modifyProductById} from "/api/product.js";
+import {downloadProductImg, getProductById, modifyProductById} from "/api/product.js";
 import {checkPermission} from "/api/user.js";
 import {loginOut} from "/api/login.js";
 
@@ -40,7 +40,7 @@ new Vue({
             categoryLevelId: [
                 {required: true, message: '请选择商品类别', trigger: 'change'}
             ],
-            desc: [
+            description: [
                 {required: true, message: '请填写商品描述', trigger: 'blur'}
             ]
         },
@@ -104,7 +104,15 @@ new Vue({
             const {code, data} = await getProductById(id);
             if (code === '200') {
                 this.product = data;
-                this.imageUrl = "/" + data.picPath
+                this.handleDownloadImg(data.picPath)
+            }
+        },
+        async handleDownloadImg(picPath) {
+            if (picPath != null){
+                const data = await downloadProductImg(picPath)
+                const blob = new Blob([data], {type: "image/jepg,image/png"});
+                let url = window.URL.createObjectURL(blob);
+                this.imageUrl = url
             }
         },
         async handleLoginOut() {

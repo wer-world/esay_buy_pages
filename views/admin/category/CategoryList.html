@@ -1,4 +1,3 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -122,7 +121,8 @@
             <span class="fr">
         	<span class="fl">
                 <a href="/esay_buy_pages/Index.html" v-if="loginName != null"> 返回首页</a>
-                你好，<span style="color: red">{{loginName}}<a v-if="loginName != null" @click="handleLoginOut"> 注销</a></span><span v-if="loginName == null">请<a href="/esay_buy_pages/login/Login.html">登录</a></span>
+                你好，<span style="color: red">{{loginName}}<a v-if="loginName != null" @click="handleLoginOut"> 注销</a></span><span
+                    v-if="loginName == null">请<a href="/esay_buy_pages/login/Login.html">登录</a></span>
                 <a
                         href="/esay_buy_pages/register/Regist.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
                     href="/esay_buy_pages/member/Member_Order.html" v-if="loginName != null">我的订单</a>&nbsp;|</span>
@@ -203,7 +203,8 @@
                 <div class="left_m">
                     <div class="left_m_t t_bg4">分类管理</div>
                     <ul>
-                        <li><a href="/esay_buy_pages/admin/category/CategoryList.html" style="color: red">分类列表</a></li>
+                        <li><a href="/esay_buy_pages/admin/category/CategoryList.html" style="color: red">分类列表</a>
+                        </li>
                     </ul>
                 </div>
                 <div class="left_m">
@@ -222,39 +223,42 @@
                             node-key="id"
                             :expand-on-click-node="false"
                             :props="defaultProps">
-        <span class="custom-tree-node" slot-scope="{node,data}">
-            <span>{{getCategoryType(data.type)}}</span>
-            <span>{{data.name}}</span>
-            <span>
-                <el-button size="mini" type="text" @click="dialogAddCategoryForm=true,setParentCategory(data.id)" v-if="data.type<3">添加</el-button>
-                <el-button size="mini" type="text"
-                           @click="dialogUpdateCategoryForm=true,setCurrentCategory(data.id)">修改</el-button>
-                <el-button size="mini" type="text"
-                           @click="dialogDeleteCategoryForm=true,setCurrentCategory(data.id)">删除</el-button>
-            </span>
-            <el-dialog title="新建分类" :visible.sync="dialogAddCategoryForm">
-                <h4>在<b
-                        style="color: red">{{parentCategory == null ? '根' : parentCategory.name}}</b>类别下添加子类</h4>
-                类别名：<el-input v-model="newCategoryName"></el-input>
-                <el-button @click="saveAdd()">保存</el-button>
-                <el-button @click="dialogAddCategoryForm=false">返回</el-button>
-            </el-dialog>
-            <el-dialog title="修改分类" :visible.sync="dialogUpdateCategoryForm">
-                类别名：<el-input v-model="currentCategory.name"></el-input>
-                <el-button @click="saveUpdate()">保存</el-button>
-                <el-button @click="dialogUpdateCategoryForm=false">返回</el-button>
-            </el-dialog>
-            <el-dialog title="删除分类" :visible.sync="dialogDeleteCategoryForm">
-                <span>是否删除该分类?</span>
-                <el-button @click="saveDelete()">确认删除</el-button>
-                <el-button @click="dialogDeleteCategoryForm=false">返回</el-button>
-            </el-dialog>
-        </span>
+                            <span class="custom-tree-node" slot-scope="{node,data}">
+                                <span>{{getCategoryType(data.type)}}</span>
+                                <span>{{data.name}}</span>
+                                <span>
+                                    <el-button size="mini" type="text"
+                                               @click="dialogAddCategoryForm=true,setParentCategory(data.id)"
+                                               v-if="data.type<3">添加</el-button>
+                                    <el-button size="mini" type="text"
+                                               @click="dialogUpdateCategoryForm=true,setCurrentCategory(data.id)">修改</el-button>
+                                    <el-button size="mini" type="text"
+                                               @click="dialogDeleteCategoryForm=true,setCurrentCategory(data.id)">删除</el-button>
+                                </span>
+                            </span>
                     </el-tree>
-
                 </div>
             </div>
         </div>
+        <el-dialog title="新建分类" :visible.sync="dialogAddCategoryForm">
+            <h4>在<b
+                    style="color: red">{{parentCategory == null ? '根' : parentCategory.name}}</b>类别下添加子类</h4>
+            类别名：
+            <el-input v-model="newCategoryName"></el-input>
+            <el-button @click="saveAdd()">保存</el-button>
+            <el-button @click="dialogAddCategoryForm=false">返回</el-button>
+        </el-dialog>
+        <el-dialog title="修改分类" :visible.sync="dialogUpdateCategoryForm">
+            类别名：
+            <el-input v-model="currentCategory.name"></el-input>
+            <el-button @click="saveUpdate()">保存</el-button>
+            <el-button @click="dialogUpdateCategoryForm=false">返回</el-button>
+        </el-dialog>
+        <el-dialog title="删除分类" :visible.sync="dialogDeleteCategoryForm">
+            <span>是否删除该分类?</span>
+            <el-button @click="saveDelete()">确认删除</el-button>
+            <el-button @click="dialogDeleteCategoryForm=false">返回</el-button>
+        </el-dialog>
         <!--End 用户中心 End-->
         <!--Begin Footer Begin -->
         <div class="b_btm_bg b_btm_c">

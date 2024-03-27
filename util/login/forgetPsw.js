@@ -40,6 +40,7 @@ new Vue({
                 if (this.user.email !== data.email && this.user.email.trim().length !== 0) {
                     this.userMsg.emailMsg = "请输入正确的邮箱"
                     this.flag.emailFlag = false
+                    return
                 }
                 this.user.id = data.id
                 this.flag.emailFlag = true
