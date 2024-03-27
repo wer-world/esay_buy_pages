@@ -1,4 +1,4 @@
-import {getOrderList} from "/api/order.js";
+import {getOrderList, getUserOrderList} from "/api/order.js";
 import {loginOut} from "/api/login.js";
 
 new Vue({
@@ -78,7 +78,7 @@ new Vue({
         this.name = readCookie('loginName')
         this.type = readCookie('type')
         this.orderListLoad = true
-        const {code, data, message} = await getOrderList(1, 5)
+        const {code, data, message} = await getUserOrderList(1, 5)
         if (code === '300') {
             this.$alert(message, '登录提示', {
                 confirmButtonText: '确定',
