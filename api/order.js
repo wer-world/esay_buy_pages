@@ -8,6 +8,15 @@ export function getOrderList(currentPage, pageSize, serialNumber, loginName) {
         loginName: loginName
     })
 }
+export function getUserOrderList(currentPage, pageSize, serialNumber) {
+    return request.get('/order/getUserOrderList', {
+        params:{
+            currentPage: currentPage,
+            pageSize: pageSize,
+            serialNumber: serialNumber
+        }
+    })
+}
 
 export function getOrder(id, serialNumber) {
     return request.post('/order/getOrder', {

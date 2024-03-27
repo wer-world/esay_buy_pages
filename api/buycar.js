@@ -1,8 +1,9 @@
 import request from "/util/request.js";
 
-export function addBuyCar(productId) {
+export function addBuyCar(productId,productNum) {
     return request.post('/buyCar/addBuyCar', {
-        productId: productId
+        productId: productId,
+        productNum:productNum
     })
 }
 

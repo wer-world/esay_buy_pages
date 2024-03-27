@@ -1,13 +1,10 @@
 import {getCurrentUser} from "/api/user.js"
 import {downloadProductImg} from "/api/product.js";
 import {addBuyCar, delBuyCarProductById, getBuyCarListByUserId} from "/api/buycar.js";
-import {loginOut} from "/api/login.js";
-
 new Vue({
-    el:"#admin",
+    el:"#root",
     data:{
         user:'',
-        type:null,
         //购物车相关
         loginName: null,
         buyCarList: [],
@@ -26,7 +23,6 @@ new Vue({
     mounted:async function(){
         await this.getCurrentUser();
         this.loginName = readCookie('loginName')
-        this.type = readCookie('type')
         await this.getBuyCarList()
         await this.handleDownloadImg();
     },
@@ -76,39 +72,11 @@ new Vue({
                 this.message(message, 'error')
             }
         },
-        async handleLoginOut() {
-            const {code} = await loginOut()
-            if (code === '200') {
-                this.loginName = null
-                this.message('用户注销成功', 'success')
-            } else {
-                this.message('用户注销失败', 'error')
-            }
-        },
         handlerToBuyCar() {
             window.location.href = '/esay_buy_pages/buycar/BuyCar.html'
         },
         toCategoryList(){
             window.location.href='/esay_buy_pages/category/CategoryList.html?globalCondition='+this.globalCondition
-        },
-        message(message, option) {
-            const messageDom = document.getElementsByClassName('el-message')[0]
-            if (messageDom === undefined) {
-                switch (option) {
-                    case 'success': {
-                        this.$message.success(message)
-                        break;
-                    }
-                    case 'error': {
-                        this.$message.error(message)
-                        break;
-                    }
-                    case 'warning': {
-                        this.$message.warning(message)
-                        break;
-                    }
-                }
-            }
-        },
+        }
     }
 })

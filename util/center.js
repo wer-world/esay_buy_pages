@@ -76,36 +76,44 @@ export const centerVue = new Vue({
                 const {data} = await getProductsByHigHestId(id);
                 this.productList.push(data);
             }
+            console.log(this.productList)
         },
         async handleDownloadImg() {
-            for (const key in this.productList) {
-                const childProductList = this.productList[key];
-                for (const key1 in childProductList) {
-                    const data = await downloadProductImg(childProductList[key1].picPath)
+            if (this.productList.length > 0) {
+                for (const key in this.productList) {
+                    const childProductList = this.productList[key];
+                    for (const key1 in childProductList) {
+                        const data = await downloadProductImg(childProductList[key1].picPath)
+                        const blob = new Blob([data], {type: "image/jepg,image/png"});
+                        let url = window.URL.createObjectURL(blob);
+                        let img = document.getElementById('productImg' + key + key1)
+                        img.setAttribute('src', url);
+                    }
+                }
+            }
+            if (this.products.length > 0) {
+                for (const key in this.products) {
+                    const data = await downloadProductImg(this.products[key].picPath)
                     const blob = new Blob([data], {type: "image/jepg,image/png"});
                     let url = window.URL.createObjectURL(blob);
-                    let img = document.getElementById('productImg' + key + key1)
+                    let img = document.getElementById('proImg' + key)
                     img.setAttribute('src', url);
                 }
             }
-            for (const key in this.products) {
-                const data = await downloadProductImg(this.products[key].picPath)
-                const blob = new Blob([data], {type: "image/jepg,image/png"});
-                let url = window.URL.createObjectURL(blob);
-                let img = document.getElementById('proImg' + key)
-                img.setAttribute('src', url);
-            }
-            //购物车相关
-            for (const key in this.buyCarList) {
-                const data = await downloadProductImg(this.buyCarList[key].picPath)
-                const blob = new Blob([data], {type: "image/jepg,image/png"});
-                let url = window.URL.createObjectURL(blob);
-                let productImg = document.getElementById('productImg' + key)
-                if (productImg != null) {
-                    productImg.setAttribute('src', url);
+            if (this.buyCarList.length > 0) {
+                //购物车相关
+                for (const key in this.buyCarList) {
+                    const data = await downloadProductImg(this.buyCarList[key].picPath)
+                    const blob = new Blob([data], {type: "image/jepg,image/png"});
+                    let url = window.URL.createObjectURL(blob);
+                    let productImg = document.getElementById('productImg' + key)
+                    if (productImg != null) {
+                        productImg.setAttribute('src', url);
+                    }
                 }
+                //↑购物车相关
             }
-            //↑购物车相关
+
         },
         async getNewsList() {
             const {code, data} = await getNewsList(this.page, '');

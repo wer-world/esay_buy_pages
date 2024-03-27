@@ -1,4 +1,4 @@
-import {getOrderList,cancelOrder} from "/api/order.js"
+import {getUserOrderList,cancelOrder} from "/api/order.js"
 import {alipayCreate} from "/api/alipay.js"
 import {downloadProductImg} from "/api/product.js"
 import {addBuyCar, delBuyCarProductById, getBuyCarListByUserId} from "/api/buycar.js";
@@ -37,8 +37,7 @@ new Vue({
     },
     methods:{
         async getOrderList(currentPage=1){
-            const {data} = await getOrderList(currentPage,this.pageSize,this.serialNumber,null);
-            console.log(data)
+            const {data} = await getUserOrderList(currentPage,this.pageSize,this.serialNumber);
             this.orderList = data.orderList;
             this.totalCount = data.totalCount;
         },
