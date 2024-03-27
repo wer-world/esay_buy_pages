@@ -372,12 +372,12 @@
 
                     <ul class="cate_list">
                         <li v-for="(item, index) in productList">
-                            <div class="img"><a href="#"><img :id="'productList' + index" width="210"
+                            <div class="img"><a :href="'/esay_buy_pages/product/Product.html?id='+item.id"><img :id="'productList' + index" width="210"
                                                               height="185"/></a></div>
                             <div class="price">
                                 <font>￥<span>{{item.price}}</span></font> &nbsp; 26R
                             </div>
-                            <div class="name"><a href="#" v-html="item.description"></a></div>
+                            <div class="name"><a :href="'/esay_buy_pages/product/Product.html?id='+item.id" v-html="item.description"></a></div>
                             <div class="carbg">
                                 <a @click="handleAddCollection(item.id)" class="ss">收藏</a>
                                 <a @click="handleAddBuyCar(item.id)" class="j_car">加入购物车</a>

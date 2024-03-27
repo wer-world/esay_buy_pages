@@ -3,6 +3,7 @@ import {downloadProductImg} from "/api/product.js";
 import {addCollection} from "/api/collection.js";
 import {getUserById} from "/api/user.js";
 import {createOrder} from "/api/order.js";
+import {loginOut} from "/api/login.js";
 
 let time
 
@@ -28,7 +29,11 @@ new Vue({
             },
             postal: '6011111',
             isProductMod: true,
-            isUserInfoMod: true
+            isUserInfoMod: true,
+            //购物车相关
+            loginName: null,
+            type:null,
+            globalCondition: null,
         }
     },
     methods: {
@@ -149,6 +154,15 @@ new Vue({
                 }
             })
         },
+        async handleLoginOut() {
+            const {code} = await loginOut()
+            if (code === '200') {
+                this.loginName = null
+                this.message('用户注销成功', 'success')
+            } else {
+                this.message('用户注销失败', 'error')
+            }
+        },
         message(message, option) {
             const messageDom = document.getElementsByClassName('el-message')[0]
             if (messageDom === undefined) {
@@ -179,6 +193,8 @@ new Vue({
         }
     },
     mounted: async function () {
+        this.loginName = readCookie('loginName')
+        this.type = readCookie('type')
         await this.getBuyCarList()
         await this.handlerGetUserInfo()
     }

@@ -2,6 +2,7 @@ import {delBuyCarProductById, getBuyCarListByUserId} from "/api/buycar.js";
 import {downloadProductImg} from "/api/product.js";
 import {getOrder} from "/api/order.js";
 import {alipayCreate} from "/api/alipay.js";
+import {loginOut} from "/api/login.js";
 
 let time
 
@@ -23,7 +24,11 @@ new Vue({
                 id: '',
                 serialNumber: '',
                 cost: 888,
-            }
+            },
+            //购物车相关
+            loginName: null,
+            type:null,
+            globalCondition: null,
         }
     },
     methods: {
@@ -81,6 +86,18 @@ new Vue({
                 document.getElementsByName('punchout_form')[0].submit()
             }, 1000)
         },
+        handlerToBuyCar() {
+            window.location.href = '/esay_buy_pages/buycar/BuyCar.html'
+        },
+        async handleLoginOut() {
+            const {code} = await loginOut()
+            if (code === '200') {
+                this.loginName = null
+                this.message('用户注销成功', 'success')
+            } else {
+                this.message('用户注销失败', 'error')
+            }
+        },
         message(message, option) {
             const messageDom = document.getElementsByClassName('el-message')[0]
             console.log(messageDom)
@@ -112,6 +129,8 @@ new Vue({
         }
     },
     mounted: async function () {
+        this.loginName = readCookie('loginName')
+        this.type = readCookie('type')
         this.order.id = getUrlParam('orderId')
         await this.getBuyCarList()
         await this.handlerGetOrder()

@@ -103,8 +103,9 @@
         </span>
             <!--End 所在收货地区 End-->
             <span class="fr">
-        	<span class="fl">你好，<span style="color: red">{{loginName}}</span><span v-if="loginName == null">请<a href="../login/Login.html">登录</a></span>&nbsp; <a
-                    href="/esay_buy_pages/register/Regist.html"
+        	<span class="fl">你好，<span style="color: red">{{loginName}}</span><span v-if="loginName == null">请<a
+                    href="../login/Login.html">登录</a></span>&nbsp; <a
+                    href="../register/Regist.html"
                     style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
                     href="/esay_buy_pages/member/Member_Order.html">我的订单</a>&nbsp;|</span>
         	<span class="ss">
@@ -155,46 +156,37 @@
     </div>
     <div class="m_top_bg">
         <div class="top">
-            <div class="m_logo"><a href="../Index.html"><img src="../../images/logo1.png"/></a></div>
+            <div class="m_logo"><a href="../Index.html"><img src="../../images/logo1.png" /></a></div>
             <div class="m_search">
                 <form>
-                    <input type="text" value="" class="m_ipt"/>
-                    <input type="submit" value="搜索" class="m_btn"/>
+                    <input type="text" value="" class="m_ipt" v-model="globalCondition"/>
+                    <input type="button" value="搜索" class="m_btn" @click="toCategoryList()"/>
                 </form>
-                <span class="fl"><a href="#">咖啡</a><a href="#">iphone 6S</a><a href="#">新鲜美食</a><a
-                        href="#">蛋糕</a><a href="#">日用品</a><a href="#">连衣裙</a></span>
+                <span class="fl"><a href="#">咖啡</a><a href="#">iphone 6S</a><a href="#">新鲜美食</a><a href="#">蛋糕</a><a href="#">日用品</a><a href="#">连衣裙</a></span>
             </div>
             <div class="i_car">
-                <div class="car_t">购物车 [ <span>3</span> ]</div>
+                <div class="car_t">购物车 [ <span>{{buyCarList.length}}</span> ]</div>
                 <div class="car_bg">
                     <!--Begin 购物车未登录 Begin-->
-                    <div class="un_login">还未登录！<a href="../login/Login.html" style="color:#ff4e00;">马上登录</a>
-                        查看购物车！
+                    <div class="un_login" v-if="loginName == null">还未登录！<a href="../login/Login.html" style="color:#ff4e00;">马上登录</a> 查看购物车！
                     </div>
+                    <div class="un_login">欢迎 <span style="color: red">{{loginName}}</span> 查看购物车！</div>
                     <!--End 购物车未登录 End-->
                     <!--Begin 购物车已登录 Begin-->
                     <ul class="cars">
-                        <li>
-                            <div class="img"><a href="#"><img src="../../images/car1.jpg" width="58" height="58"/></a>
-                            </div>
-                            <div class="name"><a href="#">法颂浪漫梦境50ML 香水女士持久清新淡香 送2ML小样3只</a></div>
-                            <div class="price"><font color="#ff4e00">￥399</font> X1</div>
+                        <li v-if="buyCarList.length === 0">
+                            <div style="text-indent: 50px">购物车暂无数据，快去购买吧!</div>
                         </li>
-                        <li>
-                            <div class="img"><a href="#"><img src="../../images/car2.jpg" width="58" height="58"/></a>
-                            </div>
-                            <div class="name"><a href="#">香奈儿（Chanel）邂逅活力淡香水50ml</a></div>
-                            <div class="price"><font color="#ff4e00">￥399</font> X1</div>
-                        </li>
-                        <li>
-                            <div class="img"><a href="#"><img src="../../images/car2.jpg" width="58" height="58"/></a>
-                            </div>
-                            <div class="name"><a href="#">香奈儿（Chanel）邂逅活力淡香水50ml</a></div>
-                            <div class="price"><font color="#ff4e00">￥399</font> X1</div>
+                        <li v-for="(item,index) in buyCarList" :key="item.id">
+                            <div class="img"><a href="javascript:void(0)"><img :id="'productImg' + index" width="58"
+                                                                               height="58"/></a></div>
+                            <div class="name"><a href="javascript:void(0)">{{item.description}}</a></div>
+                            <div class="price"><font color="#ff4e00">￥{{item.productPrice}}</font> X{{item.productNum}}&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<a
+                                    href="javascript:void(0)" @click="handleDelBuyCarProduct(item.id)">删除</a></div>
                         </li>
                     </ul>
-                    <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>1058</span></div>
-                    <div class="price_a"><a href="#">去购物车结算</a></div>
+                    <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>{{totalCost}}</span></div>
+                    <div class="price_a"><a @click="handlerToBuyCar">去购物车结算</a></div>
                     <!--End 购物车已登录 End-->
                 </div>
             </div>
@@ -210,14 +202,14 @@
                     <div class="left_m_t t_bg1">订单中心</div>
                     <ul>
                         <li><a href="Member_Order.html">我的订单</a></li>
-                        <li><a href="Member_Order_Detail.html">订单详情</a></li>
-                        <li><a href="Member_Address.html" style="color: red">收货地址</a></li>
+                        <li><a href="Member_Address.html">收货地址</a></li>
                     </ul>
                 </div>
                 <div class="left_m">
                     <div class="left_m_t t_bg2">会员中心</div>
                     <ul>
-                        <li><a href="Member.html">用户信息</a></li>
+                        <li><a href="Member.html" style="color: red">用户信息</a></li>
+
                         <li><a href="Member_Collect.html">我的收藏</a></li>
                     </ul>
                 </div>
@@ -269,7 +261,7 @@
 
                 <div class="mem_t">账号信息</div>
                 <p>
-                <a :href="'/esay_buy_pages/member/Member_UpdateUser.html?userId='+user.id">去修改</a>
+                    <a :href="'/esay_buy_pages/member/Member_UpdateUser.html?userId='+user.id">去修改</a>
                 </p>
                 <table border="0" class="acc_tab" style="width:870px;" cellspacing="0" cellpadding="0">
                     <tr>
@@ -282,7 +274,7 @@
                     </tr>
                     <tr>
                         <td class="td_l b_none">性别：</td>
-                        <td>{{user.sex==1?"男":"女"}}</td>
+                        <td>{{user.sex == 1 ? "男" : "女"}}</td>
                     </tr>
                     <tr>
                         <td class="td_l b_none">身份证：</td>
