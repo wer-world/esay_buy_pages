@@ -246,6 +246,7 @@
                         <td v-else-if="order.status==2"><span>已取消订单</span></td>
                         <td v-else-if="order.status==3"><span>已超时取消订单</span></td>
                         <td v-else-if="order.status==4"><span>已退款成功</span></td>
+                        <td v-else-if="order.status==5"><span>已合并为新订单</span></td>
                         <td v-else><a style="color: #ff4e00;" :href="'/esay_buy_pages/member/Member_Order_Detail.html?orderId='+order.id">查看</a>
                             &nbsp;<a style="color: #ff4e00; " href="javascript:void(0)" @click="payOrder(order.id,order.serialNumber)">支付订单</a>
                             &nbsp;<a style="color: #ff4e00; " href="javascript:void(0)" @click="cancelOrder(order.id)">取消订单</a></td>
@@ -259,32 +260,24 @@
                         :total="totalCount">
                 </el-pagination>
 
-
-                <!--<div class="mem_tit">合并订单</div>
+                <div class="mem_tit">合并订单</div>
+                <span class="mergeMsg">{{mergeMsg}}</span>
                 <table border="0" class="order_tab" style="width:930px;" cellspacing="0" cellpadding="0">
                     <tr>
                         <td width="135" align="right">主订单</td>
                         <td width="220">
-                            <select class="jj" name="order1">
-                                <option value="0" selected="selected">请选择...</option>
-                                <option value="1">2015092626589</option>
-                                <option value="2">2015092626589</option>
-                                <option value="3">2015092626589</option>
-                                <option value="4">2015092626589</option>
+                            <select class="jj" name="order1" v-model="mainOrder">
+                                <option v-for="o1 in unPayOrderList" :value="o1">{{o1.serialNumber}}</option>
                             </select>
                         </td>
                         <td width="135" align="right">从订单</td>
                         <td width="220">
-                            <select class="jj" name="order2">
-                                <option value="0" selected="selected">请选择...</option>
-                                <option value="1">2015092626589</option>
-                                <option value="2">2015092626589</option>
-                                <option value="3">2015092626589</option>
-                                <option value="4">2015092626589</option>
+                            <select class="jj" name="order2" v-model="slaveOrder">
+                                <option v-for="o2 in unPayOrderList" :value="o2">{{o2.serialNumber}}</option>
                             </select>
                         </td>
                         <td>
-                            <div class="btn_u"><a href="#">合并订单</a></div>
+                            <div class="btn_u"><a @click="mergeOrder">合并订单</a></div>
                         </td>
                     </tr>
                     <tr>
@@ -294,7 +287,7 @@
                             收货地址，送货方式等以主定单为准。
                         </td>
                     </tr>
-                </table>-->
+                </table>
             </div>
         </div>
         <!--End 用户中心 End-->

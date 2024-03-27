@@ -1,9 +1,9 @@
-import {getUserOrderList, cancelOrder} from "/api/order.js"
+import {getUserOrderList, cancelOrder, modOrder, createOrder} from "/api/order.js"
 import {alipayCreate} from "/api/alipay.js"
 import {downloadProductImg} from "/api/product.js"
 import {addBuyCar, delBuyCarProductById, getBuyCarListByUserId} from "/api/buycar.js";
 import {loginOut} from "/api/login.js";
-import {checkPermission} from "/api/user.js";
+import {getOrderDetailList} from "/api/orderDetail.js"
 
 new Vue({
     el: "#root",
@@ -12,6 +12,15 @@ new Vue({
         pageSize: 5,
         serialNumber: '',
         totalCount: '',
+        //未支付订单列表
+        unPayOrderList:[],
+        mergeMsg:'',
+        //主订单
+        mainOrder:'',
+        //从订单
+        slaveOrder:'',
+        //订单详情列表
+        orderDetailList:[],
         //购物车相关
         loginName: null,
         type: null,
@@ -42,6 +51,7 @@ new Vue({
         }
         await this.getBuyCarList()
         await this.getOrderList();
+        await this.getUnPayOrderList();
         await this.handleDownloadImg();
     },
     methods: {
@@ -49,6 +59,48 @@ new Vue({
             const {data} = await getUserOrderList(currentPage, this.pageSize, this.serialNumber);
             this.orderList = data.orderList;
             this.totalCount = data.totalCount;
+        },
+        async getUnPayOrderList(currentPage = 1) {
+            const {data} = await getUserOrderList(1, 100, this.serialNumber,0);
+            this.unPayOrderList = data.orderList;
+        },
+        async mergeOrder(){
+            if (this.mainOrder===this.slaveOrder){
+                this.mergeMsg = "主订单和从订单不能一致！";
+                return
+            }
+            this.mergeMsg = "";
+            //改两个订单的状态为已合并
+            let message;
+            message = await modOrder(this.mainOrder.id,5)
+            if (message.code!="200"){
+                return
+            }
+            message = await modOrder(this.slaveOrder.id,5)
+            if (message.code!="200"){
+                return
+            }
+            //获取两个订单里的商品并加入购物车
+            message = await getOrderDetailList(this.mainOrder.id);
+            for (const key in message.data){
+                await this.handleAddBuyCar(message.data[key].productId,message.data[key].quantity);
+            }
+            message = await getOrderDetailList(this.slaveOrder.id);
+            for (const key in message.data){
+                await this.handleAddBuyCar(message.data[key].productId,message.data[key].quantity);
+            }
+            await this.getBuyCarList();
+            await this.handlerCreateOrder();
+            await this.getOrderList();
+        },
+        async handlerCreateOrder() {
+            const $this = this
+                const {code, data, message} = await createOrder(this.buyCarList)
+                if (code === '200') {
+                    this.mergeMsg = "合并成功!"
+                } else {
+                    $this.message(message, 'error')
+                }
         },
         async cancelOrder(id) {
             if (!confirm("确认取消订单吗？")) {
@@ -99,8 +151,8 @@ new Vue({
                 await this.handleDownloadImg()
             }
         },
-        async handleAddBuyCar(productId) {
-            const {code, message} = await addBuyCar(productId)
+        async handleAddBuyCar(productId,productNum) {
+            const {code, message} = await addBuyCar(productId,productNum)
             if (code === '200') {
                 await this.getBuyCarList()
                 this.message('加入购物车成功！', 'success')
