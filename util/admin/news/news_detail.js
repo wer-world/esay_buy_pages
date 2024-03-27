@@ -5,20 +5,23 @@ new Vue({
     el: '#app',
     data:{
         newsList: [],
-        currentPageCount:1,
-        pageSize:4,
+        page:{
+            currentPageCount:1,
+            pageSize:4,
+        },
         totalCount:0,
-        loading:true
+        loading:true,
+        title:'',
 
     },
     methods: {
         async getNewsList(currentPageCount){
             this.loading = true
-            const {code,data} = await getNewsList(currentPageCount,this.pageSize);
+            const {code,data} = await getNewsList(this.page,this.title);
             if (code==='200') {
                 this.newsList = data.getNewsList
                 this.totalCount = data.page.totalCount
-                this.currentPageCount = data.page.currentPage
+                this.page.currentPageCount = data.page.currentPage
             }
             this.loading = false
         },
@@ -38,7 +41,7 @@ new Vue({
             const {code} = await delNewsById(id);
             if (code==='200') {
                 alert("删除成功");
-                this.getNewsList(this.currentPageCount)
+                this.getNewsList(this.page.currentPageCount)
             }
         },
         returnAdmin(){

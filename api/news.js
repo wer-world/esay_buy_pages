@@ -27,12 +27,10 @@ export function modifyNewsById(id,title,content) {
     })
 }
 
-export function getNewsList(currentPage,pageSize) {
-    return request.get('/news/getNewsList', {
-        params:{
-            currentPage:currentPage,
-            pageSize:pageSize
-        }
+export function getNewsList(page,title) {
+    return request.post('/news/getNewsList', {
+        page:page,
+        title:title
 
     })
 }

@@ -4,12 +4,17 @@ import {getNewsList} from "/api/news.js";
 import {addBuyCar, delBuyCarProductById, getBuyCarListByUserId, modBuyCarProductNumById} from "/api/buycar.js";
 import {createMobilePaymentOrder} from "/api/order.js";
 import {alipayCreate} from "/api/alipay.js";
+import {loginOut} from "../api/login.js";
 
 let time
 
 export const centerVue = new Vue({
     el: '#center',
     data: {
+        page:{
+            currentPage:1,
+            pageSize:5
+        },
         categoryList1: [],
         hoverIndex: -1,
         productList: [],
@@ -33,11 +38,13 @@ export const centerVue = new Vue({
         amount: '99.5',
         //购物车相关
         loginName: null,
+        type:null,
         buyCarList: [],
         globalCondition: null,
     },
     mounted: async function () {
         this.loginName = readCookie('loginName')
+        this.type = readCookie('type')
         await this.initCategoryList();
         await this.getProductList();
         await this.getBuyCarList()
@@ -101,7 +108,7 @@ export const centerVue = new Vue({
             //↑购物车相关
         },
         async getNewsList() {
-            const {code, data} = await getNewsList(1, 5);
+            const {code, data} = await getNewsList(this.page, '');
             if (code === '200') {
                 this.newsList = data.getNewsList
             }
@@ -196,6 +203,15 @@ export const centerVue = new Vue({
                     }
                 }
             }
-        }
+        },
+        async handleLoginOut() {
+            const {code} = await loginOut()
+            if (code === '200') {
+                this.loginName = null
+                this.message('用户注销成功', 'success')
+            } else {
+                this.message('用户注销失败', 'error')
+            }
+        },
     }
 })

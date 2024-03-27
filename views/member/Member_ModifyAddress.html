@@ -1,9 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" href="/css/Element.css">
-	<link type="text/css" rel="stylesheet" href="../../css/style.css" />
+    <link type="text/css" rel="stylesheet" href="../../css/style.css" />
     <!--[if IE 6]>
     <script src="../../js/iepng.js" type="text/javascript"></script>
     <script type="text/javascript">
@@ -14,10 +14,10 @@
     <script type="text/javascript" src="../../js/jquery-1.8.2.min.js"></script>
     <script type="text/javascript" src="../../js/menu.js"></script>
 
-	<script type="text/javascript" src="../../js/select.js"></script>
+    <script type="text/javascript" src="../../js/select.js"></script>
 
 
-<title>尤洪</title>
+    <title>尤洪</title>
 </head>
 <body>
 <!--Begin Header Begin-->
@@ -219,133 +219,152 @@
                 </div>
             </div>
             <div class="m_right">
-                <div >
-                    <el-descriptions title="地址列表"></el-descriptions>
-                    <div>
-                        <el-button type="" @click="addAddress()">添加地址</el-button>
-                    </div>
-
-                    <el-table :data="addressList" border style="width: 98%" v-loading="loading">
-
-                        <el-table-column prop="id" label="地址id" width="120">
-                        </el-table-column>
-                        <el-table-column prop="consignee" label="收货人" width="120">
-                        </el-table-column>
-                        <el-table-column prop="tel" label="联系电话" width="120">
-                        </el-table-column>
-                        <el-table-column prop="address" label="地址" width="120">
-                        </el-table-column>
-                        <el-table-column prop="createTime" label="创建时间" width="120">
-                        </el-table-column>
-                        <el-table-column prop="remark" label="备注" width="120">
-                        </el-table-column>
-                        <el-table-column fixed="right" label="操作" width="150">
-                            <template slot-scope="scope">
-                                <el-button @click="modifyAddress(scope.row.id)" type="text" size="small">修改</el-button>
-                                <el-button @click="delAddress(scope.row.id)" type="text" size="small">删除</el-button>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                    <div class="block" width="100">
-                        <el-pagination layout="prev, pager, next" :total="totalCount" :page-size="pageSize" @current-change="getAddressList">
-                        </el-pagination>
-                    </div>
+                <div>
+                    <el-descriptions title="修改地址"></el-descriptions>
+                    <el-form :model="form" :rules="rules" ref="form" label-width="80px">
+                        <el-form-item label="收货人" prop="consignee">
+                            <el-input id = "consignee" v-model="form.consignee" placeholder="请填写收货人"></el-input>
+                        </el-form-item>
+                        <el-form-item label="联系电话" prop="tel">
+                            <el-input id = "tel" v-model="form.tel" placeholder="请填写联系电话"></el-input>
+                        </el-form-item>
+                        <el-form-item label="收货地址">
+                            <el-row>
+                                <el-col :span="8">
+                                    <el-form-item label-width="0" label="" prop="region1" style="margin-bottom:0;">
+                                        <el-select class = "arriveClass" v-model= "form.region1" placeholder="请选择省" @change = "provinceChange($event)">
+                                            <el-option v-for="(item, index) in form.provinceList" :key="item.name" :value="item.name"></el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="7" :offset="1">
+                                    <el-form-item label-width="0" label="" prop="region2" style="margin-bottom:0;">
+                                        <el-select class = "arriveClass" v-model="form.region2" placeholder="请选择城市" @change = "cityChange($event)">
+                                            <el-option v-for="(item, index) in form.cityList" :key="index" :value="item.name"></el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="7" :offset="1">
+                                    <el-form-item label-width="0" label="" prop="region3" style="margin-bottom:0;">
+                                        <el-select class = "arriveClass" v-model="form.region3" placeholder="请选择区县">
+                                            <el-option v-for="(item ,index) in form.countyList" :key="index" :value="item.name"></el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                </el-col>
+                            </el-row>
+                        </el-form-item>
+                        <el-form-item label="详细地址" prop="xxarrive">
+                            <el-input id = "xiangxiArrive" v-model="form.xxarrive" placeholder="请填写详细地址确保收货地址准确无误"></el-input>
+                        </el-form-item>
+                        <el-form-item label="备注">
+                            <el-input id = "remark" v-model="address.remark" placeholder="请填写备注"></el-input>
+                        </el-form-item>
+                        <el-form-item label="默认地址">
+                            <el-radio-group v-model="address.isDefault">
+                                <el-radio :label="1">是</el-radio>
+                                <el-radio :label="0">否</el-radio>
+                            </el-radio-group>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button type="primary" @click="onSubmit()">确认修改</el-button>
+                            <el-button @click="quxiao()">取消</el-button>
+                            <el-button @click="resetForm">重置</el-button>
+                        </el-form-item>
+                    </el-form>
                 </div>
             </div>
-        </div>
-        <!--End 用户中心 End-->
-        <!--Begin Footer Begin -->
-        <div class="b_btm_bg b_btm_c">
-            <div class="b_btm">
-                <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
-                    <tr>
-                        <td width="72"><img src="../../images/b1.png" width="62" height="62" /></td>
-                        <td><h2>正品保障</h2>正品行货  放心购买</td>
-                    </tr>
-                </table>
-                <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
-                    <tr>
-                        <td width="72"><img src="../../images/b2.png" width="62" height="62" /></td>
-                        <td><h2>满38包邮</h2>满38包邮 免运费</td>
-                    </tr>
-                </table>
-                <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
-                    <tr>
-                        <td width="72"><img src="../../images/b3.png" width="62" height="62" /></td>
-                        <td><h2>天天低价</h2>天天低价 畅选无忧</td>
-                    </tr>
-                </table>
-                <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
-                    <tr>
-                        <td width="72"><img src="../../images/b4.png" width="62" height="62" /></td>
-                        <td><h2>准时送达</h2>收货时间由你做主</td>
-                    </tr>
-                </table>
+            <!--End 用户中心 End-->
+            <!--Begin Footer Begin -->
+            <div class="b_btm_bg b_btm_c">
+                <div class="b_btm">
+                    <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td width="72"><img src="../../images/b1.png" width="62" height="62" /></td>
+                            <td><h2>正品保障</h2>正品行货  放心购买</td>
+                        </tr>
+                    </table>
+                    <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td width="72"><img src="../../images/b2.png" width="62" height="62" /></td>
+                            <td><h2>满38包邮</h2>满38包邮 免运费</td>
+                        </tr>
+                    </table>
+                    <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td width="72"><img src="../../images/b3.png" width="62" height="62" /></td>
+                            <td><h2>天天低价</h2>天天低价 畅选无忧</td>
+                        </tr>
+                    </table>
+                    <table border="0" style="width:210px; height:62px; float:left; margin-left:75px; margin-top:30px;" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td width="72"><img src="../../images/b4.png" width="62" height="62" /></td>
+                            <td><h2>准时送达</h2>收货时间由你做主</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
-        </div>
-        <div class="b_nav">
-            <dl>
-                <dt><a href="#">新手上路</a></dt>
-                <dd><a href="#">售后流程</a></dd>
-                <dd><a href="#">购物流程</a></dd>
-                <dd><a href="#">订购方式</a></dd>
-                <dd><a href="#">隐私声明</a></dd>
-                <dd><a href="#">推荐分享说明</a></dd>
-            </dl>
-            <dl>
-                <dt><a href="#">配送与支付</a></dt>
-                <dd><a href="#">货到付款区域</a></dd>
-                <dd><a href="#">配送支付查询</a></dd>
-                <dd><a href="#">支付方式说明</a></dd>
-            </dl>
-            <dl>
-                <dt><a href="#">会员中心</a></dt>
-                <dd><a href="#">资金管理</a></dd>
-                <dd><a href="#">我的收藏</a></dd>
-                <dd><a href="#">我的订单</a></dd>
-            </dl>
-            <dl>
-                <dt><a href="#">服务保证</a></dt>
-                <dd><a href="#">退换货原则</a></dd>
-                <dd><a href="#">售后服务保证</a></dd>
-                <dd><a href="#">产品质量保证</a></dd>
-            </dl>
-            <dl>
-                <dt><a href="#">联系我们</a></dt>
-                <dd><a href="#">网站故障报告</a></dd>
-                <dd><a href="#">购物咨询</a></dd>
-                <dd><a href="#">投诉与建议</a></dd>
-            </dl>
-            <div class="b_tel_bg">
-                <a href="#" class="b_sh1">新浪微博</a>
-                <a href="#" class="b_sh2">腾讯微博</a>
-                <p>
-                    服务热线：<br />
-                    <span>400-123-4567</span>
-                </p>
+            <div class="b_nav">
+                <dl>
+                    <dt><a href="#">新手上路</a></dt>
+                    <dd><a href="#">售后流程</a></dd>
+                    <dd><a href="#">购物流程</a></dd>
+                    <dd><a href="#">订购方式</a></dd>
+                    <dd><a href="#">隐私声明</a></dd>
+                    <dd><a href="#">推荐分享说明</a></dd>
+                </dl>
+                <dl>
+                    <dt><a href="#">配送与支付</a></dt>
+                    <dd><a href="#">货到付款区域</a></dd>
+                    <dd><a href="#">配送支付查询</a></dd>
+                    <dd><a href="#">支付方式说明</a></dd>
+                </dl>
+                <dl>
+                    <dt><a href="#">会员中心</a></dt>
+                    <dd><a href="#">资金管理</a></dd>
+                    <dd><a href="#">我的收藏</a></dd>
+                    <dd><a href="#">我的订单</a></dd>
+                </dl>
+                <dl>
+                    <dt><a href="#">服务保证</a></dt>
+                    <dd><a href="#">退换货原则</a></dd>
+                    <dd><a href="#">售后服务保证</a></dd>
+                    <dd><a href="#">产品质量保证</a></dd>
+                </dl>
+                <dl>
+                    <dt><a href="#">联系我们</a></dt>
+                    <dd><a href="#">网站故障报告</a></dd>
+                    <dd><a href="#">购物咨询</a></dd>
+                    <dd><a href="#">投诉与建议</a></dd>
+                </dl>
+                <div class="b_tel_bg">
+                    <a href="#" class="b_sh1">新浪微博</a>
+                    <a href="#" class="b_sh2">腾讯微博</a>
+                    <p>
+                        服务热线：<br />
+                        <span>400-123-4567</span>
+                    </p>
+                </div>
+                <div class="b_er">
+                    <div class="b_er_c"><img src="../../images/er.gif" width="118" height="118" /></div>
+                    <img src="../../images/ss.png" />
+                </div>
             </div>
-            <div class="b_er">
-                <div class="b_er_c"><img src="../../images/er.gif" width="118" height="118" /></div>
-                <img src="../../images/ss.png" />
+            <div class="btmbg">
+                <div class="btm">
+                    备案/许可证编号：蜀ICP备12009302号-1-www.dingguagua.com   Copyright © 2015-2018 尤洪商城网 All Rights Reserved. 复制必究 , Technical Support: Dgg Group <br />
+                    <img src="../../images/b_1.gif" width="98" height="33" /><img src="../../images/b_2.gif" width="98" height="33" /><img src="../../images/b_3.gif" width="98" height="33" /><img src="../../images/b_4.gif" width="98" height="33" /><img src="../../images/b_5.gif" width="98" height="33" /><img src="../../images/b_6.gif" width="98" height="33" />
+                </div>
             </div>
+            <!--End Footer End -->
         </div>
-        <div class="btmbg">
-            <div class="btm">
-                备案/许可证编号：蜀ICP备12009302号-1-www.dingguagua.com   Copyright © 2015-2018 尤洪商城网 All Rights Reserved. 复制必究 , Technical Support: Dgg Group <br />
-                <img src="../../images/b_1.gif" width="98" height="33" /><img src="../../images/b_2.gif" width="98" height="33" /><img src="../../images/b_3.gif" width="98" height="33" /><img src="../../images/b_4.gif" width="98" height="33" /><img src="../../images/b_5.gif" width="98" height="33" /><img src="../../images/b_6.gif" width="98" height="33" />
-            </div>
-        </div>
-        <!--End Footer End -->
     </div>
-</div>
-
 
 </body>
 <script type="text/javascript" src="/js/vue.min.js"></script>
 <script type="module" src="/js/axios.js"></script>
 <script type="text/javascript" src="/js/Element.js"></script>
 <script src="/util/common.js"></script>
-<script type="module" src="/util/address/addressDetail.js"></script>
+<script type="module" src="/util/address/modifyAddress.js"></script>
 <!--[if IE 6]>
 <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
 <![endif]-->

@@ -1,6 +1,7 @@
 import {getOrder, getOrderDetailListPage} from "/api/order.js";
 import {delBuyCarProductById, getBuyCarListByUserId} from "/api/buycar.js";
 import {downloadProductImg} from "/api/product.js";
+import {loginOut} from "../../api/login.js";
 
 new Vue({
     el: '#root',
@@ -34,6 +35,7 @@ new Vue({
             load: true,
             //购物车相关
             loginName: null,
+            type:null,
             globalCondition: null,
         }
     },
@@ -96,7 +98,36 @@ new Vue({
         },
         toCategoryList(){
             window.location.href='/esay_buy_pages/category/CategoryList.html?globalCondition='+this.globalCondition
-        }
+        },
+        message(message, option) {
+            const messageDom = document.getElementsByClassName('el-message')[0]
+            console.log(messageDom)
+            if (messageDom === undefined) {
+                switch (option) {
+                    case 'success': {
+                        this.$message.success(message)
+                        break;
+                    }
+                    case 'error': {
+                        this.$message.error(message)
+                        break;
+                    }
+                    case 'warning': {
+                        this.$message.warning(message)
+                        break;
+                    }
+                }
+            }
+        },
+        async handleLoginOut() {
+            const {code} = await loginOut()
+            if (code === '200') {
+                this.loginName = null
+                this.message('用户注销成功', 'success')
+            } else {
+                this.message('用户注销失败', 'error')
+            }
+        },
     },
     computed: {
         totalCost: function () {
@@ -121,5 +152,6 @@ new Vue({
             this.$message.error('订单详情获取失败!')
         }
         this.loginName = readCookie('loginName')
+        this.type = readCookie('type')
     }
 })
