@@ -22,7 +22,7 @@ new Vue({
         },
         async handleFind() {
             this.orderListLoad = true
-            const {code, data} = await getOrderList(this.currentPage, this.pageSize, this.serialNumber, this.loginName)
+            const {code, data} = await getUserOrderList(this.currentPage, this.pageSize, this.serialNumber, this.loginName)
             if (code === '200') {
                 this.orderList = data.orderList
                 this.totalCount = data.totalCount

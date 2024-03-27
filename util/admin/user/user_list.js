@@ -1,18 +1,21 @@
-import {getUserListPage, checkType, deleteUser,getTypeList} from "/api/user.js"
+import {getUserListPage, checkType, deleteUser, getTypeList} from "/api/user.js"
 import {checkPermission} from "/api/user.js";
+import {loginOut} from "/api/login.js";
 
 new Vue({
-    el: '#root',
+    el: '#admin',
     data: {
         userList: [],
         typeList: [],
         type: null,
         userName: null,
         pageSize: 5,
-        totalCount: 0
+        totalCount: 0,
+        loginName: null,
     },
-    mounted:async function(){
-         const {code, message} = await checkPermission()
+    mounted: async function () {
+        this.loginName = readCookie('loginName');
+        const {code, message} = await checkPermission()
         if (code === '300') {
             this.$alert(message, '登录提示', {
                 confirmButtonText: '确定',
@@ -75,6 +78,37 @@ new Vue({
         async getTypeList() {
             const {data} = await getTypeList();
             this.typeList = data;
-        }
+        },
+        async handleLoginOut() {
+            const {code} = await loginOut()
+            if (code === '200') {
+                this.loginName = null
+                this.message('用户注销成功', 'success')
+                setTimeout(function () {
+                    window.location.reload()
+                }, 1000)
+            } else {
+                this.message('用户注销失败', 'error')
+            }
+        },
+        message(message, option) {
+            const messageDom = document.getElementsByClassName('el-message')[0]
+            if (messageDom === undefined) {
+                switch (option) {
+                    case 'success': {
+                        this.$message.success(message)
+                        break;
+                    }
+                    case 'error': {
+                        this.$message.error(message)
+                        break;
+                    }
+                    case 'warning': {
+                        this.$message.warning(message)
+                        break;
+                    }
+                }
+            }
+        },
     }
 })

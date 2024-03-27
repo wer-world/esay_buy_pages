@@ -1,11 +1,12 @@
 import {getProductListPages, delProduct} from "/api/product.js";
-import { getProCategoryNameByType} from "/api/category.js";
+import {getProCategoryNameByType} from "/api/category.js";
 import {getBrandAllList} from "/api/brand.js";
 import {checkPermission} from "/api/user.js";
+import {loginOut} from "/api/login.js";
 
 Vue.config.productionTip = false
 new Vue({
-    el: '#app',
+    el: '#admin',
     data: {
         proList: [],
         product: {},
@@ -13,10 +14,12 @@ new Vue({
         pageSize: 5,
         totalCount: 0,
         categoryList: [],
-        brandList:[],
+        brandList: [],
         categoryLeve3Name: '',
-        brandName:'',
-        loading: true
+        brandName: '',
+        loading: true,
+        type: null,
+        loginName: null,
     },
     methods: {
         async getProList(currentPageCount) {
@@ -24,7 +27,7 @@ new Vue({
             const {
                 code,
                 data
-            } = await getProductListPages(currentPageCount, this.pageSize, this.product.brandName, this.product.name,this.product.categoryLeve3Name)
+            } = await getProductListPages(currentPageCount, this.pageSize, this.product.brandName, this.product.name, this.product.categoryLeve3Name)
             if (code === '200') {
                 this.proList = data.productList
                 this.totalCount = data.page.totalCount
@@ -48,21 +51,55 @@ new Vue({
                 await this.getProList(this.currentPageCount)
             }
         },
-        async getCategoryList(){
+        async getCategoryList() {
             const {data} = await getProCategoryNameByType();
-            this.categoryList=data
+            this.categoryList = data
         },
-        async getBrandList(){
+        async getBrandList() {
             const {data} = await getBrandAllList();
-            this.brandList=data
+            this.brandList = data
         },
-        returnAdmin(){
-            window.location="/esay_buy_pages/admin/Admin.html"
-        }
+        returnAdmin() {
+            window.location = "/esay_buy_pages/admin/Admin.html"
+        },
+        async handleLoginOut() {
+            const {code} = await loginOut()
+            if (code === '200') {
+                this.loginName = null
+                this.message('用户注销成功', 'success')
+                setTimeout(function () {
+                    window.location.reload()
+                }, 1000)
+
+            } else {
+                this.message('用户注销失败', 'error')
+            }
+        },
+        message(message, option) {
+            const messageDom = document.getElementsByClassName('el-message')[0]
+            if (messageDom === undefined) {
+                switch (option) {
+                    case 'success': {
+                        this.$message.success(message)
+                        break;
+                    }
+                    case 'error': {
+                        this.$message.error(message)
+                        break;
+                    }
+                    case 'warning': {
+                        this.$message.warning(message)
+                        break;
+                    }
+                }
+            }
+        },
 
     },
     mounted: async function () {
-         const {code, message} = await checkPermission()
+        this.loginName = readCookie('loginName');
+        this.type = readCookie('type')
+        const {code, message} = await checkPermission()
         if (code === '300') {
             this.$alert(message, '登录提示', {
                 confirmButtonText: '确定',

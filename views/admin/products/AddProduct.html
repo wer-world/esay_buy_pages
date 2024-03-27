@@ -1,40 +1,25 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link type="text/css" rel="stylesheet" href="/css/style.css"/>
+    <!--[if IE 6]>
+    <script src="/js/iepng.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        EvPNG.fix('div, ul, img, li, input, a');
+    </script>
+    <![endif]-->
+
+    <title>尤洪</title>
     <link rel="stylesheet" href="/css/Element.css">
+    <link rel="stylesheet" href="/css/common.css">
     <style>
-        .avatar-uploader .el-upload {
-            border: 1px dashed #d9d9d9;
-            border-radius: 6px;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
 
-        .avatar-uploader .el-upload:hover {
-            border-color: #409EFF;
-        }
-
-        .avatar-uploader-icon {
-            font-size: 28px;
-            color: #8c939d;
-            width: 178px;
-            height: 178px;
-            line-height: 178px;
-            text-align: center;
-        }
-
-        .avatar {
-            width: 178px;
-            height: 178px;
-            display: block;
-        }
     </style>
 </head>
 <body>
-<div id="app">
+<div id="admin">
     <!--Begin Header Begin-->
     <div class="soubg">
         <div class="sou">
@@ -117,14 +102,15 @@
         </span>
             <!--End 所在收货地区 End-->
             <span class="fr">
-        	<span class="fl">你好，<span style="color: red">{{loginName}}</span><span v-if="loginName == null">请<a
-                    href="../login/Login.html">登录</a></span>&nbsp; <a
-                    href="/esay_buy_pages/register/Regist.html"
-                    style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
-                    href="/esay_buy_pages/member/Member_Order.html">我的订单</a>&nbsp;|</span>
+        	<span class="fl">
+                <a href="/esay_buy_pages/Index.html" v-if="loginName != null"> 返回首页</a>
+                你好，<span style="color: red">{{loginName}}<a v-if="loginName != null" @click="handleLoginOut"> 注销</a></span><span v-if="loginName == null">请<a href="/esay_buy_pages/login/Login.html">登录</a></span>
+                <a
+                        href="/esay_buy_pages/register/Regist.html" style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
+                    href="/esay_buy_pages/member/Member_Order.html" v-if="loginName != null">我的订单</a>&nbsp;|</span>
         	<span class="ss">
             	<div class="ss_list">
-                	<a href="/esay_buy_pages/member/Member_Collect.html">收藏夹</a>
+                	<a href="#">收藏夹</a>
                     <div class="ss_list_bg">
                     	<div class="s_city_t"></div>
                         <div class="ss_list_c">
@@ -169,43 +155,7 @@
     </div>
     <div class="m_top_bg">
         <div class="top">
-            <div class="m_logo"><a href="../Index.html"><img src="//images/logo1.png"/></a></div>
-            <div class="m_search">
-                <form>
-                    <input type="text" value="" class="m_ipt" v-model="globalCondition"/>
-                    <input type="button" value="搜索" class="m_btn" @click="toCategoryList()"/>
-                </form>
-                <span class="fl"><a href="#">咖啡</a><a href="#">iphone 6S</a><a href="#">新鲜美食</a><a
-                        href="#">蛋糕</a><a href="#">日用品</a><a href="#">连衣裙</a></span>
-            </div>
-            <div class="i_car">
-                <div class="car_t">购物车 [ <span>{{buyCarList.length}}</span> ]</div>
-                <div class="car_bg">
-                    <!--Begin 购物车未登录 Begin-->
-                    <div class="un_login" v-if="loginName == null">还未登录！<a href="../login/Login.html"
-                                                                               style="color:#ff4e00;">马上登录</a>
-                        查看购物车！
-                    </div>
-                    <div class="un_login">欢迎 <span style="color: red">{{loginName}}</span> 查看购物车！</div>
-                    <!--End 购物车未登录 End-->
-                    <!--Begin 购物车已登录 Begin-->
-                    <ul class="cars">
-                        <li v-if="buyCarList.length === 0">
-                            <div style="text-indent: 50px">购物车暂无数据，快去购买吧!</div>
-                        </li>
-                        <li v-for="(item,index) in buyCarList" :key="item.id">
-                            <div class="img"><a href="javascript:void(0)"><img :id="'productImg' + index" width="58"
-                                                                               height="58"/></a></div>
-                            <div class="name"><a href="javascript:void(0)">{{item.description}}</a></div>
-                            <div class="price"><font color="#ff4e00">￥{{item.productPrice}}</font> X{{item.productNum}}&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<a
-                                    href="javascript:void(0)" @click="handleDelBuyCarProduct(item.id)">删除</a></div>
-                        </li>
-                    </ul>
-                    <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>{{totalCost}}</span></div>
-                    <div class="price_a"><a @click="handlerToBuyCar">去购物车结算</a></div>
-                    <!--End 购物车已登录 End-->
-                </div>
-            </div>
+            <div class="m_logo"><a href="/esay_buy_pages/Index.html"><img src="/images/logo1.png"/></a></div>
         </div>
     </div>
     <!--End Header End-->
@@ -229,7 +179,7 @@
                 <div class="left_m">
                     <div class="left_m_t t_bg3">商品管理</div>
                     <ul>
-                        <li><a href="/esay_buy_pages/admin/products/ProductDetail.html">商品列表</a></li>
+                        <li><a href="/esay_buy_pages/admin/products/ProductDetail.html" style="color: red">商品列表</a></li>
                     </ul>
                 </div>
                 <div class="left_m">
@@ -246,61 +196,58 @@
                 </div>
             </div>
             <div class="m_right">
-                <div class="product_add">
-                    <el-descriptions title="商品添加"></el-descriptions>
-                    <el-form :model="product" :rules="rules" ref="product" label-width="100px" class="demo-ruleForm"
-                             id="upload">
-                        <el-form-item label="商品名称" prop="name">
-                            <el-input v-model="product.name" name="name"></el-input>
-                        </el-form-item>
-                        <el-form-item label="品牌名称" prop="brandId">
-                            <el-select v-model="product.brandId" name="brandId" placeholder="请选品牌">
-                                <el-option
-                                        v-for="brand in brandList"
-                                        :key="brand.id"
-                                        :label="brand.name"
-                                        :value="brand.id">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="分类名称" prop="categoryLevelId">
-                            <el-select v-model="product.categoryLevelId" name="categoryLevelId" placeholder="请选分类">
-                                <el-option
-                                        v-for="category in categoryList"
-                                        :key="category.id"
-                                        :label="category.name"
-                                        :value="category.id">
-                                </el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="商品价格" prop="price">
-                            <el-input v-model.number="product.price" name="price" :step="0.1"></el-input>
-                        </el-form-item>
-                        <el-form-item label="商品库存" prop="stock">
-                            <el-input v-model.number="product.stock" name="stock"></el-input>
-                        </el-form-item>
-                        <el-form-item label="商品描述" prop="desc">
-                            <el-input type="textarea" name="description" v-model="product.desc"></el-input>
-                        </el-form-item>
-                        <el-form-item label="文件上传" prop="picPath">
-                            <el-upload
-                                    class="avatar-uploader"
-                                    name="filePath"
-                                    action="#"
-                                    :http-request="handleHttpRequest"
-                                    :show-file-list="false"
-                                    :before-upload="beforeAvatarUpload">
-                                <img v-if="imageUrl" :src="imageUrl" class="avatar" alt="">
-                                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                            </el-upload>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button type="primary" @click="submitForm('product')">立即创建</el-button>
-                            <el-button @click="cancle">取消</el-button>
-                            <el-button @click="resetForm">重置</el-button>
-                        </el-form-item>
-                    </el-form>
-                </div>
+                <el-descriptions title="商品添加"></el-descriptions>
+                <el-form :model="product" :rules="rules" ref="product" label-width="100px" class="demo-ruleForm" id="upload">
+                    <el-form-item label="商品名称" prop="name">
+                        <el-input v-model="product.name" name="name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="品牌名称" prop="brandId">
+                        <el-select v-model="product.brandId" name="brandId" placeholder="请选品牌">
+                            <el-option
+                                    v-for="brand in brandList"
+                                    :key="brand.id"
+                                    :label="brand.name"
+                                    :value="brand.id">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="分类名称" prop="categoryLevelId">
+                        <el-select v-model="product.categoryLevelId" name="categoryLevelId" placeholder="请选分类">
+                            <el-option
+                                    v-for="category in categoryList"
+                                    :key="category.id"
+                                    :label="category.name"
+                                    :value="category.id">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="商品价格" prop="price">
+                        <el-input v-model.number="product.price" name="price" :step="0.1"></el-input>
+                    </el-form-item>
+                    <el-form-item label="商品库存" prop="stock">
+                        <el-input v-model.number="product.stock" name="stock"></el-input>
+                    </el-form-item>
+                    <el-form-item label="商品描述" prop="desc">
+                        <el-input type="textarea" name="description" v-model="product.desc"></el-input>
+                    </el-form-item>
+                    <el-form-item label="文件上传"  prop="picPath">
+                        <el-upload
+                                class="avatar-uploader"
+                                name="filePath"
+                                action="#"
+                                :http-request="handleHttpRequest"
+                                :show-file-list="false"
+                                :before-upload="beforeAvatarUpload">
+                            <img v-if="imageUrl" :src="imageUrl" class="avatar" alt="">
+                            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                        </el-upload>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="submitForm('product')">立即创建</el-button>
+                        <el-button @click="cancle">取消</el-button>
+                        <el-button @click="resetForm">重置</el-button>
+                    </el-form-item>
+                </el-form>
             </div>
         </div>
         <!--End 用户中心 End-->
@@ -399,8 +346,15 @@
     </div>
 </div>
 </body>
+<script type="text/javascript" src="/js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" src="/js/menu.js"></script>
+
+<script src="/util/common.js"></script>
 <script src="/js/vue.min.js"></script>
 <script type="module" src="/js/axios.js"></script>
 <script src="/js/Element.js"></script>
 <script type="module" src="/util/admin/product/addProduct.js"></script>
+<!--[if IE 6]>
+<script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
 </html>

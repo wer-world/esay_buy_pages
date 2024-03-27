@@ -1,17 +1,18 @@
 import {getProCategoryNameByType} from "/api/category.js";
 import {getBrandAllList} from "/api/brand.js";
 import {addProduct} from "/api/product.js";
+import {loginOut} from "/api/login.js";
 import {checkPermission} from "/api/user.js";
 
 new Vue({
-    el: '#app',
+    el: '#admin',
     data: {
         product: {
             brandId: '',
             categoryLevelId: '',
             name: '',
             price: '',
-            stock:'',
+            stock: '',
             description: '',
             picPath: ''
         },
@@ -23,9 +24,9 @@ new Vue({
                 {required: true, message: '价格不能为空', trigger: 'blur'},
                 {type: 'number', message: '价格必须为数字值', trigger: 'blur'}
             ],
-            stock:[
+            stock: [
                 {required: true, message: '库存不能为空', trigger: 'blur'},
-                {pattern: /^[0-9]*$/,message: "只能输入正整数", trigger: 'blur'}
+                {pattern: /^[0-9]*$/, message: "只能输入正整数", trigger: 'blur'}
             ],
             name: [
                 {required: true, message: '请输入商品名称', trigger: 'blur'},
@@ -40,11 +41,14 @@ new Vue({
             desc: [
                 {required: true, message: '请填写商品描述', trigger: 'blur'}
             ]
-        }
+        },
+        type: null,
+        loginName: null,
     },
     methods: {
         resetForm() {
             this.product = [];
+            this.imageUrl = '';
         },
         async getCategoryList() {
             const {data} = await getProCategoryNameByType();
@@ -90,12 +94,45 @@ new Vue({
                 }
             });
         },
-        cancle(){
+        cancle() {
             window.location = "/esay_buy_pages/admin/products/ProductDetail.html"
-        }
+        },
+        async handleLoginOut() {
+            const {code} = await loginOut()
+            if (code === '200') {
+                this.loginName = null
+                this.message('用户注销成功', 'success')
+                setTimeout(function () {
+                    window.location.reload()
+                }, 1000)
+            } else {
+                this.message('用户注销失败', 'error')
+            }
+        },
+        message(message, option) {
+            const messageDom = document.getElementsByClassName('el-message')[0]
+            if (messageDom === undefined) {
+                switch (option) {
+                    case 'success': {
+                        this.$message.success(message)
+                        break;
+                    }
+                    case 'error': {
+                        this.$message.error(message)
+                        break;
+                    }
+                    case 'warning': {
+                        this.$message.warning(message)
+                        break;
+                    }
+                }
+            }
+        },
     },
     mounted: async function () {
-         const {code, message} = await checkPermission()
+        this.loginName = readCookie('loginName');
+        this.type = readCookie('type')
+        const {code, message} = await checkPermission()
         if (code === '300') {
             this.$alert(message, '登录提示', {
                 confirmButtonText: '确定',
