@@ -1,21 +1,15 @@
-import {getUserOrderList,cancelOrder} from "/api/order.js"
-import {alipayCreate} from "/api/alipay.js"
-import {downloadProductImg} from "/api/product.js"
+import {getCurrentUser} from "/api/user.js"
+import {downloadProductImg} from "/api/product.js";
 import {addBuyCar, delBuyCarProductById, getBuyCarListByUserId} from "/api/buycar.js";
-
 new Vue({
     el:"#root",
     data:{
-        orderList:[],
-        pageSize:5,
-        serialNumber:'',
-        totalCount:'',
+        user:'',
         //购物车相关
         loginName: null,
         buyCarList: [],
         globalCondition: null,
     },
-    //购物车相关
     computed: {
         totalCost: function () {
             let totalCost = 0
@@ -27,35 +21,17 @@ new Vue({
     },
     //↑购物车相关
     mounted:async function(){
+        await this.getCurrentUser();
         this.loginName = readCookie('loginName')
         await this.getBuyCarList()
-        await this.getOrderList();
         await this.handleDownloadImg();
     },
     methods:{
-        async getOrderList(currentPage=1){
-            const {data} = await getUserOrderList(currentPage,this.pageSize,this.serialNumber);
-            this.orderList = data.orderList;
-            this.totalCount = data.totalCount;
+        async getCurrentUser(){
+            const {data} = await getCurrentUser();
+            this.user = data;
         },
-        async cancelOrder(id){
-            if (!confirm("确认取消订单吗？")){
-                return
-            }
-            const {message} = await cancelOrder(id);
-            alert(message)
-            await this.getOrderList(1);
-        },
-        async payOrder(id,serialNumber){
-            const data = await alipayCreate(id,serialNumber);
-            console.log(data)
-            /* 此处form就是后台返回接收到的数据 */
-            const div = document.createElement('div');
-            div.innerHTML = data;
-            document.body.appendChild(div);
-            document.getElementsByName('punchout_form')[0].submit()
-        },
-        async handleDownloadImg() {
+        async handleDownloadImg(){
             //购物车相关
             for (const key in this.buyCarList) {
                 const data = await downloadProductImg(this.buyCarList[key].picPath)
@@ -102,6 +78,5 @@ new Vue({
         toCategoryList(){
             window.location.href='/esay_buy_pages/category/CategoryList.html?globalCondition='+this.globalCondition
         }
-
     }
 })

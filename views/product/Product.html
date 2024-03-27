@@ -353,7 +353,7 @@
                         <input type="button" class="n_btn_1" @click="checkCount(++count)"/>
                         <input type="button" class="n_btn_2" @click="checkCount(--count)"/>
                     </div>
-                    <span class="fl"><a onclick="ShowDiv_1('MyDiv1','fade1')"><img
+                    <span class="fl"><a @click="handleAddBuyCar(product.id,count)"><img
                             src="../../images/j_car.png"/></a></span>
                 </div>
             </div>
@@ -392,7 +392,7 @@
                         </div>
                         <div class="name"><a href="javascript:void(0)" @click="view(p.id)">{{p.name}}</a></div>
                         <div class="price">
-                            <div class="checkbox"><input type="checkbox" name="zuhe" @change="handlerChange($event,p),calZuhePrice()"/></div>
+                            <div class="checkbox"><input type="checkbox" name="zuhe" @change="handlerChange($event,p,index),calZuhePrice()"/></div>
                             <font>￥<span>{{p.price}}</span></font> &nbsp; 18R
                         </div>
                     </div>
@@ -404,7 +404,7 @@
                     <div class="team_sum">
                         套餐价：￥<span>{{zuhePrice}}</span><br/>
                         <input type="text" class="sum_ipt" @keyup="checkZuheCount(),calZuhePrice()" v-model="zuheCount"/><br/>
-                        <a href="#"><img src="../../images/z_buy.gif"/></a>
+                        <a @click="submitZuhe"><img src="../../images/z_buy.gif"/></a>
                     </div>
 
                 </div>
@@ -731,9 +731,10 @@
 <script type="module" src="/js/axios.js"></script>
 <script type="text/javascript" src="/js/vue.min.js"></script>
 <script src="/util/common.js"></script>
+<script src="/js/Element.js"></script>
 <script type="module" src="/util/product.js"></script>
 
-<!--[if IE 6]>
+<!--[if IE 6]>w
 <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
 <![endif]-->
 </html>

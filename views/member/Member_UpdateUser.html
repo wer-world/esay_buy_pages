@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/css/Element.css">
+    <style>
+        .el-input{
+            width: 16%;
+        }
+        .el-alert{
+            width: 36%;
+        }
+        .el-select{
+            width: 40%;
+        }
+    </style>
+</head>
+<body>
+    <div id="root">
+        登录名：<el-input :value="user.loginName" v-model="user.loginName" readonly="true"></el-input><br>
+        用户名：<el-input :value="user.userName" v-model="user.userName"></el-input>
+        <el-alert :title="userMsg.userNameMsg" :closable="false" v-show="userMsg.userNameMsg!==''"></el-alert><br>
+        性别：<el-select v-model="user.sex">
+        <el-option label="男" :value="1"></el-option>
+        <el-option label="女" :value="0"></el-option>
+            </el-select><br>
+        身份证号：<el-input :value="user.identityCode" readonly="true"></el-input><br>
+        邮箱：<el-input :value="user.email" v-model="user.email"></el-input>
+        <el-alert :title="userMsg.emailMsg" :closable="false" v-show="userMsg.emailMsg!==''"></el-alert><br>
+        手机号码： <el-input :value="user.mobile" v-model="user.mobile"></el-input>
+        <el-alert :title="userMsg.mobileMsg" :closable="false" v-show="userMsg.mobileMsg!==''"></el-alert><br>
+        <a href="/esay_buy_pages/member/Member.html">返回个人信息页</a>
+        <el-button @click="save()">保存</el-button>
+    </div>
+</body>
+<script type="text/javascript" src="/js/vue.min.js"></script>
+<script type="text/javascript" src="/js/Element.js"></script>
+<script type="module" src="/js/axios.js"></script>
+<script type="module" src="/util/member/member_user_update.js"></script>
+</html>

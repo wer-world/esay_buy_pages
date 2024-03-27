@@ -122,7 +122,7 @@
                 <span class="fl">你好，<span style="color: red">{{loginName}}</span><span v-if="loginName == null">请<a href="../login/Login.html">登录</a></span>&nbsp; <a
                         href="../register/Regist.html"
                         style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
-                        href="#">我的订单</a>&nbsp;|</span>
+                        href="/esay_buy_pages/member/Member_Order.html">我的订单</a>&nbsp;|</span>
                 <span class="ss">
                     <div class="ss_list">
                 	<a href="/esay_buy_pages/member/Member_Collect.html">收藏夹</a>
@@ -183,7 +183,7 @@
             <div class="car_t">购物车 [ <span>{{buyCarList.length}}</span> ]</div>
             <div class="car_bg">
                 <!--Begin 购物车未登录 Begin-->
-                <div class="un_login" v-if="loginName == null">还未登录！<a href="../login/Login.html"
+                <div class="un_login" v-if="loginName == null">还未登录！<a href="/login/Login.html"
                                                                            style="color:#ff4e00;">马上登录</a> 查看购物车！
                 </div>
                 <div class="un_login">欢迎 <span style="color: red">{{loginName}}</span> 查看购物车！</div>

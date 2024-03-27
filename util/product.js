@@ -13,6 +13,7 @@ new Vue({
         colorChoose: 1,
         collectMsg: '',
         count: 1,
+        zuheProducts: [null, null, null],
         zuheCount: 1,
         zuheTempPrice: 0,
         zuhePrice: 0,
@@ -31,6 +32,7 @@ new Vue({
         await this.initProduct();
         await this.initsimilarProducts();
         await this.handleDownloadImg();
+        await this.handleBuyCarDownloadImg();
     },
     //购物车相关
     computed: {
@@ -47,13 +49,14 @@ new Vue({
         calZuhePrice() {
             this.zuhePrice = this.zuheTempPrice * this.zuheCount
         },
-        handlerChange(e, p) {
+        handlerChange(e, p, index) {
             if (e.target.checked) {
                 this.zuheTempPrice += p.price
+                this.zuheProducts[index] = p;
             } else {
                 this.zuheTempPrice -= p.price
+                this.zuheProducts[index] = null;
             }
-
         },
         async initProduct() {
             const url = new URLSearchParams(window.location.search)
@@ -64,7 +67,6 @@ new Vue({
         },
         async initsimilarProducts() {
             const {data} = await getSimilarProducts(this.product.categoryLevelId);
-            console.log(data)
             this.similarProducts = data;
         },
         async collect() {
@@ -94,23 +96,24 @@ new Vue({
             const data = await downloadProductImg(this.product.picPath)
             const blob = new Blob([data], {type: "image/jepg,image/png"});
             let url = window.URL.createObjectURL(blob);
-            let imgss = document.getElementsByClassName('productImg'+this.product.picId);
-            for (let i=0;i<imgss.length;i++){
+            let imgss = document.getElementsByClassName('productImg' + this.product.picId);
+            for (let i = 0; i < imgss.length; i++) {
                 imgss[i].setAttribute('src', url);
             }
-
-            for (const key in this.similarProducts){
-                if (key==6){
+            for (const key in this.similarProducts) {
+                if (key == 6) {
                     return
                 }
                 const data = await downloadProductImg(this.similarProducts[key].picPath)
                 const blob = new Blob([data], {type: "image/jepg,image/png"});
                 let url = window.URL.createObjectURL(blob);
-                let imgs = document.getElementsByClassName('productImg'+this.similarProducts[key].picId);
-                    for (let i=0;i<imgs.length;i++){
-                        imgs[i].setAttribute('src', url);
-                    }
+                let imgs = document.getElementsByClassName('productImg' + this.similarProducts[key].picId);
+                for (let i = 0; i < imgs.length; i++) {
+                    imgs[i].setAttribute('src', url);
+                }
             }
+        },
+        async handleBuyCarDownloadImg() {
             //购物车相关
             for (const key in this.buyCarList) {
                 const data = await downloadProductImg(this.buyCarList[key].picPath)
@@ -126,7 +129,7 @@ new Vue({
         //侧边栏分类
         async initCategoryList() {
             const {code, data} = await getCategoryList(0);
-            if (code === '200'){
+            if (code === '200') {
                 this.categoryList1 = data;
             }
         },
@@ -153,13 +156,20 @@ new Vue({
             const {code, data} = await getBuyCarListByUserId()
             if (code === '200') {
                 this.buyCarList = data
-                await this.handleDownloadImg()
+                this.handleBuyCarDownloadImg()
             }
         },
-        async handleAddBuyCar(productId) {
-            const {code, message} = await addBuyCar(productId)
+        async submitZuhe() {
+            for (let i = 0; i < this.zuheProducts.length; i++) {
+                if (this.zuheProducts[i] != null) {
+                    await this.handleAddBuyCar(this.zuheProducts[i].id, this.zuheCount)
+                }
+            }
+            await this.getBuyCarList()
+        },
+        async handleAddBuyCar(productId, productNum) {
+            const {code, message} = await addBuyCar(productId, productNum)
             if (code === '200') {
-                await this.getBuyCarList()
                 this.message('加入购物车成功！', 'success')
             } else {
                 this.message(message, 'error')
@@ -168,8 +178,27 @@ new Vue({
         handlerToBuyCar() {
             window.location.href = '/esay_buy_pages/buycar/BuyCar.html'
         },
-        toCategoryList(){
-            window.location.href='/esay_buy_pages/category/CategoryList.html?globalCondition='+this.globalCondition
+        toCategoryList() {
+            window.location.href = '/esay_buy_pages/category/CategoryList.html?globalCondition=' + this.globalCondition
+        },
+        message(message, option) {
+            const messageDom = document.getElementsByClassName('el-message')[0]
+            if (messageDom === undefined) {
+                switch (option) {
+                    case 'success': {
+                        this.$message.success(message)
+                        break;
+                    }
+                    case 'error': {
+                        this.$message.error(message)
+                        break;
+                    }
+                    case 'warning': {
+                        this.$message.warning(message)
+                        break;
+                    }
+                }
+            }
         }
     }
 })

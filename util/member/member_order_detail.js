@@ -68,7 +68,7 @@ new Vue({
         async handleDelBuyCarProduct(id) {
             const {code} = await delBuyCarProductById(id)
             if (code === '200') {
-                this.getBuyCarList()
+                await this.getBuyCarList()
             } else {
                 this.$message.error('删除购物车信息失败')
             }
@@ -77,18 +77,20 @@ new Vue({
             const {code, data} = await getBuyCarListByUserId()
             if (code === '200') {
                 this.buyCarList = data
-                await this.handleDownloadImg()
+                this.handleDownloadImg()
             } else {
                 this.buyCarList = []
             }
         },
         async handleDownloadImg() {
-            for (const key in this.buyCarList) {
-                const data = await downloadProductImg(this.buyCarList[key].picPath)
-                const blob = new Blob([data], {type: "image/jepg,image/png"});
-                let url = window.URL.createObjectURL(blob);
-                let img = document.getElementById('productImg' + key)
-                img.setAttribute('src', url);
+            if (this.buyCarList.length>0){
+                for (const key in this.buyCarList) {
+                    const data = await downloadProductImg(this.buyCarList[key].picPath)
+                    const blob = new Blob([data], {type: "image/jepg,image/png"});
+                    let url = window.URL.createObjectURL(blob);
+                    let img = document.getElementById('productImg' + key)
+                    img.setAttribute('src', url);
+                }
             }
         },
         handlerToBuyCar() {
@@ -111,15 +113,15 @@ new Vue({
         const urlParams = new URLSearchParams(window.location.search)
         const orderId = urlParams.get("orderId");
         this.orderId = orderId;
-        await this.getBuyCarList()
         const {code, data} = await getOrder(this.orderId)
         if (code === '200') {
             this.order = data
-            this.handleFind()
+            await this.handleFind()
             this.$message.success('订单详情获取成功!')
         } else {
             this.$message.error('订单详情获取失败!')
         }
         this.loginName = readCookie('loginName')
+        await this.getBuyCarList()
     }
 })
