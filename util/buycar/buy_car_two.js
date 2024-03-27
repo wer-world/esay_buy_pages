@@ -1,7 +1,7 @@
 import {delBuyCarProductById, getBuyCarListByUserId, modBuyCarProductNumById} from "/api/buycar.js";
 import {downloadProductImg} from "/api/product.js";
 import {addCollection} from "/api/collection.js";
-import {getUserById} from "/api/user.js";
+import {getCurrentUser, getUserById, getUserInfoAndAddress} from "/api/user.js";
 import {createOrder} from "/api/order.js";
 import {loginOut} from "/api/login.js";
 
@@ -32,7 +32,7 @@ new Vue({
             isUserInfoMod: true,
             //购物车相关
             loginName: null,
-            type:null,
+            type: null,
             globalCondition: null,
         }
     },
@@ -129,7 +129,7 @@ new Vue({
             this.handleModBuyCarProductNumById(this.buyCarList[index].id, this.buyCarList[index].productNum)
         },
         async handlerGetUserInfo() {
-            const {code, data} = await getUserById()
+            const {code, data} = await getUserInfoAndAddress()
             if (code === '200') {
                 this.userInfo = data
             } else {
@@ -140,25 +140,28 @@ new Vue({
             window.location.href = '/esay_buy_pages/buycar/BuyCar.html'
         },
         async handlerCreateOrder() {
+            const $this = this
             if (this.buyCarList.length === 0) {
                 this.message('当前购物车中没有商品,无法确认订单', 'error')
                 return
             }
-            this.$alert('是否确认订单', '确认订单', {
-                confirmButtonText: '确定',
-                callback: async action => {
-                    const {code, data} = await createOrder(this.buyCarList)
-                    if (code === '200') {
-                        window.location.href = '/esay_buy_pages/buycar/BuyCar_Three.html?orderId=' + data.id
-                    }
+            if (confirm('是否确认订单')) {
+                const {code, data, message} = await createOrder(this.buyCarList)
+                if (code === '200') {
+                    window.location.href = '/esay_buy_pages/buycar/BuyCar_Three.html?orderId=' + data.id
+                } else {
+                    $this.message(message, 'error')
                 }
-            })
+            }
         },
         async handleLoginOut() {
             const {code} = await loginOut()
             if (code === '200') {
                 this.loginName = null
                 this.message('用户注销成功', 'success')
+                setTimeout(function () {
+                    window.location.reload()
+                }, 1000)
             } else {
                 this.message('用户注销失败', 'error')
             }

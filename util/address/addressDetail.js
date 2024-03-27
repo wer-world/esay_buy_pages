@@ -111,7 +111,6 @@ new Vue({
         },
         message(message, option) {
             const messageDom = document.getElementsByClassName('el-message')[0]
-            console.log(messageDom)
             if (messageDom === undefined) {
                 switch (option) {
                     case 'success': {
@@ -134,6 +133,9 @@ new Vue({
             if (code === '200') {
                 this.loginName = null
                 this.message('用户注销成功', 'success')
+                setTimeout(function () {
+                    window.location.reload()
+                }, 1000)
             } else {
                 this.message('用户注销失败', 'error')
             }

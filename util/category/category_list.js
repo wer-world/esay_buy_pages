@@ -102,7 +102,7 @@ new Vue({
                 window.location.href = '/esay_buy_pages/login/Login.html'
             }
             this.handleClearSearchCondition()
-            const {code, data} = await globalSearchProduct(this.globalCondition)
+            const {code, data} = await globalSearchProduct(this.currentPage, this.pageSize, this.globalCondition)
             if (code === '200') {
                 this.productList = data.productList
                 this.totalCount = data.page.totalCount

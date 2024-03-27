@@ -29,9 +29,15 @@ new Vue({
     },
     methods: {
         async getUserList(currentPage) {
-            const {data} = await getUserListPage(this.type, this.userName, currentPage, this.pageSize);
-            this.userList = data.userList;
-            this.totalCount = data.totalCount;
+            const {code, data} = await getUserListPage(this.type, this.userName, currentPage, this.pageSize);
+            if (code === '200'){
+                this.userList = data.userList;
+                this.totalCount = data.totalCount;
+            } else {
+                this.userList = [];
+                this.totalCount = 0;
+            }
+
         },
         async currentChange(currentPage) {
             await this.getUserList(currentPage);
@@ -90,6 +96,10 @@ new Vue({
             } else {
                 this.message('用户注销失败', 'error')
             }
+        },
+        handleReset() {
+            this.userName = ''
+            this.type = null
         },
         message(message, option) {
             const messageDom = document.getElementsByClassName('el-message')[0]

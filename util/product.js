@@ -25,13 +25,13 @@ new Vue({
         loginName: null,
         buyCarList: [],
         globalCondition: null,
-        type:null
+        type: null
     },
     mounted: async function () {
         this.loginName = readCookie('loginName')
-        this.type=readCookie("type")
-        if (this.loginName == null){
-            setTimeout(function (){
+        this.type = readCookie("type")
+        if (this.loginName == null) {
+            setTimeout(function () {
                 window.location.href = '/esay_buy_pages/login/Login.html'
             }, '2000')
         }
@@ -164,7 +164,7 @@ new Vue({
             const {code, data} = await getBuyCarListByUserId()
             if (code === '200') {
                 this.buyCarList = data
-                this.handleBuyCarDownloadImg()
+                await this.handleBuyCarDownloadImg()
             }
         },
         async submitZuhe() {
@@ -179,6 +179,7 @@ new Vue({
             const {code, message} = await addBuyCar(productId, productNum)
             if (code === '200') {
                 this.message('加入购物车成功！', 'success')
+                await this.getBuyCarList()
             } else {
                 this.message(message, 'error')
             }
@@ -194,6 +195,9 @@ new Vue({
             if (code === '200') {
                 this.loginName = null
                 this.message('用户注销成功', 'success')
+                setTimeout(function () {
+                    window.location.reload()
+                }, 1000)
             } else {
                 this.message('用户注销失败', 'error')
             }

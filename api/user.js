@@ -47,3 +47,7 @@ export function getCurrentUser() {
 export function checkPermission() {
     return request.get('/user/checkPermission')
 }
+
+export function getUserInfoAndAddress() {
+    return request.get('/user/getUserInfoAndAddress')
+}

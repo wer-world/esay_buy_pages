@@ -240,7 +240,7 @@
                         </td>
                         <td align="center">￥{{c.price}}</td>
                         <td align="center"><a href="javascript:void(0)" @click="view(c.productId)">查看商品</a>&nbsp; &nbsp;
-                            <a href="javascript:void(0)" style="color:#ff4e00;" @click="addBuyCar(c.productId)">加入购物车</a>&nbsp;
+                            <a href="javascript:void(0)" style="color:#ff4e00;" @click="handleAddBuyCar(c.productId)">加入购物车</a>&nbsp;
                             <a href="javascript:void(0)" @click="deleteCollection(c.id)">删除</a></td>
                     </tr>
                 </table>

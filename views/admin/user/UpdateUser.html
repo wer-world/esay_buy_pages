@@ -210,7 +210,7 @@
                 <el-alert :title="userMsg.mobileMsg" :closable="false" v-show="userMsg.mobileMsg!==''"></el-alert><br>
                 身份类型：
                 <el-select v-model="user.type">
-                    <el-option v-for="t in typeList" :value="t.id" :label="t.name" :disabled="currentUser.type>=t.type"></el-option>
+                    <el-option v-for="t in typeList"  v-if="t.id > 1" :value="t.id" :label="t.name" :disabled="currentUser.type>=t.type"></el-option>
                 </el-select>
                 <a href="UserList.html">返回用户列表</a>
                 <el-button @click="save()">保存</el-button>

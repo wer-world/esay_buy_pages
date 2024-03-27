@@ -179,6 +179,7 @@ export const centerVue = new Vue({
         async handleCreateMobilePaymentOrder() {
             if (!/^1[3-9]\d{9}$/.test(this.mobile)) {
                 this.message('手机号输入不正确', 'warning')
+                return
             }
             this.handleModBuyCarProductNumById()
         },

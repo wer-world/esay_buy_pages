@@ -201,8 +201,8 @@
                     <el-select v-model="type" placeholder="全部">
                         <el-option v-for="t in typeList" :key="t.id" :value="t.id" :label="t.name"></el-option>
                     </el-select>
-                    <h2>{{type}}</h2>
                     <el-button slot="append" icon="el-icon-search" @click="currentChange(1)"></el-button>
+                    <el-button @click="handleReset">重置</el-button>
                 </div>
                 <el-table :data="userList" border style="width: 60%;margin-left: 1px">
                     <el-table-column prop="loginName" label="登录名" width="180"></el-table-column>

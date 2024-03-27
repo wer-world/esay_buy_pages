@@ -17,6 +17,8 @@ export function getProductListPages(currentPageCount, pageSize, brandName, produ
 
 export function globalSearchProduct(globalCondition) {
     return request.post('/product/getProductListPages', {
+        currentPage: currentPageCount,
+        pageSize: pageSize,
         globalCondition: globalCondition
     })
 }
@@ -58,6 +60,7 @@ export function getSimilarProducts(categoryLevelId) {
 export function addProduct(formDate) {
     return request.post('/product/addProduct', formDate)
 }
+
 export function modifyProductById(formDate) {
     return request.post('/product/modifyProductById', formDate)
 }

@@ -55,7 +55,7 @@ new Vue({
         },
     },
     mounted: async function () {
-        const {code, message} = await checkPermission()
+        const {code, message} = await this.getNewsById();
         if (code === '300') {
             this.$alert(message, '登录提示', {
                 confirmButtonText: '确定',
@@ -64,6 +64,5 @@ new Vue({
                 }
             })
         }
-        await this.getNewsById();
     },
 })
