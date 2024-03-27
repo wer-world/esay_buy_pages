@@ -43,10 +43,17 @@ new Vue({
             }
         },
         async getBuyCarList() {
-            const {code, data} = await getBuyCarListByUserId()
+            const {code, data, message} = await getBuyCarListByUserId()
             if (code === '200') {
                 this.buyCarList = data
                 await this.handleDownloadImg()
+            } else if (code === '300') {
+                this.$alert('未登录无法结算', '登录提示', {
+                    confirmButtonText: '确定',
+                    callback: action => {
+                        window.location.href = '/esay_buy_pages/login/Login.html'
+                    }
+                })
             } else {
                 this.buyCarList = []
             }
@@ -144,7 +151,6 @@ new Vue({
         },
         message(message, option) {
             const messageDom = document.getElementsByClassName('el-message')[0]
-            console.log(messageDom)
             if (messageDom === undefined) {
                 switch (option) {
                     case 'success': {

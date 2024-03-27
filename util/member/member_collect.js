@@ -1,7 +1,8 @@
 import {getCollections,deleteCollection} from "/api/collection.js"
 import {downloadProductImg} from "/api/product.js"
 import {addBuyCar, delBuyCarProductById, getBuyCarListByUserId} from "/api/buycar.js";
-import {loginOut} from "../../api/login.js";
+import {loginOut} from "/api/login.js";
+import {checkPermission} from "/api/user.js";
 
 new Vue({
     el:'#root',
@@ -27,6 +28,14 @@ new Vue({
     mounted:async function(){
         this.loginName = readCookie('loginName')
         this.type = readCookie('type')
+        if (this.loginName == null) {
+            this.$alert('请登录后操作!', '登录提示', {
+                confirmButtonText: '确定',
+                callback: action => {
+                    window.location.href = '/esay_buy_pages/login/Login.html'
+                }
+            })
+        }
         await this.getBuyCarList()
         await this.initCollections();
         await this.handleDownloadImg();
@@ -128,6 +137,9 @@ new Vue({
             if (code === '200') {
                 this.loginName = null
                 this.message('用户注销成功', 'success')
+                setTimeout(function () {
+                    window.location.reload()
+                }, 1000)
             } else {
                 this.message('用户注销失败', 'error')
             }

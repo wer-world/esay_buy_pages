@@ -1,5 +1,6 @@
 import {getUserById, updateUser,getCurrentUser} from "/api/user.js"
 import {getTypeList} from "/api/type.js"
+import {checkPermission} from "/api/user.js";
 new Vue({
     el:'#root',
     data:{
@@ -20,6 +21,15 @@ new Vue({
         typeList:[]
     },
     mounted:async function(){
+         const {code, message} = await checkPermission()
+        if (code === '300') {
+            this.$alert(message, '登录提示', {
+                confirmButtonText: '确定',
+                callback: action => {
+                    window.location.href = '/esay_buy_pages/login/Login.html'
+                }
+            })
+        }
         await this.initUser();
         await this.initCurrentUser();
         await this.getTypeList();

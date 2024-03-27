@@ -1,7 +1,8 @@
-import {getOrder, getOrderDetailListPage} from "/api/order.js";
+import {getOrder, getOrderDetailListPage, getOrderList} from "/api/order.js";
 import {delBuyCarProductById, getBuyCarListByUserId} from "/api/buycar.js";
 import {downloadProductImg} from "/api/product.js";
 import {loginOut} from "/api/login.js";
+import {checkPermission} from "/api/user.js";
 
 new Vue({
     el: '#admin',
@@ -33,8 +34,8 @@ new Vue({
             totalCount: 0,
             orderDetailList: [],
             load: true,
-            type:null,
-            name:null,
+            type: null,
+            name: null,
         }
     },
     methods: {
@@ -51,7 +52,6 @@ new Vue({
             } else {
                 this.orderDetailList = []
                 this.totalCount = 0
-                this.$message.error('订单详情列表获取失败!');
             }
             this.load = false
         },
@@ -133,6 +133,15 @@ new Vue({
     mounted: async function () {
         this.name = readCookie('loginName')
         this.type = readCookie('type')
+        const data1 = await checkPermission()
+        if (data1.code === '300') {
+            this.$alert(data1.message, '登录提示', {
+                confirmButtonText: '确定',
+                callback: action => {
+                    window.location.href = '/esay_buy_pages/login/Login.html'
+                }
+            })
+        }
         await this.getBuyCarList()
         this.orderId = getUrlParam('orderId')
         const {code, data} = await getOrder(this.orderId)
@@ -140,8 +149,6 @@ new Vue({
             this.order = data
             this.handleFind()
             this.$message.success('订单详情获取成功!')
-        } else {
-            this.$message.error('订单详情获取失败!')
         }
     }
 })

@@ -1,6 +1,7 @@
 import {getProCategoryNameByType} from "/api/category.js";
 import {getBrandAllList} from "/api/brand.js";
 import {getProductById, modifyProductById} from "/api/product.js";
+import {checkPermission} from "/api/user.js";
 var param = new URLSearchParams(window.location.search);
 var id = param.get("id")
 new Vue({
@@ -104,6 +105,15 @@ new Vue({
         }
     },
     mounted: async function () {
+         const {code, message} = await checkPermission()
+        if (code === '300') {
+            this.$alert(message, '登录提示', {
+                confirmButtonText: '确定',
+                callback: action => {
+                    window.location.href = '/esay_buy_pages/login/Login.html'
+                }
+            })
+        }
         await this.getCategoryList();
         await this.getBrandList();
         await this.getProById();

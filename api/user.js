@@ -33,13 +33,17 @@ export function getTypeList() {
 }
 
 export function getUserById(id) {
-    return request.get('/user/getUserById',{
-        params:{
-            id:id
+    return request.get('/user/getUserById', {
+        params: {
+            id: id
         }
     })
 }
 
 export function getCurrentUser() {
     return request.get('/user/getCurrentUser');
+}
+
+export function checkPermission() {
+    return request.get('/user/checkPermission')
 }

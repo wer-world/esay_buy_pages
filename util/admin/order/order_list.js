@@ -1,4 +1,4 @@
-import {getOrderList} from "/api/order.js";
+import {getOrderList, getUserOrderList} from "/api/order.js";
 import {loginOut} from "/api/login.js";
 
 new Vue({
@@ -9,8 +9,8 @@ new Vue({
             totalCount: 0,
             serialNumber: '',
             loginName: '',
-            type:null,
-            name:null,
+            type: null,
+            name: null,
             currentPage: 1,
             pageSize: 5,
             orderListLoad: true
@@ -46,7 +46,6 @@ new Vue({
         },
         message(message, option) {
             const messageDom = document.getElementsByClassName('el-message')[0]
-            console.log(messageDom)
             if (messageDom === undefined) {
                 switch (option) {
                     case 'success': {
@@ -69,6 +68,9 @@ new Vue({
             if (code === '200') {
                 this.loginName = null
                 this.message('用户注销成功', 'success')
+                setTimeout(function () {
+                    window.location.reload()
+                }, 1000)
             } else {
                 this.message('用户注销失败', 'error')
             }

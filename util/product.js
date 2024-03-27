@@ -30,6 +30,11 @@ new Vue({
     mounted: async function () {
         this.loginName = readCookie('loginName')
         this.type=readCookie("type")
+        if (this.loginName == null){
+            setTimeout(function (){
+                window.location.href = '/esay_buy_pages/login/Login.html'
+            }, '2000')
+        }
         await this.getBuyCarList()
         await this.initCategoryList();
         await this.initProduct();

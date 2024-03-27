@@ -1,4 +1,5 @@
 import {getUserListPage, checkType, deleteUser,getTypeList} from "/api/user.js"
+import {checkPermission} from "/api/user.js";
 
 new Vue({
     el: '#root',
@@ -11,6 +12,15 @@ new Vue({
         totalCount: 0
     },
     mounted:async function(){
+         const {code, message} = await checkPermission()
+        if (code === '300') {
+            this.$alert(message, '登录提示', {
+                confirmButtonText: '确定',
+                callback: action => {
+                    window.location.href = '/esay_buy_pages/login/Login.html'
+                }
+            })
+        }
         await this.getTypeList();
         await this.getUserList(1);
     },

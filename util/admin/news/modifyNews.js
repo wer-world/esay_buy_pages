@@ -1,4 +1,5 @@
-import {getNewsById} from "../../../api/news.js";
+import {getNewsById} from "/api/news.js";
+import {checkPermission} from "/api/user.js";
 
 Vue.config.productionTip = false
 var params = new URLSearchParams(window.location.search);
@@ -7,53 +8,62 @@ new Vue({
     el: "#app",
     data: {
         news: {
-            title:'',
-            content:'',
+            title: '',
+            content: '',
         },
-        titleMsg:'',
-        contentMsg:'',
-        flag:false
+        titleMsg: '',
+        contentMsg: '',
+        flag: false
     },
     methods: {
-        async getNewsById(){
+        async getNewsById() {
             const {data} = await getNewsById(id);
-            this.news=data
+            this.news = data
         },
         async onSubmit() {
             await this.checkTitle();
             if (!this.flag) {
                 return
             }
-            if (this.news.content.trim().length===0) {
-                this.contentMsg="请输入内容";
+            if (this.news.content.trim().length === 0) {
+                this.contentMsg = "请输入内容";
             }
-            const {code} = await modifyNewsById(id,this.news.title,this.news.content);
-            if (code==='200') {
+            const {code} = await modifyNewsById(id, this.news.title, this.news.content);
+            if (code === '200') {
                 alert("修改成功");
-                window.location="/esay_buy_pages/admin/news/NewsDetail.html"
+                window.location = "/esay_buy_pages/admin/news/NewsDetail.html"
             }
         },
-        async checkTitle(){
-            const {code,message} = await getNewsByTitle(this.news.title);
-            if (code==='201') {
+        async checkTitle() {
+            const {code, message} = await getNewsByTitle(this.news.title);
+            if (code === '201') {
                 this.titleMsg = message
                 this.flag = false
-            }else{
+            } else {
                 this.flag = true
             }
         },
-        clear(){
-            this.news={
-                title:'',
-                content:'',
+        clear() {
+            this.news = {
+                title: '',
+                content: '',
             }
         },
-        returnNewsList(){
-            window.location="/esay_buy_pages/admin/news/NewsDetail.html"
-        
+        returnNewsList() {
+            window.location = "/esay_buy_pages/admin/news/NewsDetail.html"
+
         }
     },
-    mounted() {
-        this.getNewsById();
+    mounted: async function () {
+         const {code, message} = await checkPermission()
+        if (code === '300') {
+            this.$alert(message, '登录提示', {
+                confirmButtonText: '确定',
+                callback: action => {
+                    window.location.href = '/esay_buy_pages/login/Login.html'
+                }
+            })
+        }
+        await this.getNewsById();
     },
 })

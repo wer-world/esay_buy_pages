@@ -1,19 +1,20 @@
-import {getUserOrderList,cancelOrder} from "/api/order.js"
+import {getUserOrderList, cancelOrder} from "/api/order.js"
 import {alipayCreate} from "/api/alipay.js"
 import {downloadProductImg} from "/api/product.js"
 import {addBuyCar, delBuyCarProductById, getBuyCarListByUserId} from "/api/buycar.js";
-import {loginOut} from "../../api/login.js";
+import {loginOut} from "/api/login.js";
+import {checkPermission} from "/api/user.js";
 
 new Vue({
-    el:"#root",
-    data:{
-        orderList:[],
-        pageSize:5,
-        serialNumber:'',
-        totalCount:'',
+    el: "#root",
+    data: {
+        orderList: [],
+        pageSize: 5,
+        serialNumber: '',
+        totalCount: '',
         //购物车相关
         loginName: null,
-        type:null,
+        type: null,
         buyCarList: [],
         globalCondition: null,
     },
@@ -28,29 +29,37 @@ new Vue({
         }
     },
     //↑购物车相关
-    mounted:async function(){
+    mounted: async function () {
         this.loginName = readCookie('loginName')
         this.type = readCookie('type')
+        if (this.loginName == null) {
+            this.$alert('请登录后操作!', '登录提示', {
+                confirmButtonText: '确定',
+                callback: action => {
+                    window.location.href = '/esay_buy_pages/login/Login.html'
+                }
+            })
+        }
         await this.getBuyCarList()
         await this.getOrderList();
         await this.handleDownloadImg();
     },
-    methods:{
-        async getOrderList(currentPage=1){
-            const {data} = await getUserOrderList(currentPage,this.pageSize,this.serialNumber);
+    methods: {
+        async getOrderList(currentPage = 1) {
+            const {data} = await getUserOrderList(currentPage, this.pageSize, this.serialNumber);
             this.orderList = data.orderList;
             this.totalCount = data.totalCount;
         },
-        async cancelOrder(id){
-            if (!confirm("确认取消订单吗？")){
+        async cancelOrder(id) {
+            if (!confirm("确认取消订单吗？")) {
                 return
             }
             const {message} = await cancelOrder(id);
             alert(message)
             await this.getOrderList(1);
         },
-        async payOrder(id,serialNumber){
-            const data = await alipayCreate(id,serialNumber);
+        async payOrder(id, serialNumber) {
+            const data = await alipayCreate(id, serialNumber);
             console.log(data)
             /* 此处form就是后台返回接收到的数据 */
             const div = document.createElement('div');
@@ -102,8 +111,8 @@ new Vue({
         handlerToBuyCar() {
             window.location.href = '/esay_buy_pages/buycar/BuyCar.html'
         },
-        toCategoryList(){
-            window.location.href='/esay_buy_pages/category/CategoryList.html?globalCondition='+this.globalCondition
+        toCategoryList() {
+            window.location.href = '/esay_buy_pages/category/CategoryList.html?globalCondition=' + this.globalCondition
         },
         message(message, option) {
             const messageDom = document.getElementsByClassName('el-message')[0]
@@ -130,6 +139,9 @@ new Vue({
             if (code === '200') {
                 this.loginName = null
                 this.message('用户注销成功', 'success')
+                setTimeout(function () {
+                    window.location.reload()
+                }, 1000)
             } else {
                 this.message('用户注销失败', 'error')
             }

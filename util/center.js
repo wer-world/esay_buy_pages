@@ -11,9 +11,9 @@ let time
 export const centerVue = new Vue({
     el: '#center',
     data: {
-        page:{
-            currentPage:1,
-            pageSize:5
+        page: {
+            currentPage: 1,
+            pageSize: 5
         },
         categoryList1: [],
         hoverIndex: -1,
@@ -38,7 +38,7 @@ export const centerVue = new Vue({
         amount: '99.5',
         //购物车相关
         loginName: null,
-        type:null,
+        type: null,
         buyCarList: [],
         globalCondition: null,
     },
@@ -190,7 +190,11 @@ export const centerVue = new Vue({
             window.location.href = '/esay_buy_pages/buycar/BuyCar.html'
         },
         toCategoryList() {
-            window.location.href = '/esay_buy_pages/category/CategoryList.html?globalCondition=' + this.globalCondition
+            if (this.loginName == null) {
+                window.location.href = '/esay_buy_pages/login/Login.html'
+            } else {
+                window.location.href = '/esay_buy_pages/category/CategoryList.html?globalCondition=' + this.globalCondition
+            }
         },
         message(message, option) {
             const messageDom = document.getElementsByClassName('el-message')[0]
@@ -217,6 +221,9 @@ export const centerVue = new Vue({
             if (code === '200') {
                 this.loginName = null
                 this.message('用户注销成功', 'success')
+                setTimeout(function () {
+                    window.location.reload()
+                }, 1000)
             } else {
                 this.message('用户注销失败', 'error')
             }
