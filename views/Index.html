@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://www.w3.org/1999/XSL/Transform">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <link type="text/css" rel="stylesheet" href="../css/style.css"/>
+    <link type="text/css" rel="stylesheet" href="/css/style.css"/>
     <link rel="stylesheet" href="/css/Element.css">
     <!--[if IE 6]>
     <script src="/js/iepng.js" type="text/javascript"></script>
@@ -11,25 +11,25 @@
         EvPNG.fix('div, ul, img, li, input, a');
     </script>
     <![endif]-->
-    <script type="text/javascript" src="../js/jquery-1.11.1.min_044d0927.js"></script>
-    <script type="text/javascript" src="../js/jquery.bxslider_e88acd1b.js"></script>
+    <script type="text/javascript" src="/js/jquery-1.11.1.min_044d0927.js"></script>
+    <script type="text/javascript" src="/js/jquery.bxslider_e88acd1b.js"></script>
 
-    <script type="text/javascript" src="../js/jquery-1.8.2.min.js"></script>
-    <script type="text/javascript" src="../js/menu.js"></script>
+    <script type="text/javascript" src="/js/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="/js/menu.js"></script>
 
 
 
-    <script type="text/javascript" src="../js/lrscroll.js"></script>
+    <script type="text/javascript" src="/js/lrscroll.js"></script>
 
-    <script type="text/javascript" src="../js/iban.js"></script>
-    <script type="text/javascript" src="../js/fban.js"></script>
-    <script type="text/javascript" src="../js/f_ban.js"></script>
-    <script type="text/javascript" src="../js/mban.js"></script>
-    <script type="text/javascript" src="../js/bban.js"></script>
-    <script type="text/javascript" src="../js/hban.js"></script>
-    <script type="text/javascript" src="../js/tban.js"></script>
+    <script type="text/javascript" src="/js/iban.js"></script>
+    <script type="text/javascript" src="/js/fban.js"></script>
+    <script type="text/javascript" src="/js/f_ban.js"></script>
+    <script type="text/javascript" src="/js/mban.js"></script>
+    <script type="text/javascript" src="/js/bban.js"></script>
+    <script type="text/javascript" src="/js/hban.js"></script>
+    <script type="text/javascript" src="/js/tban.js"></script>
 
-    <script type="text/javascript" src="../js/lrscroll_1.js"></script>
+    <script type="text/javascript" src="/js/lrscroll_1.js"></script>
     <title>尤洪</title>
 </head>
 
@@ -119,8 +119,8 @@
             </span>
             <!--End 所在收货地区 End-->
             <span class="fr">
-                <span class="fl">你好，<span style="color: red">{{loginName}}</span><span v-if="loginName == null">请<a href="../login/Login.html">登录</a></span>&nbsp; <a
-                        href="../register/Regist.html"
+                <span class="fl">你好，<span style="color: red">{{loginName}}</span><span v-if="loginName == null">请<a href="/login/Login.html">登录</a></span>&nbsp; <a
+                        href="/register/Regist.html"
                         style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
                         href="#">我的订单</a>&nbsp;|</span>
                 <span class="ss">
@@ -164,7 +164,7 @@
                 </span>
                 <span class="fl">|&nbsp;关注我们：</span>
                 <span class="s_sh"><a href="#" class="sh1">新浪</a><a href="#" class="sh2">微信</a></span>
-                <span class="fr">|&nbsp;<a href="#">手机版&nbsp;<img src="../images/s_tel.png"
+                <span class="fr">|&nbsp;<a href="#">手机版&nbsp;<img src="/images/s_tel.png"
                                                                      align="absmiddle"/></a></span>
             </span>
         </div>
@@ -183,7 +183,7 @@
             <div class="car_t">购物车 [ <span>{{buyCarList.length}}</span> ]</div>
             <div class="car_bg">
                 <!--Begin 购物车未登录 Begin-->
-                <div class="un_login" v-if="loginName == null">还未登录！<a href="../login/Login.html"
+                <div class="un_login" v-if="loginName == null">还未登录！<a href="/login/Login.html"
                                                                            style="color:#ff4e00;">马上登录</a> 查看购物车！
                 </div>
                 <div class="un_login">欢迎 <span style="color: red">{{loginName}}</span> 查看购物车！</div>
@@ -219,7 +219,7 @@
                         <li v-for="(c1,index) in categoryList1">
                             <div class="fj" :class="{'nuw':index==hoverIndex} " @mouseenter="hoverIndex=index"
                                  @mouseleave="hoverIndex=-1">
-                                <span class="n_img"><span></span><img src="../images/nav1.png"/></span>
+                                <span class="n_img"><span></span><img src="/images/nav1.png"/></span>
                                 <span class="fl">{{c1.name}}</span>
                             </div>
                             <div class="zj" v-show="index==hoverIndex" @mouseenter="hoverIndex=index"
@@ -453,9 +453,9 @@
                     <div class="fre_ban">
                         <div id="imgPlay1">
                             <ul class="imgs" id="actor1">
-                                <li><a href="#"><img src="../images/fre_r.jpg" width="211" height="286"/></a></li>
-                                <li><a href="#"><img src="../images/fre_r.jpg" width="211" height="286"/></a></li>
-                                <li><a href="#"><img src="../images/fre_r.jpg" width="211" height="286"/></a></li>
+                                <li><a href="#"><img src="/images/fre_r.jpg" width="211" height="286"/></a></li>
+                                <li><a href="#"><img src="/images/fre_r.jpg" width="211" height="286"/></a></li>
+                                <li><a href="#"><img src="/images/fre_r.jpg" width="211" height="286"/></a></li>
                             </ul>
                             <div class="prevf">上一张</div>
                             <div class="nextf">下一张</div>
@@ -482,14 +482,14 @@
                 </div>
                 <div class="fresh_right">
                     <ul>
-                        <li><a href="#"><img src="../images/fre_b1.jpg" width="260" height="220"/></a></li>
-                        <li><a href="#"><img src="../images/fre_b2.jpg" width="260" height="220"/></a></li>
+                        <li><a href="#"><img src="/images/fre_b1.jpg" width="260" height="220"/></a></li>
+                        <li><a href="#"><img src="/images/fre_b2.jpg" width="260" height="220"/></a></li>
                     </ul>
                 </div>
             </div>
         </div>
         <div class="content mar_20">
-            <img src="../images/mban_1.jpg" width="1200" height="110"/>
+            <img src="/images/mban_1.jpg" width="1200" height="110"/>
         </div>
     </div>
 
@@ -690,7 +690,7 @@
 <script src="/util/common.js"></script>
 <script src="/js/Element.js"></script>
 <script type="module" src="/util/center.js"></script>
-<script type="module" src="../js/select.js"></script>
+<script type="module" src="/js/select.js"></script>
 <!--[if IE 6]>
 <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
 <![endif]-->

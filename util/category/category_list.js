@@ -38,7 +38,7 @@ new Vue({
             if (confirm('您确定要把该商品移除购物车吗!')) {
                 const {code} = await delBuyCarProductById(id)
                 if (code === '200') {
-                    this.message('移除成功!', 'error')
+                    this.message('移除成功!', 'success')
                     this.getBuyCarList()
                 } else {
                     this.message('删除购物车信息失败', 'error')
