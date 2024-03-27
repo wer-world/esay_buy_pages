@@ -1,4 +1,4 @@
-import {getOrderList} from "/api/order.js";
+import {getOrderList, getUserOrderList} from "/api/order.js";
 import {loginOut} from "/api/login.js";
 
 new Vue({
@@ -22,7 +22,7 @@ new Vue({
         },
         async handleFind() {
             this.orderListLoad = true
-            const {code, data} = await getOrderList(this.currentPage, this.pageSize, this.serialNumber, this.loginName)
+            const {code, data} = await getUserOrderList(this.currentPage, this.pageSize, this.serialNumber, this.loginName)
             if (code === '200') {
                 this.orderList = data.orderList
                 this.totalCount = data.totalCount
@@ -69,6 +69,9 @@ new Vue({
             if (code === '200') {
                 this.loginName = null
                 this.message('用户注销成功', 'success')
+                setTimeout(function () {
+                    window.location.reload()
+                }, 1000)
             } else {
                 this.message('用户注销失败', 'error')
             }

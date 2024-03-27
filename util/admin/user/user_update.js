@@ -1,7 +1,8 @@
 import {getUserById, updateUser,getCurrentUser} from "/api/user.js"
 import {getTypeList} from "/api/type.js"
+import {loginOut} from "/api/login.js";
 new Vue({
-    el:'#root',
+    el:'#admin',
     data:{
         user:{},
         userMsg:{
@@ -17,12 +18,16 @@ new Vue({
             emailCodeFlag:false
         },
         currentUser:{},
-        typeList:[]
+        typeList:[],
+        type:null,
+        loginName: null,
     },
     mounted:async function(){
         await this.initUser();
         await this.initCurrentUser();
         await this.getTypeList();
+        this.loginName = readCookie('loginName');
+        this.type = readCookie('type')
     },
     methods:{
         async initUser(){
@@ -100,6 +105,37 @@ new Vue({
                 alert("修改成功");
                 window.location.href="/esay_buy_pages/admin/user/UserList.html";
             }
-        }
+        },
+        async handleLoginOut() {
+            const {code} = await loginOut()
+            if (code === '200') {
+                this.loginName = null
+                this.message('用户注销成功', 'success')
+                setTimeout(function () {
+                    window.location.reload()
+                }, 1000)
+            } else {
+                this.message('用户注销失败', 'error')
+            }
+        },
+        message(message, option) {
+            const messageDom = document.getElementsByClassName('el-message')[0]
+            if (messageDom === undefined) {
+                switch (option) {
+                    case 'success': {
+                        this.$message.success(message)
+                        break;
+                    }
+                    case 'error': {
+                        this.$message.error(message)
+                        break;
+                    }
+                    case 'warning': {
+                        this.$message.warning(message)
+                        break;
+                    }
+                }
+            }
+        },
     }
 })

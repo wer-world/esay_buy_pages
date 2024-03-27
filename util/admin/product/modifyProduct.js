@@ -1,10 +1,11 @@
 import {getProCategoryNameByType} from "/api/category.js";
 import {getBrandAllList} from "/api/brand.js";
 import {getProductById, modifyProductById} from "/api/product.js";
+import {loginOut} from "/api/login.js";
 var param = new URLSearchParams(window.location.search);
 var id = param.get("id")
 new Vue({
-    el: '#app',
+    el: '#admin',
     data: {
         product: {
             brandId: '',
@@ -40,7 +41,9 @@ new Vue({
             desc: [
                 {required: true, message: '请填写商品描述', trigger: 'blur'}
             ]
-        }
+        },
+        type:null,
+        loginName: null,
     },
     methods: {
         resetForm() {
@@ -101,11 +104,44 @@ new Vue({
                 this.product=data;
                 this.imageUrl = "/" + data.picPath
             }
-        }
+        },
+        async handleLoginOut() {
+            const {code} = await loginOut()
+            if (code === '200') {
+                this.loginName = null
+                this.message('用户注销成功', 'success')
+                setTimeout(function () {
+                    window.location.reload()
+                }, 1000)
+            } else {
+                this.message('用户注销失败', 'error')
+            }
+        },
+        message(message, option) {
+            const messageDom = document.getElementsByClassName('el-message')[0]
+            if (messageDom === undefined) {
+                switch (option) {
+                    case 'success': {
+                        this.$message.success(message)
+                        break;
+                    }
+                    case 'error': {
+                        this.$message.error(message)
+                        break;
+                    }
+                    case 'warning': {
+                        this.$message.warning(message)
+                        break;
+                    }
+                }
+            }
+        },
     },
     mounted: async function () {
         await this.getCategoryList();
         await this.getBrandList();
         await this.getProById();
+        this.loginName = readCookie('loginName');
+        this.type = readCookie('type')
     }
 })

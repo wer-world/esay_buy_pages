@@ -1,8 +1,9 @@
-import {delNewsById, getNewsList} from "../../../api/news.js";
+import {delNewsById, getNewsList} from "/api/news.js";
+import {loginOut} from "/api/login.js";
 
 Vue.config.productionTip = false
 new Vue({
-    el: '#app',
+    el: '#admin',
     data:{
         newsList: [],
         page:{
@@ -12,6 +13,8 @@ new Vue({
         totalCount:0,
         loading:true,
         title:'',
+        type:null,
+        loginName: null,
 
     },
     methods: {
@@ -46,9 +49,42 @@ new Vue({
         },
         returnAdmin(){
             window.location="/esay_buy_pages/admin/Admin.html"
-        }
+        },
+        async handleLoginOut() {
+            const {code} = await loginOut()
+            if (code === '200') {
+                this.loginName = null
+                this.message('用户注销成功', 'success')
+                setTimeout(function () {
+                    window.location.reload()
+                }, 1000)
+            } else {
+                this.message('用户注销失败', 'error')
+            }
+        },
+        message(message, option) {
+            const messageDom = document.getElementsByClassName('el-message')[0]
+            if (messageDom === undefined) {
+                switch (option) {
+                    case 'success': {
+                        this.$message.success(message)
+                        break;
+                    }
+                    case 'error': {
+                        this.$message.error(message)
+                        break;
+                    }
+                    case 'warning': {
+                        this.$message.warning(message)
+                        break;
+                    }
+                }
+            }
+        },
     },
     mounted() {
         this.getNewsList(1);
+        this.loginName = readCookie('loginName');
+        this.type = readCookie('type')
     },
 })

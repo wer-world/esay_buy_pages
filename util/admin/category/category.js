@@ -1,7 +1,8 @@
 import {getCategoryList,getParentCategory,addCategory,getCategory,updateCategory,deleteCategory} from "/api/category.js";
+import {loginOut} from "/api/login.js";
 
 new Vue({
-    el:'#root',
+    el:'#admin',
     data:{
         categoryList1: [],
         defaultProps:{
@@ -13,10 +14,12 @@ new Vue({
         dialogDeleteCategoryForm:false,
         currentCategory:'',
         parentCategory:'',
-        newCategoryName:''
+        newCategoryName:'',
+        loginName:null,
     },
     mounted: async function(){
         await this.initCategoryList();
+        this.loginName = readCookie('loginName')
     },
     methods:{
         async initCategoryList() {
@@ -81,6 +84,37 @@ new Vue({
                 this.dialogDeleteCategoryForm=false;
                 await this.initCategoryList();
             }
-        }
+        },
+        async handleLoginOut() {
+            const {code} = await loginOut()
+            if (code === '200') {
+                this.loginName = null
+                this.message('用户注销成功', 'success')
+                setTimeout(function () {
+                    window.location.reload()
+                }, 1000)
+            } else {
+                this.message('用户注销失败', 'error')
+            }
+        },
+        message(message, option) {
+            const messageDom = document.getElementsByClassName('el-message')[0]
+            if (messageDom === undefined) {
+                switch (option) {
+                    case 'success': {
+                        this.$message.success(message)
+                        break;
+                    }
+                    case 'error': {
+                        this.$message.error(message)
+                        break;
+                    }
+                    case 'warning': {
+                        this.$message.warning(message)
+                        break;
+                    }
+                }
+            }
+        },
     }
 })
