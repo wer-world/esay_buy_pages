@@ -119,7 +119,14 @@
             </span>
             <!--End 所在收货地区 End-->
             <span class="fr">
-                <span class="fl">你好，<span style="color: red">{{loginName}}</span><span v-if="loginName == null">请<a href="../login/Login.html">登录</a></span>&nbsp; <a
+                <span class="fl">
+                    <span v-if="loginName != null">
+                        <a href="/esay_buy_pages/member/Member.html">我的信息</a>
+                        <a v-if="type<3" href="/esay_buy_pages/admin/Admin.html" style="color: red">
+                            进入管理员
+                        </a>&nbsp;
+                    </span>
+                    你好，<span style="color: red">{{loginName}}<a v-if="loginName != null" @click="handleLoginOut"> 注销</a></span><span v-if="loginName == null">请<a href="../login/Login.html">登录</a></span>&nbsp; <a
                         href="../register/Regist.html"
                         style="color:#ff4e00;">免费注册</a>&nbsp;|&nbsp;<a
                         href="#">我的订单</a>&nbsp;|</span>

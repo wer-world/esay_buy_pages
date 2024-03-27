@@ -12,6 +12,8 @@
     <div id="app">
         <div>
             <el-descriptions title="资讯列表"></el-descriptions>
+            <el-input type="text" v-model="title" placeholder="请输入标题" style="width: 100px"></el-input>
+            <el-button type="" @click="getNewsList">查询</el-button>
             <el-button type="" @click="addNews">添加资讯</el-button>
             <el-button type="" @click="returnAdmin">返回到管理员页面</el-button>
             <el-table :data="newsList" border style="width: 25%" v-loading="loading">
@@ -30,7 +32,7 @@
         </div>
 
         <div class="block">
-            <el-pagination layout="prev, pager, next" :total="totalCount" :page-size="pageSize" @current-change="getNewsList">
+            <el-pagination layout="prev, pager, next" :total="totalCount" :page-size="page.pageSize" @current-change="getNewsList">
             </el-pagination>
         </div>
 

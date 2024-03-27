@@ -2,6 +2,7 @@ import {downloadProductImg, getProductById, getProductsByHigHestId, getSimilarPr
 import {addCollection} from "/api/collection.js"
 import {getCategoryList} from "/api/category.js";
 import {addBuyCar, delBuyCarProductById, getBuyCarListByUserId} from "/api/buycar.js";
+import {loginOut} from "../api/login.js";
 
 new Vue({
     el: '#all',
@@ -23,9 +24,11 @@ new Vue({
         loginName: null,
         buyCarList: [],
         globalCondition: null,
+        type:null
     },
     mounted: async function () {
         this.loginName = readCookie('loginName')
+        this.type=readCookie("type")
         await this.getBuyCarList()
         await this.initCategoryList();
         await this.initProduct();
@@ -170,6 +173,35 @@ new Vue({
         },
         toCategoryList(){
             window.location.href='/esay_buy_pages/category/CategoryList.html?globalCondition='+this.globalCondition
-        }
+        },
+        message(message, option) {
+            const messageDom = document.getElementsByClassName('el-message')[0]
+            console.log(messageDom)
+            if (messageDom === undefined) {
+                switch (option) {
+                    case 'success': {
+                        this.$message.success(message)
+                        break;
+                    }
+                    case 'error': {
+                        this.$message.error(message)
+                        break;
+                    }
+                    case 'warning': {
+                        this.$message.warning(message)
+                        break;
+                    }
+                }
+            }
+        },
+        async handleLoginOut() {
+            const {code} = await loginOut()
+            if (code === '200') {
+                this.loginName = null
+                this.message('用户注销成功', 'success')
+            } else {
+                this.message('用户注销失败', 'error')
+            }
+        },
     }
 })

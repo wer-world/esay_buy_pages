@@ -1,4 +1,5 @@
-import {getAddressById,modifyAddressById} from "../../../api/address.js";
+import {getAddressById,modifyAddressById} from "../../api/address.js";
+import {loginOut} from "../../api/login.js";
 var param = new URLSearchParams(window.location.search);
 var id = param.get("id")
 new Vue({
@@ -57,7 +58,9 @@ new Vue({
                 { required: true, message: '请填写手机号', trigger: 'blur' },
                 { pattern: /^1[3456789]\d{9}$/, message: '手机号码格式不正确', trigger: 'blur' }
             ]
-        }
+        },
+        type:null,
+        loginName:null
     },
     methods: {
         async getAreaByGaoDe() {
@@ -131,7 +134,7 @@ new Vue({
             }
         },
         quxiao(){
-            window.location = "/esay_buy_pages/admin/address/AddressDetail.html"
+            window.location = "/esay_buy_pages/member/Member_Address.html"
         },
         onSubmit(){
             this.$refs["form"].validate(async (valid) => {
@@ -148,7 +151,7 @@ new Vue({
                     const {code} = await modifyAddressById(this.address);
                     if (code === "200"){
                         alert("修改成功");
-                        window.location="/esay_buy_pages/admin/address/AddressDetail.html"
+                        window.location="/esay_buy_pages/member/Member_Address.html"
                     }
 
                 }else{
@@ -171,12 +174,43 @@ new Vue({
                 this.form.consignee = data.consignee;
                 this.form.tel = data.tel;
             }
-        }
+        },
+        message(message, option) {
+            const messageDom = document.getElementsByClassName('el-message')[0]
+            console.log(messageDom)
+            if (messageDom === undefined) {
+                switch (option) {
+                    case 'success': {
+                        this.$message.success(message)
+                        break;
+                    }
+                    case 'error': {
+                        this.$message.error(message)
+                        break;
+                    }
+                    case 'warning': {
+                        this.$message.warning(message)
+                        break;
+                    }
+                }
+            }
+        },
+        async handleLoginOut() {
+            const {code} = await loginOut()
+            if (code === '200') {
+                this.loginName = null
+                this.message('用户注销成功', 'success')
+            } else {
+                this.message('用户注销失败', 'error')
+            }
+        },
 
     },
     mounted: async function () {
         await this.getAreaByGaoDe();
         await this.getAddressById();
+        this.loginName = readCookie('loginName')
+        this.type = readCookie('type')
     }
 
 

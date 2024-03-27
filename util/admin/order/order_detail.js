@@ -1,6 +1,7 @@
 import {getOrder, getOrderDetailListPage} from "/api/order.js";
 import {delBuyCarProductById, getBuyCarListByUserId} from "/api/buycar.js";
 import {downloadProductImg} from "/api/product.js";
+import {loginOut} from "/api/login.js";
 
 new Vue({
     el: '#admin',
@@ -31,7 +32,9 @@ new Vue({
             productName: '',
             totalCount: 0,
             orderDetailList: [],
-            load: true
+            load: true,
+            type:null,
+            name:null,
         }
     },
     methods: {
@@ -87,7 +90,36 @@ new Vue({
                 let img = document.getElementById('productImg' + key)
                 img.setAttribute('src', url);
             }
-        }
+        },
+        message(message, option) {
+            const messageDom = document.getElementsByClassName('el-message')[0]
+            console.log(messageDom)
+            if (messageDom === undefined) {
+                switch (option) {
+                    case 'success': {
+                        this.$message.success(message)
+                        break;
+                    }
+                    case 'error': {
+                        this.$message.error(message)
+                        break;
+                    }
+                    case 'warning': {
+                        this.$message.warning(message)
+                        break;
+                    }
+                }
+            }
+        },
+        async handleLoginOut() {
+            const {code} = await loginOut()
+            if (code === '200') {
+                this.loginName = null
+                this.message('用户注销成功', 'success')
+            } else {
+                this.message('用户注销失败', 'error')
+            }
+        },
     },
     computed: {
         totalCost: function () {
@@ -99,6 +131,8 @@ new Vue({
         }
     },
     mounted: async function () {
+        this.name = readCookie('loginName')
+        this.type = readCookie('type')
         await this.getBuyCarList()
         this.orderId = getUrlParam('orderId')
         const {code, data} = await getOrder(this.orderId)

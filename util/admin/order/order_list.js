@@ -1,4 +1,5 @@
 import {getOrderList} from "/api/order.js";
+import {loginOut} from "/api/login.js";
 
 new Vue({
     el: '#admin',
@@ -8,6 +9,8 @@ new Vue({
             totalCount: 0,
             serialNumber: '',
             loginName: '',
+            type:null,
+            name:null,
             currentPage: 1,
             pageSize: 5,
             orderListLoad: true
@@ -40,9 +43,40 @@ new Vue({
         handleCurrentChange(val) {
             this.currentPage = val
             this.handleFind()
-        }
+        },
+        message(message, option) {
+            const messageDom = document.getElementsByClassName('el-message')[0]
+            console.log(messageDom)
+            if (messageDom === undefined) {
+                switch (option) {
+                    case 'success': {
+                        this.$message.success(message)
+                        break;
+                    }
+                    case 'error': {
+                        this.$message.error(message)
+                        break;
+                    }
+                    case 'warning': {
+                        this.$message.warning(message)
+                        break;
+                    }
+                }
+            }
+        },
+        async handleLoginOut() {
+            const {code} = await loginOut()
+            if (code === '200') {
+                this.loginName = null
+                this.message('用户注销成功', 'success')
+            } else {
+                this.message('用户注销失败', 'error')
+            }
+        },
     },
     mounted: async function () {
+        this.name = readCookie('loginName')
+        this.type = readCookie('type')
         this.orderListLoad = true
         const {data} = await getOrderList(1, 5)
         this.orderList = data.orderList
