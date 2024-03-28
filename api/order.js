@@ -8,12 +8,13 @@ export function getOrderList(currentPage, pageSize, serialNumber, loginName) {
         loginName: loginName
     })
 }
-export function getUserOrderList(currentPage, pageSize, serialNumber,status) {
+
+export function getUserOrderList(currentPage, pageSize, serialNumber, status) {
     return request.post('/order/getUserOrderList', {
-            currentPage: currentPage,
-            pageSize: pageSize,
-            serialNumber: serialNumber,
-            status:status
+        currentPage: currentPage,
+        pageSize: pageSize,
+        serialNumber: serialNumber,
+        status: status
     })
 }
 
@@ -21,6 +22,12 @@ export function getOrder(id, serialNumber) {
     return request.post('/order/getOrder', {
         id: id,
         serialNumber: serialNumber
+    })
+}
+
+export function getAdminOrder(id) {
+    return request.post('/order/getAdminOrder', {
+        id: id
     })
 }
 
@@ -53,11 +60,12 @@ export function cancelOrder(id) {
         }
     })
 }
-export function modOrder(id,status) {
+
+export function modOrder(id, status) {
     return request.get('/order/modOrder', {
         params: {
             id: id,
-            status:status
+            status: status
         }
     })
 }

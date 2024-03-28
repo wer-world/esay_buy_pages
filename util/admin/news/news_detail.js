@@ -8,7 +8,7 @@ new Vue({
     data: {
         newsList: [],
         page: {
-            currentPageCount: 1,
+            currentPage: 1,
             pageSize: 4,
         },
         totalCount: 0,
@@ -26,11 +26,11 @@ new Vue({
             if (code === '200') {
                 this.newsList = data.getNewsList
                 this.totalCount = data.page.totalCount
-                this.page.currentPageCount = data.page.currentPage
+                this.page.currentPage = data.page.currentPage
             } else {
                 this.newsList = []
                 this.totalCount = 0
-                this.page.currentPageCount = 1
+                this.page.currentPage = 1
             }
             this.loading = false
         },

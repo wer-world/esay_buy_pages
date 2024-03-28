@@ -8,16 +8,24 @@ var id = params.get("id");
 new Vue({
     el: "#admin",
     data: {
+        loginName: '',
         news: {},
     },
     methods: {
         async getNewsById() {
-            const {data} = await getNewsById(id);
+            const {code, data, message} = await getNewsById(id);
+            if (code === '300') {
+                this.$alert(message, '登录提示', {
+                    confirmButtonText: '确定',
+                    callback: action => {
+                        window.location.href = '/esay_buy_pages/login/Login.html'
+                    }
+                })
+            }
             this.news = data
         },
         returnNewsList() {
             window.location = "/esay_buy_pages/admin/news/NewsDetail.html"
-
         },
         returnIndex() {
             window.location = "/esay_buy_pages/Index.html"
@@ -55,14 +63,8 @@ new Vue({
         },
     },
     mounted: async function () {
-        const {code, message} = await this.getNewsById();
-        if (code === '300') {
-            this.$alert(message, '登录提示', {
-                confirmButtonText: '确定',
-                callback: action => {
-                    window.location.href = '/esay_buy_pages/login/Login.html'
-                }
-            })
-        }
+        this.loginName = readCookie('loginName');
+        this.type = readCookie('type')
+        await this.getNewsById();
     },
 })

@@ -5,6 +5,8 @@ import {addBuyCar, delBuyCarProductById, getBuyCarListByUserId} from "/api/buyca
 import {loginOut} from "/api/login.js";
 import {getOrderDetailList} from "/api/orderDetail.js"
 
+let time
+
 new Vue({
     el: "#root",
     data: {
@@ -13,14 +15,14 @@ new Vue({
         serialNumber: '',
         totalCount: '',
         //未支付订单列表
-        unPayOrderList:[],
-        mergeMsg:'',
+        unPayOrderList: [],
+        mergeMsg: '',
         //主订单
-        mainOrder:'',
+        mainOrder: '',
         //从订单
-        slaveOrder:'',
+        slaveOrder: '',
         //订单详情列表
-        orderDetailList:[],
+        orderDetailList: [],
         //购物车相关
         loginName: null,
         type: null,
@@ -56,51 +58,63 @@ new Vue({
     },
     methods: {
         async getOrderList(currentPage = 1) {
-            const {data} = await getUserOrderList(currentPage, this.pageSize, this.serialNumber);
-            this.orderList = data.orderList;
-            this.totalCount = data.totalCount;
+            const {code, data} = await getUserOrderList(currentPage, this.pageSize, this.serialNumber);
+            if (code === '200'){
+                this.orderList = data.orderList;
+                this.totalCount = data.totalCount;
+            } else {
+                this.orderList = [];
+                this.totalCount = 0;
+            }
         },
         async getUnPayOrderList(currentPage = 1) {
-            const {data} = await getUserOrderList(1, 100, this.serialNumber,0);
+            const {data} = await getUserOrderList(1, 100, this.serialNumber, 0);
             this.unPayOrderList = data.orderList;
         },
-        async mergeOrder(){
-            if (this.mainOrder===this.slaveOrder){
+        async mergeOrder() {
+            if (this.mainOrder === this.slaveOrder) {
                 this.mergeMsg = "主订单和从订单不能一致！";
                 return
             }
             this.mergeMsg = "";
-            //改两个订单的状态为已合并
-            let message;
-            message = await modOrder(this.mainOrder.id,5)
-            if (message.code!="200"){
-                return
+            const $this = this
+            if (time) {
+                clearTimeout(time)
             }
-            message = await modOrder(this.slaveOrder.id,5)
-            if (message.code!="200"){
-                return
-            }
-            //获取两个订单里的商品并加入购物车
-            message = await getOrderDetailList(this.mainOrder.id);
-            for (const key in message.data){
-                await this.handleAddBuyCar(message.data[key].productId,message.data[key].quantity);
-            }
-            message = await getOrderDetailList(this.slaveOrder.id);
-            for (const key in message.data){
-                await this.handleAddBuyCar(message.data[key].productId,message.data[key].quantity);
-            }
-            await this.getBuyCarList();
-            await this.handlerCreateOrder();
-            await this.getOrderList();
+            time = setTimeout(async function () {
+                //改两个订单的状态为已合并
+                let message;
+                message = await modOrder($this.mainOrder.id, 5)
+                if (message.code != "200") {
+                    return
+                }
+                message = await modOrder($this.slaveOrder.id, 5)
+                if (message.code != "200") {
+                    return
+                }
+                //获取两个订单里的商品并加入购物车
+                message = await getOrderDetailList($this.mainOrder.id);
+                for (const key in message.data) {
+                    await $this.handleAddBuyCar(message.data[key].productId, message.data[key].quantity);
+                }
+                message = await getOrderDetailList($this.slaveOrder.id);
+                for (const key in message.data) {
+                    await $this.handleAddBuyCar(message.data[key].productId, message.data[key].quantity);
+                }
+                await $this.getBuyCarList();
+                await $this.handlerCreateOrder();
+                await $this.getOrderList();
+            }, 1000)
+
         },
         async handlerCreateOrder() {
             const $this = this
-                const {code, data, message} = await createOrder(this.buyCarList)
-                if (code === '200') {
-                    this.mergeMsg = "合并成功!"
-                } else {
-                    $this.message(message, 'error')
-                }
+            const {code, data, message} = await createOrder(this.buyCarList)
+            if (code === '200') {
+                this.mergeMsg = "合并成功!"
+            } else {
+                $this.message(message, 'error')
+            }
         },
         async cancelOrder(id) {
             if (!confirm("确认取消订单吗？")) {
@@ -151,8 +165,8 @@ new Vue({
                 await this.handleDownloadImg()
             }
         },
-        async handleAddBuyCar(productId,productNum) {
-            const {code, message} = await addBuyCar(productId,productNum)
+        async handleAddBuyCar(productId, productNum) {
+            const {code, message} = await addBuyCar(productId, productNum)
             if (code === '200') {
                 await this.getBuyCarList()
             }

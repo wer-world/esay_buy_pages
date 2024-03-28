@@ -1,4 +1,4 @@
-import {getOrder, getOrderDetailListPage, getOrderList} from "/api/order.js";
+import {getAdminOrder, getOrder, getOrderDetailListPage, getOrderList} from "/api/order.js";
 import {delBuyCarProductById, getBuyCarListByUserId} from "/api/buycar.js";
 import {downloadProductImg} from "/api/product.js";
 import {loginOut} from "/api/login.js";
@@ -147,7 +147,7 @@ new Vue({
         }
         await this.getBuyCarList()
         this.orderId = getUrlParam('orderId')
-        const {code, data} = await getOrder(this.orderId)
+        const {code, data} = await getAdminOrder(this.orderId)
         if (code === '200') {
             this.order = data
             this.handleFind()

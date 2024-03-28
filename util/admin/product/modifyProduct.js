@@ -86,7 +86,12 @@ new Vue({
                     formData.set('id', id)
                     formData.set('brandId', $this.product.brandId)
                     formData.set('categoryLevelId', $this.product.categoryLevelId)
-                    formData.set('filePath', $this.product.picPath)
+                    if ($this.product.picPath instanceof Object) {
+                        formData.set('filePath', $this.product.picPath)
+                    } else {
+                        formData.set('picPath', $this.product.picPath)
+                        formData.set('filePath', null)
+                    }
                     const {code, message} = await modifyProductById(formData);
                     if (code === '200') {
                         alert(message)
@@ -108,7 +113,7 @@ new Vue({
             }
         },
         async handleDownloadImg(picPath) {
-            if (picPath != null){
+            if (picPath != null) {
                 const data = await downloadProductImg(picPath)
                 const blob = new Blob([data], {type: "image/jepg,image/png"});
                 let url = window.URL.createObjectURL(blob);
