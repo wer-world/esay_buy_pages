@@ -56,6 +56,8 @@ new Vue({
             if (code === '200') {
                 this.buyCarList = data
                 await this.handleDownloadImg()
+            } else {
+                this.buyCarList = []
             }
         },
         async getBrandAllList() {

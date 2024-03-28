@@ -15,7 +15,7 @@ export function getProductListPages(currentPageCount, pageSize, brandName, produ
     })
 }
 
-export function globalSearchProduct(globalCondition) {
+export function globalSearchProduct(currentPageCount, pageSize, globalCondition) {
     return request.post('/product/getProductListPages', {
         currentPage: currentPageCount,
         pageSize: pageSize,

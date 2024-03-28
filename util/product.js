@@ -165,6 +165,8 @@ new Vue({
             if (code === '200') {
                 this.buyCarList = data
                 await this.handleBuyCarDownloadImg()
+            } else {
+                this.buyCarList = []
             }
         },
         async submitZuhe() {

@@ -155,9 +155,6 @@ new Vue({
             const {code, message} = await addBuyCar(productId,productNum)
             if (code === '200') {
                 await this.getBuyCarList()
-                this.message('加入购物车成功！', 'success')
-            } else {
-                this.message(message, 'error')
             }
         },
         handlerToBuyCar() {

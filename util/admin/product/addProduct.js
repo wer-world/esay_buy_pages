@@ -9,6 +9,7 @@ new Vue({
     data: {
         product: {
             brandId: '',
+            brandName: '',
             categoryLevelId: '',
             name: '',
             price: '',
